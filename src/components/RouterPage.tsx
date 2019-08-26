@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { RouteComponentProps, Redirect } from "@reach/router";
 import { BASE, APP } from "../constants/routes";
 import { AppState } from "../store/configureStore";
-import LoadingPage from "./LoadingPage";
+import LoadingPage from "../styled/LoadingPage";
 
 interface StateProps {
   userId: string;

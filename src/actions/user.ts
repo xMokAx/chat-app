@@ -1,3 +1,4 @@
+export const NO_USER = "NO_USER";
 export const AUTH_SUCCESS = "AUTH_SUCCESS";
 export const AUTH_FAILURE = "AUTH_FAILURE";
 export const ADD_USER = "ADD_USER";
@@ -12,6 +13,10 @@ export type User = {
   email: string | null;
   photo: string | null;
 };
+
+export interface NoUserAction {
+  type: typeof NO_USER;
+}
 
 export interface AuthSuccessAction {
   type: typeof AUTH_SUCCESS;
@@ -39,11 +44,16 @@ export interface UpdateUserAction {
 }
 
 export type UserActionTypes =
+  | NoUserAction
   | AuthSuccessAction
   | AuthFailureAction
   | SignOutAction
   | AddUserAction
   | UpdateUserAction;
+
+const noUser = (): UserActionTypes => ({
+  type: NO_USER
+});
 
 const authSuccess = (isNewUser: boolean, user: User): UserActionTypes => ({
   type: AUTH_SUCCESS,
@@ -71,6 +81,7 @@ const updateUser = (user: User): UserActionTypes => ({
 });
 
 export const userActions = {
+  noUser,
   authSuccess,
   authFailure,
   signOut,

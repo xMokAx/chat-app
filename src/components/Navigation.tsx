@@ -1,45 +1,37 @@
-import React from "react";
-import { Link } from "@reach/router";
+import React, { Fragment } from "react";
 import * as ROUTES from "../constants/routes";
 import { connect } from "react-redux";
 import { AppState } from "../store/configureStore";
 
+import Nav from "../styled/Nav";
+import NavLink from "../styled/NavLink";
 import SignOutButton from "./SignOutButton";
+import ThemeTogglerButton from "./ThemeTogglerButton";
 
 type NavigationProps = {
-  userId?: string;
+  userId: string;
 };
 
 const Navigation = ({ userId }: NavigationProps) => (
-  <div>{userId ? <NavigationAuth /> : <NavigationNonAuth />}</div>
+  <Nav>{userId ? <NavigationAuth /> : <NavigationNonAuth />}</Nav>
 );
 
 const NavigationAuth = () => (
-  <ul>
-    <li>
-      <Link to={ROUTES.APP}>App</Link>
-    </li>
-    <li>
-      <Link to={ROUTES.ACCOUNT}>Account</Link>
-    </li>
-    <li>
-      <SignOutButton />
-    </li>
-  </ul>
+  <Fragment>
+    <NavLink to={ROUTES.APP}>App</NavLink>
+    <NavLink to={ROUTES.ACCOUNT}>Account</NavLink>
+    <ThemeTogglerButton />
+    <SignOutButton />
+  </Fragment>
 );
 
 const NavigationNonAuth = () => (
-  <ul>
-    <li>
-      <Link to={ROUTES.SIGN_IN}>Sign In</Link>
-    </li>
-    <li>
-      <Link to={ROUTES.SIGN_UP}>Sign Up</Link>
-    </li>
-    <li>
-      <Link to={ROUTES.BASE}>Home</Link>
-    </li>
-  </ul>
+  <Fragment>
+    <NavLink to={ROUTES.BASE}>Home</NavLink>
+    <NavLink to={ROUTES.SIGN_IN}>Sign In</NavLink>
+    <NavLink to={ROUTES.SIGN_UP}>Sign Up</NavLink>
+    <ThemeTogglerButton />
+  </Fragment>
 );
 
 const mapStatetoProps = (state: AppState) => ({

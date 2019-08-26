@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, Fragment } from "react";
 import ProviderAuthButton from "./ProviderAuthButton";
 import { userActions } from "../actions/user";
 import { connect } from "react-redux";
@@ -58,7 +58,7 @@ const ProviderAuth = ({ authSuccess }: Props) => {
     };
   }, []);
   return (
-    <div>
+    <Fragment>
       {error && (
         <div>
           <p>{error.message}</p>
@@ -83,7 +83,7 @@ const ProviderAuth = ({ authSuccess }: Props) => {
         isLoading={isLoading}
         onButtonClick={onButtonClick}
       />
-    </div>
+    </Fragment>
   );
 };
 

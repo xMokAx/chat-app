@@ -1,1 +1,1 @@
-A chat app created using: Typescript, React, Redux, Redux-Saga, Firebase (Authentication, Cloud Firestore).
+A chat app created using: TypeScript, React, Redux, Redux Saga, Firebase (Authentication, Cloud Firestore) and Styled Components.

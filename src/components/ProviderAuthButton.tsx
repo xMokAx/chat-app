@@ -1,4 +1,5 @@
 import React from "react";
+import Button from "../styled/Button";
 
 interface Props {
   provider: string;
@@ -11,11 +12,9 @@ const ProviderAuthButton = ({ provider, isLoading, onButtonClick }: Props) => {
     onButtonClick(provider);
   };
   return (
-    <div>
-      <button onClick={onClick} disabled={isLoading}>
-        {provider}
-      </button>
-    </div>
+    <Button onClick={onClick} disabled={isLoading} primary>
+      {provider}
+    </Button>
   );
 };
 

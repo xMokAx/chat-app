@@ -1,35 +1,26 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import "./index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import { Provider } from "react-redux";
 import configureStore from "./store/configureStore";
 import { auth } from "./firebase";
 import { userActions } from "./actions/user";
-import LoadingPage from "./components/LoadingPage";
 import { rootSaga } from "./sagas";
 
 export const store = configureStore();
 store.runSaga(rootSaga);
 
-let hasRendered = false;
-const renderApp = () => {
-  if (!hasRendered) {
-    console.log("will render the app");
-    ReactDOM.render(
-      <Provider store={store}>
-        <App />
-      </Provider>,
-      document.getElementById("root")
-    );
-    hasRendered = true;
-  }
-};
+ReactDOM.render(
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  document.getElementById("root")
+);
 
-ReactDOM.render(<LoadingPage />, document.getElementById("root"));
-
+let firstRender = true;
 auth.onAuthStateChanged(async authUser => {
+  console.log("is first render? ", firstRender);
   if (authUser) {
     console.log("auth change user: ", authUser);
     const user = {
@@ -38,18 +29,20 @@ auth.onAuthStateChanged(async authUser => {
       email: authUser.email,
       photo: authUser.photoURL
     };
-    if (!hasRendered) {
+    if (firstRender) {
       console.log("user is already authenticated");
       // if a user is authenticated and the app didn't render yet dispatch authSuccess action to run user Saga
       store.dispatch(userActions.authSuccess(false, user));
+      firstRender = false;
     }
-    renderApp();
   } else {
-    if (hasRendered) {
+    if (!firstRender) {
       console.log("no user and the app is rendered will dispatch signOut");
       store.dispatch(userActions.signOut());
+    } else {
+      store.dispatch(userActions.noUser());
+      firstRender = false;
     }
-    renderApp();
   }
 });
 

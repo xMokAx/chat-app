@@ -1,14 +1,17 @@
 import React from "react";
-import { Link } from "@reach/router";
 import { SIGN_UP_EMAIL } from "../constants/routes";
 import ProviderAuth from "./ProviderAuth";
+import ButtonAsLink from "../styled/ButtonAsLink";
+import Card from "../styled/Card";
 
 const SignUpPage = () => (
-  <div>
-    <h1>Create account</h1>
+  <Card>
+    <h1>Sign up</h1>
     <ProviderAuth />
-    <Link to={SIGN_UP_EMAIL}>email</Link>
-  </div>
+    <ButtonAsLink to={SIGN_UP_EMAIL} primary>
+      email
+    </ButtonAsLink>
+  </Card>
 );
 
 export default SignUpPage;

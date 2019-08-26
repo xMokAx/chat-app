@@ -5,7 +5,8 @@ import {
   UserActionTypes,
   User,
   AUTH_FAILURE,
-  AUTH_SUCCESS
+  AUTH_SUCCESS,
+  NO_USER
 } from "../actions/user";
 
 export type UserState = {
@@ -21,7 +22,7 @@ const initialUserState = {
     email: null,
     photo: null
   },
-  isLoading: false,
+  isLoading: true,
   error: ""
 };
 
@@ -32,8 +33,9 @@ export const userReducer = (
   switch (action.type) {
     case ADD_USER:
       return {
-        ...initialUserState,
-        userInfo: action.user
+        ...state,
+        userInfo: action.user,
+        isLoading: false
       };
     case UPDATE_USER:
       return {
@@ -43,18 +45,25 @@ export const userReducer = (
           ...action.user
         }
       };
+    case NO_USER:
+      return {
+        ...state,
+        isLoading: false
+      };
     case AUTH_SUCCESS:
       return {
-        ...initialUserState,
+        ...state,
+        error: "",
         isLoading: true
       };
     case AUTH_FAILURE:
       return {
         ...state,
+        isLoading: false,
         error: action.error
       };
     case SIGN_OUT:
-      return initialUserState;
+      return { ...initialUserState, isLoading: false };
     default:
       return state;
   }
