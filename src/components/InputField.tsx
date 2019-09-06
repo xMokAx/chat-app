@@ -11,7 +11,7 @@ type Props = FieldProps<any, HTMLElement> & {
   icon: string;
 };
 
-const InputPassword = ({ name, placeholder, icon }: Props) => (
+const InputField = ({ name, placeholder, icon }: Props) => (
   <Field name={name}>
     {({ input }) => (
       <div>
@@ -40,4 +40,4 @@ const InputPassword = ({ name, placeholder, icon }: Props) => (
   </Field>
 );
 
-export default InputPassword;
+export default InputField;
