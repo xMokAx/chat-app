@@ -18,10 +18,9 @@ interface FormValues {
   password: string;
 }
 
-interface Errors {
-  email?: string;
-  password?: string;
-}
+type Errors = {
+  [K in keyof FormValues]?: string;
+};
 
 interface Props {
   authSuccess: typeof userActions.authSuccess;
@@ -79,7 +78,11 @@ const SignInEmailPage = ({ authSuccess }: Props) => {
               <Loading />
             </div>
           )}
-          {submitError && <Text color="red">{submitError}</Text>}
+          {submitError && (
+            <Text size="14px" color="red">
+              {submitError}
+            </Text>
+          )}
           <InputField name="email" placeholder="Email" icon="email" />
           <InputPassword name="password" placeholder="Password" />
           <Link to={PASSWORD_FORGET}>

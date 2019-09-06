@@ -1,7 +1,8 @@
-import React, { useState, Fragment } from "react";
+import React, { useState } from "react";
 import { authApi } from "../firebase";
 import { signInMethodsActions } from "../actions/signInMethods";
 import LoadingButton from "./LoadingButton";
+import Text from "../styled/Text";
 
 interface Props {
   providerName: string;
@@ -54,9 +55,15 @@ const ToggleLinkingProvider = ({
     }
   };
   return (
-    <Fragment>
+    <div>
+      {error && (
+        <Text size="14px" color="red">
+          {error}
+        </Text>
+      )}
       {isLinked ? (
         <LoadingButton
+          full="true"
           type="button"
           bg="red"
           onClick={onUnlink}
@@ -67,6 +74,7 @@ const ToggleLinkingProvider = ({
         </LoadingButton>
       ) : (
         <LoadingButton
+          full="true"
           type="button"
           bg="green"
           onClick={onLink}
@@ -75,9 +83,7 @@ const ToggleLinkingProvider = ({
           Link {providerName}
         </LoadingButton>
       )}
-      {isLoading && <p>loading...</p>}
-      {error && <p>{error}</p>}
-    </Fragment>
+    </div>
   );
 };
 

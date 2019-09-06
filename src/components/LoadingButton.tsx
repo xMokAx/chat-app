@@ -17,7 +17,8 @@ const LoadingButton = ({
   bg,
   large,
   onClick,
-  disabled
+  disabled,
+  full
 }: Props) => (
   <Button
     type={type}
@@ -25,6 +26,7 @@ const LoadingButton = ({
     bg={bg}
     large={large}
     onClick={onClick}
+    full={full}
   >
     {children} {isLoading && <Loading small disabled />}
   </Button>

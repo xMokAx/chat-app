@@ -4,6 +4,7 @@ import { lighten, darken, rgba } from "polished";
 export interface ButtonProps {
   bg?: keyof DefaultTheme["colors"];
   large?: "true";
+  full?: "true";
 }
 
 export default styled.button<ButtonProps>`
@@ -13,6 +14,7 @@ export default styled.button<ButtonProps>`
   align-items: center;
   text-align: center;
   font-weight: 500;
+  width: ${props => props.full && "100%"};
   background: ${props =>
     props.bg ? props.theme.colors[props.bg] : "transparent"};
   color: ${props =>

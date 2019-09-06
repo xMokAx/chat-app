@@ -13,10 +13,9 @@ interface FormValues {
   oldPassword: string;
 }
 
-interface Errors {
-  newPassword?: string;
-  oldPassword?: string;
-}
+type Errors = {
+  [K in keyof FormValues]?: string;
+};
 
 const PasswordChangeForm = () => {
   const onSubmit = async (values: FormValues, form: FormApi<FormValues>) => {
@@ -74,7 +73,11 @@ const PasswordChangeForm = () => {
                 <Loading />
               </div>
             )}
-            {submitError && <Text color="red">{submitError}</Text>}
+            {submitError && (
+              <Text size="14px" color="red">
+                {submitError}
+              </Text>
+            )}
             <InputPassword name="oldPassword" placeholder="Old password" />
             <InputPassword name="newPassword" placeholder="New password" />
             <LoadingButton type="submit" bg="primary" isLoading={submitting}>

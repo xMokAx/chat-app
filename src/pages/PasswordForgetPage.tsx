@@ -14,9 +14,9 @@ interface FormValues {
   email: string;
 }
 
-interface Errors {
-  email?: string;
-}
+type Errors = {
+  [K in keyof FormValues]?: string;
+};
 
 interface Props {
   location: WindowLocation;
@@ -64,10 +64,14 @@ const PassWordForgetForm = ({ location }: Props) => {
               <Loading />
             </div>
           )}
-          {submitError && <Text color="red">{submitError}</Text>}
-          <p>
+          {submitError && (
+            <Text size="14px" color="red">
+              {submitError}
+            </Text>
+          )}
+          <Text size="14px">
             To reset your password, enter the email address you use to sign in.
-          </p>
+          </Text>
           <InputField name="email" placeholder="Email" icon="email" />
           <LoadingButton type="submit" bg="primary" isLoading={submitting}>
             Get reset link

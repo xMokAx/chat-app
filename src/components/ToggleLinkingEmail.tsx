@@ -1,4 +1,6 @@
 import React from "react";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import styled from "styled-components/macro";
 import { authApi } from "../firebase";
 import { FORM_ERROR } from "final-form";
 import { Form } from "react-final-form";
@@ -14,10 +16,9 @@ interface FormValues {
   confirmPassword: string;
 }
 
-interface Errors {
-  password?: string;
-  confirmPassword?: string;
-}
+type Errors = {
+  [K in keyof FormValues]?: string;
+};
 
 interface Props {
   providerName: string;
@@ -54,7 +55,17 @@ const ToggleLinkingProvider = ({
           onSubmit={onSubmit}
           render={({ handleSubmit, submitting, submitError }) => (
             <FormCard onSubmit={handleSubmit}>
-              {submitError && <Text color="red">{submitError}</Text>}
+              {submitError && (
+                <Text
+                  css={`
+                    margin-bottom: 0;
+                  `}
+                  size="14px"
+                  color="red"
+                >
+                  {submitError}
+                </Text>
+              )}
               <LoadingButton
                 type="submit"
                 bg="red"
@@ -120,7 +131,17 @@ const ToggleLinkingProvider = ({
                 <Loading />
               </div>
             )}
-            {submitError && <Text color="red">{submitError}</Text>}
+            {submitError && (
+              <Text
+                css={`
+                  margin-bottom: 0;
+                `}
+                size="14px"
+                color="red"
+              >
+                {submitError}
+              </Text>
+            )}
             <InputPassword name="password" placeholder="Password" />
             <InputPassword
               name="confirmPassword"

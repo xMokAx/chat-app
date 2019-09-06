@@ -103,7 +103,9 @@ const SignUpEmailPage = ({ authSuccess }: Props) => {
           )}
           {submitError && (
             <div>
-              <Text color="red">{submitError.message}</Text>
+              <Text size="14px" color="red">
+                {submitError.message}
+              </Text>
               {submitError.code === ERROR_CODE_ACCOUNT_EXISTS && (
                 <SignInMethods email={values.email} />
               )}

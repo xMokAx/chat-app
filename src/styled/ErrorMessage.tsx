@@ -8,7 +8,6 @@ interface ContainerProps {
 const Container = styled.div<ContainerProps>`
   margin-left: -16px;
   margin-right: -16px;
-  width: 100vw;
   padding: 4px;
   background-color: ${props =>
     props.isOnline ? props.theme.colors.green : props.theme.colors.red};

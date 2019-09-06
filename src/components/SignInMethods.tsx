@@ -17,9 +17,11 @@ const SignInMethods = ({
         <Loading />
       ) : error ? (
         <div>
-          <Text color="red">{error}</Text>
+          <Text size="14px" color="red">
+            {error}
+          </Text>
           <Button
-            color="bgSec"
+            color="green"
             onClick={() => {
               getMethodsStart(email);
             }}
