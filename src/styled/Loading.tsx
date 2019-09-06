@@ -11,23 +11,30 @@ const rotate = keyframes`
   }
 `;
 
-const Container = styled.div`
+interface Props {
+  small?: boolean;
+  disabled?: boolean;
+}
+
+const Container = styled.div<Props>`
   display: inline-block;
   position: relative;
-  width: 64px;
-  height: 64px;
+  width: ${props => (props.small ? "24px" : "48px")};
+  height: ${props => (props.small ? "24px" : "48px")};
   & > div {
     box-sizing: border-box;
     display: block;
     position: absolute;
-    width: 51px;
-    height: 51px;
-    margin: 6px;
-    border: 6px solid #fff;
+    width: 100%;
+    height: 100%;
+    border: ${props => (props.small ? "3px" : "6px")} solid
+      ${props =>
+        props.disabled ? props.theme.colors.grey : props.theme.colors.primary};
     border-radius: 50%;
     animation: ${rotate} 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
-    border-color: ${props => props.theme.colors.primary} transparent transparent
-      transparent;
+    border-color: ${props =>
+        props.disabled ? props.theme.colors.grey : props.theme.colors.primary}
+      transparent transparent transparent;
     &:nth-child(1) {
       animation-delay: -0.45s;
     }
@@ -40,8 +47,8 @@ const Container = styled.div`
   }
 `;
 
-const Loading = () => (
-  <Container>
+const Loading = (props: Props) => (
+  <Container {...props} aria-label="Loading">
     <div></div>
     <div></div>
     <div></div>

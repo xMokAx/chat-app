@@ -2,6 +2,9 @@ import React, { Fragment } from "react";
 import ToggleLinkingProvider from "./ToggleLinkingProvider";
 import ToggleLinkingEmail from "./ToggleLinkingEmail";
 import withSignInMethods, { WithSignInMethodsProps } from "./withSignInMethods";
+import Card from "../styled/Card";
+import Loading from "../styled/Loading";
+import Button from "../styled/Button";
 
 const SIGN_IN_METHODS = [
   {
@@ -32,31 +35,31 @@ const ProviderLinking = ({
   error
 }: WithSignInMethodsProps) => {
   return (
-    <div>
-      <h2>Link Social Accounts</h2>
-      <div>
+    <Card>
+      <h2>Link sign in methods</h2>
+      <Fragment>
         {isLoading ? (
-          <p>Loading...</p>
+          <Loading />
         ) : (
           <Fragment>
             {error ? (
               <div>
                 <p>{error}</p>
-                <button
+                <Button
                   onClick={async () => {
                     getMethodsStart(email);
                   }}
                 >
                   Try again
-                </button>
+                </Button>
               </div>
             ) : (
-              <ul>
+              <Fragment>
                 {SIGN_IN_METHODS.map(method => {
                   const isLinked = signInMethods.includes(method.id);
                   const onlyOneLinked = signInMethods.length === 1;
                   return (
-                    <li key={method.name}>
+                    <Fragment key={method.name}>
                       {method.id === "password" ? (
                         <ToggleLinkingEmail
                           onlyOneLinked={onlyOneLinked}
@@ -78,17 +81,17 @@ const ProviderLinking = ({
                           email={email}
                         />
                       )}
-                    </li>
+                    </Fragment>
                   );
                 })}
-              </ul>
+              </Fragment>
             )}
           </Fragment>
         )}
-      </div>
+      </Fragment>
 
       <p>{JSON.stringify(signInMethods, null, 2)}</p>
-    </div>
+    </Card>
   );
 };
 

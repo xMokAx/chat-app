@@ -1,14 +1,10 @@
 import styled from "styled-components";
 
-interface Props {
-  show: boolean;
-}
-
-export default styled.div<Props>`
-  padding: 1rem;
-  padding-top: ${props => (props.show ? "24px" : 0)};
-  height: 100vh;
-  width: 100vw;
+export default styled.div`
+  padding: 0 1rem 1rem 1rem;
+  height: 100%;
+  min-height: 100vh;
+  width: 100%;
   display: flex;
   flex-direction: column;
 `;

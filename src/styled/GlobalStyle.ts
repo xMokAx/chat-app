@@ -20,6 +20,10 @@ export default createGlobalStyle`
     line-height: 1.15;
     -webkit-text-size-adjust: 100%;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    text-size-adjust: 100%;
   }
 
   article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
@@ -28,7 +32,7 @@ export default createGlobalStyle`
 
   body {
     margin: 0;
-    font-family: "Open Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    font-family: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
     font-size: 1rem;
     font-weight: 400;
     line-height: 1.5;
@@ -341,5 +345,16 @@ export default createGlobalStyle`
     flex: 1;
     display: flex;
     justify-content: center;
+  }
+
+  /* to prevent material icons text to overflow its container if the font failed to load */
+  .material-icons {
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+
+  a:focus {
+    outline: 1px dotted;
+    outline: 5px auto ${props => props.theme.colors.primary};
   }
 `;

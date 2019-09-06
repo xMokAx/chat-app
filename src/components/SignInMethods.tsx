@@ -1,5 +1,8 @@
-import React from "react";
+import React, { Fragment } from "react";
 import withSignInMethods, { WithSignInMethodsProps } from "./withSignInMethods";
+import Loading from "../styled/Loading";
+import Text from "../styled/Text";
+import Button from "../styled/Button";
 
 const SignInMethods = ({
   getMethodsStart,
@@ -9,19 +12,20 @@ const SignInMethods = ({
   email
 }: WithSignInMethodsProps) => {
   return (
-    <div>
+    <Fragment>
       {isLoading ? (
-        <p>loading...</p>
+        <Loading />
       ) : error ? (
         <div>
-          <p>{error}</p>
-          <button
+          <Text color="red">{error}</Text>
+          <Button
+            color="bgSec"
             onClick={() => {
               getMethodsStart(email);
             }}
           >
             Try again
-          </button>
+          </Button>
         </div>
       ) : (
         <div>
@@ -34,7 +38,7 @@ const SignInMethods = ({
           ))}
         </div>
       )}
-    </div>
+    </Fragment>
   );
 };
 

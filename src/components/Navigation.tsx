@@ -27,7 +27,9 @@ const NavigationAuth = () => (
 
 const NavigationNonAuth = () => (
   <Fragment>
-    <NavLink to={ROUTES.BASE}>Home</NavLink>
+    <NavLink exact to={ROUTES.BASE}>
+      Home
+    </NavLink>
     <NavLink to={ROUTES.SIGN_IN}>Sign In</NavLink>
     <NavLink to={ROUTES.SIGN_UP}>Sign Up</NavLink>
     <ThemeTogglerButton />

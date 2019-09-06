@@ -1,34 +1,50 @@
-import styled from "styled-components/macro";
-import { lighten, darken } from "polished";
+import styled, { DefaultTheme } from "styled-components/macro";
+import { lighten, darken, rgba } from "polished";
 
-interface Props {
-  primary?: boolean;
-  large?: boolean;
+export interface ButtonProps {
+  bg?: keyof DefaultTheme["colors"];
+  large?: "true";
 }
 
-export default styled.button<Props>`
-  cursor: pointer;
+export default styled.button<ButtonProps>`
   border: none;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
   text-align: center;
-  text-transform: capitalize;
+  font-weight: 500;
   background: ${props =>
-    props.primary ? props.theme.colors.primary : props.theme.colors.bgSec};
-  color: ${props => props.theme.colors.textMain};
-  padding: ${props => (props.large ? "0.5rem 1rem" : "0.5rem")};
-  font-size: ${props => (props.large ? "1.5rem" : "1rem")};
+    props.bg ? props.theme.colors[props.bg] : "transparent"};
+  color: ${props =>
+    props.bg ? props.theme.colors.textMain : props.theme.colors.textSec};
+  padding: 0.5rem 1rem;
+  font-size: ${props => (props.large ? "1.25rem" : "1rem")};
   line-height: 1.5;
   border-radius: 0.25rem;
   &:hover,
-  &:focus {
+  &:active {
     color: ${props => props.theme.colors.textMain};
     background: ${props =>
-      props.primary
+      props.bg
         ? props.theme.isDarkMode
-          ? darken(0.1, props.theme.colors.primary)
-          : lighten(0.1, props.theme.colors.primary)
-        : props.theme.isDarkMode
-        ? darken(0.1, props.theme.colors.bgSec)
-        : lighten(0.1, props.theme.colors.bgSec)};
+          ? darken(0.1, props.theme.colors[props.bg])
+          : lighten(0.1, props.theme.colors[props.bg])
+        : "transparent"};
     text-decoration: none;
+  }
+  &:focus {
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem
+      ${props =>
+        props.bg
+          ? rgba(props.theme.colors[props.bg], 0.5)
+          : rgba(props.theme.colors.primary, 0.5)};
+  }
+  &:disabled {
+    background-color: ${props => props.theme.colors.bgSec};
+    color: ${props => props.theme.colors.grey};
+  }
+  & > div {
+    margin-left: 8px;
   }
 `;

@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, Fragment } from "react";
 import { authApi } from "../firebase";
 import { signInMethodsActions } from "../actions/signInMethods";
+import LoadingButton from "./LoadingButton";
 
 interface Props {
   providerName: string;
@@ -53,19 +54,30 @@ const ToggleLinkingProvider = ({
     }
   };
   return (
-    <div>
+    <Fragment>
       {isLinked ? (
-        <button onClick={onUnlink} disabled={isLoading || onlyOneLinked}>
+        <LoadingButton
+          type="button"
+          bg="red"
+          onClick={onUnlink}
+          isLoading={isLoading}
+          disabled={onlyOneLinked}
+        >
           Unlink {providerName}
-        </button>
+        </LoadingButton>
       ) : (
-        <button onClick={onLink} disabled={isLoading}>
+        <LoadingButton
+          type="button"
+          bg="green"
+          onClick={onLink}
+          isLoading={isLoading}
+        >
           Link {providerName}
-        </button>
+        </LoadingButton>
       )}
       {isLoading && <p>loading...</p>}
       {error && <p>{error}</p>}
-    </div>
+    </Fragment>
   );
 };
 

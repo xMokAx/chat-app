@@ -4,6 +4,8 @@ import { userActions } from "../actions/user";
 import { connect } from "react-redux";
 import { authApi } from "../firebase";
 import SignInMethods from "./SignInMethods";
+import Loading from "../styled/Loading";
+import Text from "../styled/Text";
 
 const ERROR_CODE_ACCOUNT_EXISTS =
   "auth/account-exists-with-different-credential";
@@ -60,26 +62,29 @@ const ProviderAuth = ({ authSuccess }: Props) => {
   return (
     <Fragment>
       {error && (
-        <div>
-          <p>{error.message}</p>
+        <Fragment>
+          <Text color="red">{error.message}</Text>
           {error.code === ERROR_CODE_ACCOUNT_EXISTS && (
             <SignInMethods email={error.email} />
           )}
-        </div>
+        </Fragment>
       )}
-      {isLoading && <p>loading...</p>}
+      {isLoading && <Loading />}
       <ProviderAuthButton
-        provider="google"
+        color="green"
+        provider="Google"
         isLoading={isLoading}
         onButtonClick={onButtonClick}
       />
       <ProviderAuthButton
-        provider="facebook"
+        color="blue"
+        provider="Facebook"
         isLoading={isLoading}
         onButtonClick={onButtonClick}
       />
       <ProviderAuthButton
-        provider="github"
+        color="grey"
+        provider="Github"
         isLoading={isLoading}
         onButtonClick={onButtonClick}
       />

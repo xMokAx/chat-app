@@ -1,11 +1,12 @@
 import React from "react";
 import styled from "styled-components/macro";
+import { rgba } from "polished";
 
-const Container = styled.div`
+const Container = styled.span`
+  user-select: none;
   width: 48px;
   height: 24px;
-  background-color: ${props => props.theme.colors.bgSec};
-  display: block;
+  background-color: ${props => props.theme.colors.grey};
   border-radius: 12px;
   margin: 1rem 0.75rem;
   margin-left: auto;
@@ -16,6 +17,9 @@ const Container = styled.div`
   cursor: pointer;
   &:active span:first-of-type {
     width: 26px;
+  }
+  &:focus {
+    outline: 0;
   }
 `;
 
@@ -31,6 +35,8 @@ const Input = styled.input<InputProps>`
 
 const Icon = styled.span<InputProps>`
   position: absolute;
+  display: flex;
+  align-items: center;
   top: 1px;
   left: ${props => (props.theme.isDarkMode ? "1px" : "calc(100% - 1px)")};
   width: 22px;
@@ -48,11 +54,15 @@ const Toggler = styled.span<InputProps>`
   left: ${props => (props.theme.isDarkMode ? "calc(100% - 1px)" : "1px")};
   width: 22px;
   height: 22px;
-  background-color: ${props => props.theme.colors.primary};
+  background-color: ${props => props.theme.colors.textMain};
   border-radius: 11px;
   transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1) 0ms;
   transform: ${props =>
     props.theme.isDarkMode ? "translateX(-100%)" : "unset"};
+  ${Container}:focus &,
+  ${Container}:hover & {
+    box-shadow: 0 0 0 0.2rem ${props => rgba(props.theme.colors.primary, 0.5)};
+  }
 `;
 
 interface Props {
@@ -62,6 +72,7 @@ interface Props {
 
 const Toggle = ({ isDarkMode, toggleTheme }: Props) => (
   <Container
+    aria-label="Switch between Dark and Light mode"
     onClick={toggleTheme}
     tabIndex={0}
     onKeyUp={e => {
@@ -70,12 +81,7 @@ const Toggle = ({ isDarkMode, toggleTheme }: Props) => (
       }
     }}
   >
-    <Input
-      id="toggle"
-      type="checkbox"
-      isDarkMode={isDarkMode}
-      aria-label="Switch between Dark and Light mode"
-    />
+    <Input id="toggle" type="checkbox" isDarkMode={isDarkMode} />
     <Toggler isDarkMode={isDarkMode} />
     <Icon
       isDarkMode={isDarkMode}

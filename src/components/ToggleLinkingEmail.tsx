@@ -1,9 +1,13 @@
 import React from "react";
 import { authApi } from "../firebase";
 import { FORM_ERROR } from "final-form";
-import { Form, Field } from "react-final-form";
-import ErrorWithDelay from "./ErrorWithDelay";
+import { Form } from "react-final-form";
 import { signInMethodsActions } from "../actions/signInMethods";
+import LoadingButton from "./LoadingButton";
+import FormCard from "../styled/FormCard";
+import InputPassword from "./InputPassword";
+import Loading from "../styled/Loading";
+import Text from "../styled/Text";
 
 interface FormValues {
   password: string;
@@ -49,13 +53,17 @@ const ToggleLinkingProvider = ({
         <Form
           onSubmit={onSubmit}
           render={({ handleSubmit, submitting, submitError }) => (
-            <form onSubmit={handleSubmit}>
-              {submitting && <p>submitting....</p>}
-              {submitError && <p>{submitError}</p>}
-              <button type="submit" disabled={submitting || onlyOneLinked}>
+            <FormCard onSubmit={handleSubmit}>
+              {submitError && <Text color="red">{submitError}</Text>}
+              <LoadingButton
+                type="submit"
+                bg="red"
+                isLoading={submitting}
+                disabled={onlyOneLinked}
+              >
                 unLink {providerName}
-              </button>
-            </form>
+              </LoadingButton>
+            </FormCard>
           )}
         />
       </div>
@@ -96,41 +104,32 @@ const ToggleLinkingProvider = ({
 
           return errors;
         }}
-        render={({ handleSubmit, submitting, values, submitError }) => (
-          <form onSubmit={handleSubmit}>
-            {submitting && <p>submitting....</p>}
-            {submitError && <p>{submitError}</p>}
-            <Field name="password">
-              {({ input }) => (
-                <div>
-                  <input {...input} type="password" placeholder="Password" />
-                  <ErrorWithDelay name="password" delay={1000}>
-                    {(error: string) => <span>{error}</span>}
-                  </ErrorWithDelay>
-                </div>
-              )}
-            </Field>
-            <Field name="confirmPassword">
-              {({ input }) => (
-                <div>
-                  <input
-                    {...input}
-                    type="password"
-                    placeholder="Confirm password"
-                  />
-                  <ErrorWithDelay name="confirmPassword" delay={1000}>
-                    {(error: string) => <span>{error}</span>}
-                  </ErrorWithDelay>
-                </div>
-              )}
-            </Field>
-            <div className="buttons">
-              <button type="submit" disabled={submitting}>
-                Link {providerName}
-              </button>
-            </div>
-            <pre>{JSON.stringify(values, null, 2)}</pre>
-          </form>
+        render={({ handleSubmit, submitting, values, submitError, form }) => (
+          <FormCard
+            onSubmit={async event => {
+              const error = await handleSubmit(event);
+              if (error) {
+                console.log("Error returned from Form onSubmit", error);
+                return error;
+              }
+              form.reset();
+            }}
+          >
+            {submitting && (
+              <div>
+                <Loading />
+              </div>
+            )}
+            {submitError && <Text color="red">{submitError}</Text>}
+            <InputPassword name="password" placeholder="Password" />
+            <InputPassword
+              name="confirmPassword"
+              placeholder="Confirm password"
+            />
+            <LoadingButton bg="green" type="submit" isLoading={submitting}>
+              Link {providerName}
+            </LoadingButton>
+          </FormCard>
         )}
       />
     </div>

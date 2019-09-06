@@ -1,18 +1,22 @@
-import React, { useState, useEffect } from "react";
-import { connect } from "react-redux";
-import { AppState } from "../store/configureStore";
-
+import React, { useEffect, useState } from "react";
 import Navigation from "./Navigation";
 import Wrapper from "../styled/Wrapper";
 import Main from "../styled/Main";
-import ConnectionMessage from "../styled/ConnectionMessage";
+import ErrorMessage from "../styled/ErrorMessage";
+import { connect } from "react-redux";
+import { AppState } from "../store/configureStore";
 
-interface LayoutProps {
-  children: React.ReactNode;
+interface StateProps {
   userError: string;
 }
 
-const Layout = ({ children, userError }: LayoutProps) => {
+interface OwnProps {
+  children: React.ReactNode;
+}
+
+type Props = StateProps & OwnProps;
+
+const Layout = ({ children, userError }: Props) => {
   const [isOnline, setIsOnline] = useState(true);
   const [show, setShow] = useState(false);
   useEffect(() => {
@@ -50,15 +54,13 @@ const Layout = ({ children, userError }: LayoutProps) => {
     };
   }, []);
   return (
-    <Wrapper show={show}>
+    <Wrapper>
       {show && (
-        <ConnectionMessage isOnline={isOnline}>
-          <p style={{ margin: 0 }}>
-            {isOnline ? "You are back online" : "You are offline"}
-          </p>
-        </ConnectionMessage>
+        <ErrorMessage isOnline={isOnline}>
+          {isOnline ? "You are back online" : "You are offline"}
+        </ErrorMessage>
       )}
-      {userError && <p>{userError}</p>}
+      {userError && <ErrorMessage>{userError}</ErrorMessage>}
       <Navigation />
       <Main>{children}</Main>
     </Wrapper>

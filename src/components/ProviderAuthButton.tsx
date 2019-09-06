@@ -2,17 +2,18 @@ import React from "react";
 import Button from "../styled/Button";
 
 interface Props {
+  color: "green" | "blue" | "grey";
   provider: string;
   isLoading: boolean;
   onButtonClick: (provider: string) => Promise<void>;
 }
 
-const ProviderAuthButton = ({ provider, isLoading, onButtonClick }: Props) => {
+const ProviderAuthButton = ({ color, provider, onButtonClick }: Props) => {
   const onClick = () => {
-    onButtonClick(provider);
+    onButtonClick(provider.toLowerCase());
   };
   return (
-    <Button onClick={onClick} disabled={isLoading} primary>
+    <Button onClick={onClick} bg={color} large="true">
       {provider}
     </Button>
   );

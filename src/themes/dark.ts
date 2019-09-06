@@ -10,6 +10,7 @@ export const darkTheme: DefaultTheme = {
     primary: "#d63667",
     red: "#e91608",
     green: "#008906",
-    blue: "#0670f1"
+    blue: "#0670f1",
+    grey: "#757575"
   }
 };

@@ -1,23 +1,23 @@
-import React, { useState, Fragment, createContext } from "react";
+import React, { useState, Fragment, createContext, useEffect } from "react";
 import { Router } from "@reach/router";
+import webFont from "webfontloader";
 import * as ROUTES from "./constants/routes";
 import { ThemeProvider } from "styled-components/macro";
 import { lightTheme } from "./themes/light";
 import { darkTheme } from "./themes/dark";
 import Layout from "./components/Layout";
-import LandingPage from "./components/LandingPage";
-import SignUpPage from "./components/SignUpPage";
-import SignUpEmailPage from "./components/SignUpEmailPage";
-import SignInPage from "./components/SignInPage";
-import SignInEmailPage from "./components/SignInEmailPage";
-import PasswordForgetPage from "./components/PasswordForgetPage";
-import ChatPage from "./components/ChatPage";
-import AccountPage from "./components/AccountPage";
-import Profile from "./components/Profile";
-import PasswordChangeForm from "./components/PasswordChangeForm";
-import PasswordForgetForm from "./components/PasswordForgetForm";
-import RouterPage from "./components/RouterPage";
-import NotFoundPage from "./components/NotFoundPage";
+import LandingPage from "./pages/LandingPage";
+import SignUpPage from "./pages/SignUpPage";
+import SignUpEmailPage from "./pages/SignUpEmailPage";
+import SignInPage from "./pages/SignInPage";
+import SignInEmailPage from "./pages/SignInEmailPage";
+import ChatPage from "./pages/ChatPage";
+import AccountPage from "./pages/AccountPage";
+import ProfilePage from "./pages/ProfilePage";
+import PasswordChangePage from "./pages/PasswordChangePage";
+import PasswordForgetPage from "./pages/PasswordForgetPage";
+import RouterPage from "./pages/RouterPage";
+import NotFoundPage from "./pages/NotFoundPage";
 import GlobalStyle from "./styled/GlobalStyle";
 
 export const ThemeContext = createContext({
@@ -26,6 +26,15 @@ export const ThemeContext = createContext({
 });
 
 const App = () => {
+  useEffect(() => {
+    console.log("App is mounted");
+    // load fonts when app first mounts
+    webFont.load({
+      google: {
+        families: ["Roboto:400,500,700", "Material Icons&display=swap"]
+      }
+    });
+  }, []);
   const stored = localStorage.getItem("isDarkMode");
   const [isDarkMode, setIsDarkMode] = useState(
     stored === "true" ? true : false
@@ -82,17 +91,17 @@ const App = () => {
               >
                 <RouterPage
                   path={ROUTES.PROFILE}
-                  PageComonent={Profile}
+                  PageComonent={ProfilePage}
                   privateRoute
                 />
                 <RouterPage
                   path={ROUTES.PASSWORD_CHANGE}
-                  PageComonent={PasswordChangeForm}
+                  PageComonent={PasswordChangePage}
                   privateRoute
                 />
                 <RouterPage
                   path={ROUTES.PASSWORD_FORGET}
-                  PageComonent={PasswordForgetForm}
+                  PageComonent={PasswordForgetPage}
                   privateRoute
                 />
               </RouterPage>
