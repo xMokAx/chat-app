@@ -7,13 +7,14 @@ import Icon from "../styled/Icon";
 import Button from "../styled/Button";
 import { FieldProps, Field } from "react-final-form";
 import ErrorWithDelay from "./ErrorWithDelay";
-import Text from "../styled/Text";
+import Error from "../styled/Error";
 
 type Props = FieldProps<any, HTMLElement> & {
   placeholder: string;
+  label: string;
 };
 
-const InputPassword = ({ name, placeholder }: Props) => {
+const InputPassword = ({ name, placeholder, label }: Props) => {
   const [isHidden, setIsHidden] = useState(true);
   const toggleVisibility = () => {
     setIsHidden(!isHidden);
@@ -21,7 +22,22 @@ const InputPassword = ({ name, placeholder }: Props) => {
   return (
     <Field name={name}>
       {({ input }) => (
-        <div>
+        <div
+          css={`
+            width: 100%;
+            max-width: 100%;
+          `}
+        >
+          {label && (
+            <label
+              css={`
+                text-align: left;
+              `}
+              htmlFor={name}
+            >
+              {label}
+            </label>
+          )}
           <InputGroup hasIconLeft hasIconRight>
             <Input
               {...input}
@@ -33,7 +49,9 @@ const InputPassword = ({ name, placeholder }: Props) => {
               css="right: 0"
               type="button"
               onClick={toggleVisibility}
-              aria-label={isHidden ? "Show password" : "Hide password"}
+              aria-label={
+                isHidden ? `Show ${placeholder}` : `Hide ${placeholder}`
+              }
             >
               <i className="material-icons">
                 {isHidden ? "visibility" : "visibility_off"}
@@ -46,11 +64,7 @@ const InputPassword = ({ name, placeholder }: Props) => {
             </Icon>
           </InputGroup>
           <ErrorWithDelay name={name} delay={1000}>
-            {(error: string) => (
-              <Text as="small" color="red">
-                {error}
-              </Text>
-            )}
+            {(error: string) => <Error as="small">{error}</Error>}
           </ErrorWithDelay>
         </div>
       )}
