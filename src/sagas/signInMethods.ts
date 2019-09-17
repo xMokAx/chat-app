@@ -1,4 +1,4 @@
-import { call, put, takeLatest } from "redux-saga/effects";
+import { call, put, takeLatest, delay } from "redux-saga/effects";
 import {
   signInMethodsActions,
   GET_METHODS_START,
@@ -13,7 +13,13 @@ function* signInMethods(action: GetMethodsStartAction) {
     yield put(signInMethodsActions.getMethodsSuccess(signInMethods));
   } catch (e) {
     console.log(e);
-    yield put(signInMethodsActions.getMethodsFailure(e.message));
+    yield put(
+      signInMethodsActions.getMethodsFailure(
+        e.message + " Please fix your connection. Retrying..."
+      )
+    );
+    yield delay(3000);
+    yield put(signInMethodsActions.getMethodsStart(action.email));
   }
 }
 

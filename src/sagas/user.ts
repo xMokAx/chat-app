@@ -1,4 +1,4 @@
-import { call, put, takeLatest } from "redux-saga/effects";
+import { call, put, takeLatest, delay } from "redux-saga/effects";
 import { userActions, AUTH_SUCCESS, AuthSuccessAction } from "../actions/user";
 import { userApi } from "../firebase";
 
@@ -15,9 +15,11 @@ function* user(action: AuthSuccessAction) {
       console.log(error);
       yield put(
         userActions.authFailure(
-          "You signed up sccessfully but we failed to automatically sign you in, please fix your connection and try again."
+          "You signed up sccessfully but we failed to automatically sign you in, please fix your connection. Retrying..."
         )
       );
+      yield delay(3000);
+      yield put(userActions.authSuccess(true, action.user));
     }
   } else {
     // sign in
@@ -40,9 +42,11 @@ function* user(action: AuthSuccessAction) {
       // network failure
       yield put(
         userActions.authFailure(
-          "Failed to get user info, please fix your connection and try to sign in again."
+          "Failed to get user info, please fix your connection. Retrying..."
         )
       );
+      yield delay(3000);
+      yield put(userActions.authSuccess(false, action.user));
     }
   }
 }
