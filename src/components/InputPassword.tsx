@@ -11,7 +11,7 @@ import Error from "../styled/Error";
 
 type Props = FieldProps<any, HTMLElement> & {
   placeholder: string;
-  label: string;
+  label?: string;
 };
 
 const InputPassword = ({ name, placeholder, label }: Props) => {

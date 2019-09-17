@@ -7,6 +7,7 @@ import configureStore from "./store/configureStore";
 import { auth } from "./firebase";
 import { userActions } from "./actions/user";
 import { rootSaga } from "./sagas";
+import { signInMethodsActions } from "./actions/signInMethods";
 
 export const store = configureStore();
 store.runSaga(rootSaga);
@@ -18,9 +19,9 @@ ReactDOM.render(
   document.getElementById("root")
 );
 
-let firstRender = true;
+let justRendered = true;
 auth.onAuthStateChanged(async authUser => {
-  console.log("is first render? ", firstRender);
+  console.log("Auth state changed");
   if (authUser) {
     console.log("auth change user: ", authUser);
     const user = {
@@ -29,19 +30,21 @@ auth.onAuthStateChanged(async authUser => {
       email: authUser.email,
       photo: authUser.photoURL
     };
-    if (firstRender) {
+    if (justRendered) {
+      console.log("just rendered? ", justRendered);
       console.log("user is already authenticated");
       // if a user is authenticated and the app didn't render yet dispatch authSuccess action to run user Saga
       store.dispatch(userActions.authSuccess(false, user));
-      firstRender = false;
+      store.dispatch(signInMethodsActions.getMethodsStart(user.email!!));
+      justRendered = false;
     }
   } else {
-    if (!firstRender) {
+    if (!justRendered) {
       console.log("no user and the app is rendered will dispatch signOut");
       store.dispatch(userActions.signOut());
     } else {
       store.dispatch(userActions.noUser());
-      firstRender = false;
+      justRendered = false;
     }
   }
 });

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { authApi } from "../firebase";
 import { signInMethodsActions } from "../actions/signInMethods";
 import LoadingButton from "./LoadingButton";
-import Text from "../styled/Text";
+import Error from "../styled/Error";
 
 interface Props {
   providerName: string;
@@ -56,11 +56,7 @@ const ToggleLinkingProvider = ({
   };
   return (
     <div>
-      {error && (
-        <Text size="14px" color="red">
-          {error}
-        </Text>
-      )}
+      {error && <Error>{error}</Error>}
       {isLinked ? (
         <LoadingButton
           full="true"

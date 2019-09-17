@@ -5,7 +5,9 @@ interface Props {
   isRight?: boolean;
 }
 
-export default styled.span<Props>`
+export default styled.span.attrs({
+  "aria-hidden": true
+})<Props>`
   align-items: center;
   display: inline-flex;
   justify-content: center;

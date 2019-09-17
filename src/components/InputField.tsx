@@ -11,7 +11,7 @@ import Error from "../styled/Error";
 type Props = FieldProps<any, HTMLElement> & {
   placeholder: string;
   icon: string;
-  label: string;
+  label?: string;
 };
 
 const InputField = ({ name, placeholder, icon, label }: Props) => (

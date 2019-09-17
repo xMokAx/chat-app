@@ -35,6 +35,7 @@ export const userReducer = (
       return {
         ...state,
         userInfo: action.user,
+        error: "",
         isLoading: false
       };
     case UPDATE_USER:
@@ -52,9 +53,7 @@ export const userReducer = (
       };
     case AUTH_SUCCESS:
       return {
-        ...state,
-        error: "",
-        isLoading: true
+        ...state
       };
     case AUTH_FAILURE:
       return {

@@ -5,7 +5,7 @@ import { authApi } from "../firebase";
 import InputPassword from "../components/InputPassword";
 import FormCard from "../styled/FormCard";
 import Loading from "../styled/Loading";
-import Text from "../styled/Text";
+import Error from "../styled/Error";
 import LoadingButton from "../components/LoadingButton";
 
 interface FormValues {
@@ -73,11 +73,7 @@ const PasswordChangeForm = () => {
                 <Loading />
               </div>
             )}
-            {submitError && (
-              <Text size="14px" color="red">
-                {submitError}
-              </Text>
-            )}
+            {submitError && <Error>{submitError}</Error>}
             <InputPassword name="oldPassword" placeholder="Old password" />
             <InputPassword name="newPassword" placeholder="New password" />
             <LoadingButton type="submit" bg="primary" isLoading={submitting}>

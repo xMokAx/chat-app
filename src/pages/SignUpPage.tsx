@@ -8,7 +8,7 @@ const SignUpPage = () => (
   <Card>
     <h1>Sign up</h1>
     <ProviderAuth />
-    <ButtonAsLink to={SIGN_UP_EMAIL} bg="red" large="true">
+    <ButtonAsLink to={SIGN_UP_EMAIL} bg="red" size="l">
       Email
     </ButtonAsLink>
   </Card>

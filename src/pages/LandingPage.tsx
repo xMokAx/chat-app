@@ -6,10 +6,10 @@ import ButtonAsLink from "../styled/ButtonAsLink";
 const LandingPage = () => (
   <Card>
     <h1>Welcome to Chat App</h1>
-    <ButtonAsLink to={ROUTES.SIGN_IN} bg="primary" large="true">
+    <ButtonAsLink to={ROUTES.SIGN_IN} bg="primary" size="l">
       Sign In
     </ButtonAsLink>
-    <ButtonAsLink to={ROUTES.SIGN_UP} bg="primary" large="true">
+    <ButtonAsLink to={ROUTES.SIGN_UP} bg="primary" size="l">
       Sign Up
     </ButtonAsLink>
   </Card>

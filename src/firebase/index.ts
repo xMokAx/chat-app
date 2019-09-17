@@ -38,6 +38,7 @@ export const authProviders: AuthProviders = {
 };
 
 const authApi = {
+  currentUser: () => auth.currentUser!!,
   signUpEmail: (email: string, password: string) =>
     auth.createUserWithEmailAndPassword(email, password),
   signInEmail: (email: string, password: string) =>
@@ -47,37 +48,25 @@ const authApi = {
   signOut: () => auth.signOut(),
   resetPassword: (email: string) => auth.sendPasswordResetEmail(email),
   updatePassword: (password: string) => {
-    if (auth.currentUser) {
-      return auth.currentUser.updatePassword(password);
-    }
+    return auth.currentUser!!.updatePassword(password);
   },
   getSignInMethods: (email: string) => {
     return auth.fetchSignInMethodsForEmail(email);
   },
   linkProvider: (name: string) => {
-    if (auth.currentUser) {
-      return auth.currentUser.linkWithPopup(authProviders[name]);
-    }
+    return auth.currentUser!!.linkWithPopup(authProviders[name]);
   },
   linkEmail: (password: string) => {
-    const { currentUser } = auth;
-    if (currentUser) {
-      let credential;
-      if (currentUser.email) {
-        credential = firebase.auth.EmailAuthProvider.credential(
-          currentUser.email,
-          password
-        );
-      }
-      if (credential) {
-        return currentUser.linkWithCredential(credential);
-      }
+    if (auth.currentUser) {
+      const credential = firebase.auth.EmailAuthProvider.credential(
+        auth.currentUser.email!!,
+        password
+      );
+      return auth.currentUser.linkWithCredential(credential);
     }
   },
   unlinkProvider: (providerId: string) => {
-    if (auth.currentUser) {
-      return auth.currentUser.unlink(providerId);
-    }
+    return auth.currentUser!!.unlink(providerId);
   }
 };
 
@@ -86,7 +75,7 @@ const database = firestore();
 const users = database.collection("users");
 const userApi = {
   addUser: (id: string, user: User) => users.doc(id).set(user, { merge: true }),
-  updateUser: (id: string, user: User) =>
+  updateUser: (id: string, user: Omit<User, "id">) =>
     users.doc(id).set(user, { merge: true }),
   deleteUser: (id: string) => users.doc(id).delete(),
   getUser: (id: string) => users.doc(id).get()

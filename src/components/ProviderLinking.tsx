@@ -5,7 +5,7 @@ import withSignInMethods, { WithSignInMethodsProps } from "./withSignInMethods";
 import Card from "../styled/Card";
 import Loading from "../styled/Loading";
 import Button from "../styled/Button";
-import Text from "../styled/Text";
+import Error from "../styled/Error";
 
 const SIGN_IN_METHODS = [
   {
@@ -45,9 +45,7 @@ const ProviderLinking = ({
           <Fragment>
             {error ? (
               <div>
-                <Text size="14px" color="red">
-                  {error}
-                </Text>
+                <Error>{error}</Error>
                 <Button
                   bg="green"
                   onClick={async () => {

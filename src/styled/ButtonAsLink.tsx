@@ -10,7 +10,7 @@ import Button, { ButtonProps } from "../styled/Button";
 // } & ButtonProps;
 
 // export default Button.withComponent(
-//   ({ bg, large, aRef, to, ...props }: Props<{ [key: string]: any }>) => (
+//   ({ bg, size, aRef, to, ...props }: Props<{ [key: string]: any }>) => (
 //     <Link ref={aRef} to={to} {...props} />
 //   )
 // );

@@ -1,6 +1,4 @@
 import React from "react";
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import styled from "styled-components/macro";
 import { authApi } from "../firebase";
 import { FORM_ERROR } from "final-form";
 import { Form } from "react-final-form";
@@ -9,7 +7,7 @@ import LoadingButton from "./LoadingButton";
 import FormCard from "../styled/FormCard";
 import InputPassword from "./InputPassword";
 import Loading from "../styled/Loading";
-import Text from "../styled/Text";
+import Error from "../styled/Error";
 
 interface FormValues {
   password: string;
@@ -55,24 +53,14 @@ const ToggleLinkingProvider = ({
           onSubmit={onSubmit}
           render={({ handleSubmit, submitting, submitError }) => (
             <FormCard onSubmit={handleSubmit}>
-              {submitError && (
-                <Text
-                  css={`
-                    margin-bottom: 0;
-                  `}
-                  size="14px"
-                  color="red"
-                >
-                  {submitError}
-                </Text>
-              )}
+              {submitError && <Error>{submitError}</Error>}
               <LoadingButton
                 type="submit"
                 bg="red"
                 isLoading={submitting}
                 disabled={onlyOneLinked}
               >
-                unLink {providerName}
+                UnLink {providerName}
               </LoadingButton>
             </FormCard>
           )}
@@ -81,6 +69,7 @@ const ToggleLinkingProvider = ({
     );
   }
   const onSubmit = async (values: FormValues) => {
+    console.log("handleSubmit");
     try {
       const response = await authApi.linkEmail(values.password);
       console.log(response);
@@ -115,15 +104,24 @@ const ToggleLinkingProvider = ({
 
           return errors;
         }}
-        render={({ handleSubmit, submitting, values, submitError, form }) => (
+        render={({
+          handleSubmit,
+          submitting,
+          hasValidationErrors,
+          submitError,
+          form
+        }) => (
           <FormCard
             onSubmit={async event => {
+              console.log("onSubmit");
               const error = await handleSubmit(event);
               if (error) {
                 console.log("Error returned from Form onSubmit", error);
                 return error;
               }
-              form.reset();
+              if (!hasValidationErrors) {
+                form.reset();
+              }
             }}
           >
             {submitting && (
@@ -131,17 +129,7 @@ const ToggleLinkingProvider = ({
                 <Loading />
               </div>
             )}
-            {submitError && (
-              <Text
-                css={`
-                  margin-bottom: 0;
-                `}
-                size="14px"
-                color="red"
-              >
-                {submitError}
-              </Text>
-            )}
+            {submitError && <Error>{submitError}</Error>}
             <InputPassword name="password" placeholder="Password" />
             <InputPassword
               name="confirmPassword"

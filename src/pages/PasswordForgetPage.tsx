@@ -9,6 +9,7 @@ import FormCard from "../styled/FormCard";
 import Loading from "../styled/Loading";
 import Text from "../styled/Text";
 import LoadingButton from "../components/LoadingButton";
+import Error from "../styled/Error";
 
 interface FormValues {
   email: string;
@@ -64,11 +65,7 @@ const PassWordForgetForm = ({ location }: Props) => {
               <Loading />
             </div>
           )}
-          {submitError && (
-            <Text size="14px" color="red">
-              {submitError}
-            </Text>
-          )}
+          {submitError && <Error>{submitError}</Error>}
           <Text size="14px">
             To reset your password, enter the email address you use to sign in.
           </Text>

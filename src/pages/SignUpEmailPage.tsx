@@ -9,7 +9,7 @@ import InputPassword from "../components/InputPassword";
 import InputField from "../components/InputField";
 import FormCard from "../styled/FormCard";
 import Loading from "../styled/Loading";
-import Text from "../styled/Text";
+import Error from "../styled/Error";
 import LoadingButton from "../components/LoadingButton";
 
 const ERROR_CODE_ACCOUNT_EXISTS = "auth/email-already-in-use";
@@ -35,14 +35,14 @@ const SignUpEmailPage = ({ authSuccess }: Props) => {
       const response = await authApi.signUpEmail(values.email, values.password);
       console.log(response);
       if (response.user) {
-        const updateRespond = await response.user.updateProfile({
+        const updateResponse = await response.user.updateProfile({
           displayName: values.userName
         });
-        console.log(updateRespond);
-        const { displayName, email, uid, photoURL } = response.user;
+        console.log(updateResponse);
+        const { email, uid, photoURL } = response.user;
         if (response.additionalUserInfo) {
           authSuccess(response.additionalUserInfo.isNewUser, {
-            name: displayName,
+            name: values.userName,
             email,
             id: uid,
             photo: photoURL
@@ -103,9 +103,7 @@ const SignUpEmailPage = ({ authSuccess }: Props) => {
           )}
           {submitError && (
             <div>
-              <Text size="14px" color="red">
-                {submitError.message}
-              </Text>
+              <Error>{submitError.message}</Error>
               {submitError.code === ERROR_CODE_ACCOUNT_EXISTS && (
                 <SignInMethods email={values.email} />
               )}

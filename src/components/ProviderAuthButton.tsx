@@ -13,7 +13,7 @@ const ProviderAuthButton = ({ color, provider, onButtonClick }: Props) => {
     onButtonClick(provider.toLowerCase());
   };
   return (
-    <Button onClick={onClick} bg={color} large="true">
+    <Button onClick={onClick} bg={color} size="l">
       {provider}
     </Button>
   );

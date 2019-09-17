@@ -12,6 +12,7 @@ import Text from "../styled/Text";
 import InputPassword from "../components/InputPassword";
 import InputField from "../components/InputField";
 import LoadingButton from "../components/LoadingButton";
+import Error from "../styled/Error";
 
 interface FormValues {
   email: string;
@@ -78,11 +79,7 @@ const SignInEmailPage = ({ authSuccess }: Props) => {
               <Loading />
             </div>
           )}
-          {submitError && (
-            <Text size="14px" color="red">
-              {submitError}
-            </Text>
-          )}
+          {submitError && <Error>{submitError}</Error>}
           <InputField name="email" placeholder="Email" icon="email" />
           <InputPassword name="password" placeholder="Password" />
           <Link to={PASSWORD_FORGET}>

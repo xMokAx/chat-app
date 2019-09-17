@@ -9,7 +9,14 @@ const Container = styled.div<ContainerProps>`
   margin-left: -16px;
   margin-right: -16px;
   padding: 4px;
-  background-color: ${props =>
+  position: sticky;
+  top: 0;
+  :not(:first-child) {
+    top: 36px;
+  }
+  background-color: ${props => props.theme.colors.bgMain};
+  z-index: 999;
+  color: ${props =>
     props.isOnline ? props.theme.colors.green : props.theme.colors.red};
   text-align: center;
   p {
@@ -26,7 +33,7 @@ type Props = ContainerProps & {
 
 const ErrorMessage = ({ children, isOnline }: Props) => (
   <Container isOnline={isOnline}>
-    <p>{children}</p>
+    <p role="alert">{children}</p>
   </Container>
 );
 

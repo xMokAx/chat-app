@@ -1,7 +1,7 @@
 import React, { Fragment } from "react";
 import withSignInMethods, { WithSignInMethodsProps } from "./withSignInMethods";
 import Loading from "../styled/Loading";
-import Text from "../styled/Text";
+import Error from "../styled/Error";
 import Button from "../styled/Button";
 
 const SignInMethods = ({
@@ -17,9 +17,7 @@ const SignInMethods = ({
         <Loading />
       ) : error ? (
         <div>
-          <Text size="14px" color="red">
-            {error}
-          </Text>
+          <Error>{error}</Error>
           <Button
             color="green"
             onClick={() => {

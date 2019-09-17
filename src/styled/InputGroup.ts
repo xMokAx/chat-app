@@ -8,6 +8,8 @@ interface Props {
 export default styled.div<Props>`
   position: relative;
   display: flex;
+  width: 100%;
+  max-width: 100%;
   & > input {
     padding-left: ${props => props.hasIconLeft && "40px"};
     padding-right: ${props => props.hasIconRight && "40px"};
@@ -25,6 +27,9 @@ export default styled.div<Props>`
   }
   & > span {
     color: ${props => props.theme.colors.textSec};
+  }
+  & > button {
+    right: 0;
   }
   & > button:focus {
     border: 1px solid ${props => props.theme.colors.primary};

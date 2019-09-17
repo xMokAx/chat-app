@@ -43,7 +43,6 @@ export default styled(
   &:focus {
     text-decoration: none;
     color: ${props => props.theme.colors.textMain};
-    background-color: ${props => props.theme.colors.bgSec};
   }
   &[active="true"] {
     color: ${props => props.theme.colors.textMain};

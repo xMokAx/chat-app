@@ -9,9 +9,9 @@ export const SIGN_OUT = "SIGN_OUT";
 export type User = {
   // [key: string]: string | null | undefined | boolean;
   id: string;
-  name: string | null;
-  email: string | null;
-  photo: string | null;
+  name?: string | null;
+  email?: string | null;
+  photo?: string | null;
 };
 
 export interface NoUserAction {
@@ -40,7 +40,7 @@ export interface AddUserAction {
 
 export interface UpdateUserAction {
   type: typeof UPDATE_USER;
-  user: User;
+  user: Omit<User, "id">;
 }
 
 export type UserActionTypes =
@@ -75,7 +75,7 @@ const addUser = (user: User): UserActionTypes => ({
   user
 });
 
-const updateUser = (user: User): UserActionTypes => ({
+const updateUser = (user: Omit<User, "id">): UserActionTypes => ({
   type: UPDATE_USER,
   user
 });

@@ -3,6 +3,7 @@ import styled from "styled-components/macro";
 export default styled.div`
   flex: 1;
   display: flex;
+  width: 100%;
   max-width: 400px;
   height: fit-content;
   flex-direction: column;
@@ -12,8 +13,6 @@ export default styled.div`
   margin-right: auto;
   & > * {
     width: 100%;
-    &:not(:last-child) {
-      margin-bottom: 1rem;
-    }
+    margin-bottom: 1rem;
   }
 `;

@@ -3,6 +3,10 @@ import styled from "styled-components/macro";
 export const FlexContainer = styled.div`
   display: flex;
   justify-content: center;
+  align-items: center;
+  & > :not(:last-child) {
+    margin-right: 0.5rem;
+  }
 `;
 
 export const Row = styled.div`
@@ -24,7 +28,7 @@ export const Col = styled.div<ColProps>`
   width: 100%;
   padding-right: 15px;
   padding-left: 15px;
-  @media screen and (min-width: 768px) {
+  @media only screen and (min-width: 1024px) {
     flex: ${props =>
       props.width ? `0 0 ${(props.width / 12) * 100}%` : "1 1 0"};
     max-width: ${props =>

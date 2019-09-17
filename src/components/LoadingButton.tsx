@@ -15,7 +15,7 @@ const LoadingButton = ({
   isLoading,
   type,
   bg,
-  large,
+  size,
   onClick,
   disabled,
   full
@@ -24,7 +24,7 @@ const LoadingButton = ({
     type={type}
     disabled={disabled || isLoading}
     bg={bg}
-    large={large}
+    size={size}
     onClick={onClick}
     full={full}
   >

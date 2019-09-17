@@ -7,8 +7,12 @@ export default styled.input.attrs({
   autoCapitalize: "none",
   spellCheck: false
 })`
-  display: block;
+  display: inline-flex;
+  justify-content: flex-start;
   width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
   height: 2.5rem;
   padding: 0.375rem 0.75rem;
   line-height: 1.5;
