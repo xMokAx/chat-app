@@ -14,7 +14,7 @@ type OwnProps = {
   publicRoute?: boolean;
   privateRoute?: boolean;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  PageComonent: ComponentType<any>;
+  PageComponent: ComponentType<any>;
   children?: ReactNode;
 } & RouteComponentProps;
 
@@ -36,7 +36,7 @@ const RouterPage = ({ children, ...props }: ExtendProps) => {
   }
 
   const { ...others }: RouteComponentProps = props;
-  return <props.PageComonent {...others}>{children}</props.PageComonent>;
+  return <props.PageComponent {...others}>{children}</props.PageComponent>;
 };
 
 const mapStateToProps = (state: AppState) => ({
