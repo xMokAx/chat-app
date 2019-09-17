@@ -3,12 +3,15 @@ import React from "react";
 import styled from "styled-components/macro";
 import { connect } from "react-redux";
 import { AppState } from "../store/configureStore";
+import { createHash } from "crypto";
 import ProviderLinking from "../components/ProviderLinking";
 import { User } from "../actions/user";
-import { Row, Col, FlexContainer } from "../styled/Flex";
+import { Row, Col } from "../styled/Flex";
 import Card from "../styled/Card";
-import Icon from "../styled/Icon";
-import { createHash } from "crypto";
+import EditUserName from "../components/EditUserName";
+import EditEmail from "../components/EditEmail";
+import { Figure } from "../styled/Images";
+import Image from "../components/Image";
 
 const emailHash = (email: string) =>
   createHash("md5")
@@ -19,7 +22,7 @@ type Props = {
   userInfo: User;
 };
 
-const Profile = ({ userInfo }: Props) => (
+const Profile = ({ userInfo: { id, email, name, photo } }: Props) => (
   <Row>
     <Col
       width={12}
@@ -32,34 +35,32 @@ const Profile = ({ userInfo }: Props) => (
     </Col>
     <Col>
       <Card>
-        <figure style={{ width: "200px", height: "200px" }}>
-          <img
-            style={{ objectFit: "cover", width: "100%", height: "100%" }}
-            src={
-              userInfo.photo
-                ? userInfo.photo
-                : `https://www.gravatar.com/avatar/${emailHash(
-                    userInfo.email!!
-                  )}?s=400&r=pg&d=identicon`
-            }
-            alt={`${userInfo.name}`}
-          />
-        </figure>
-        <FlexContainer as="h2">
-          <Icon css="margin-right: 8px;">
-            <i className="material-icons">person</i>
-          </Icon>
-          {userInfo.name}
-        </FlexContainer>
-        <FlexContainer as="p">
-          <Icon css="margin-right: 8px;">
-            <i className="material-icons">email</i>
-          </Icon>
-          {userInfo.email}
-        </FlexContainer>
+        <div>
+          <Figure
+            css={`
+              height: 256px;
+              width: 256px;
+            `}
+          >
+            <Image
+              type="fit"
+              src={
+                photo
+                  ? photo
+                  : `https://www.gravatar.com/avatar/${emailHash(
+                      email!!
+                    )}?s=400&r=pg&d=identicon`
+              }
+              alt={`${name}`}
+            />
+            <figcaption>{name} profile photo</figcaption>
+          </Figure>
+        </div>
+        <EditUserName id={id} userName={name!!} />
+        <EditEmail id={id} email={email!!} />
       </Card>
     </Col>
-    <Col>{userInfo.email && <ProviderLinking email={userInfo.email} />}</Col>
+    <Col>{email && <ProviderLinking email={email} />}</Col>
   </Row>
 );
 
