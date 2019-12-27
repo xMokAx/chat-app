@@ -1,5 +1,6 @@
 import React, { useState, Fragment, createContext, useEffect } from "react";
-import { Router } from "@reach/router";
+// import { Router } from "@reach/router";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import webFont from "webfontloader";
 import * as ROUTES from "./constants/routes";
 import { ThemeProvider } from "styled-components/macro";
@@ -51,64 +52,58 @@ const App = () => {
         <ThemeContext.Provider value={{ isDarkMode, toggleTheme }}>
           <ModalProvider>
             <Router>
-              <RouterPage path={ROUTES.BASE} PageComponent={Layout}>
-                <RouterPage
-                  path={ROUTES.BASE}
-                  PageComponent={LandingPage}
-                  publicRoute
-                />
-                <RouterPage
-                  path={ROUTES.SIGN_UP}
-                  PageComponent={SignUpPage}
-                  publicRoute
-                />
-                <RouterPage
-                  path={ROUTES.SIGN_UP_EMAIL}
-                  PageComponent={SignUpEmailPage}
-                  publicRoute
-                />
-                <RouterPage
-                  path={ROUTES.SIGN_IN}
-                  PageComponent={SignInPage}
-                  publicRoute
-                />
-                <RouterPage
-                  path={ROUTES.SIGN_IN_EMAIL}
-                  PageComponent={SignInEmailPage}
-                  publicRoute
-                />
-                <RouterPage
-                  path={ROUTES.PASSWORD_FORGET}
-                  PageComponent={PasswordForgetPage}
-                />
-                <RouterPage
-                  path={ROUTES.APP}
-                  PageComponent={ChatPage}
-                  privateRoute
-                />
-                <RouterPage
-                  path={ROUTES.ACCOUNT}
-                  PageComponent={AccountPage}
-                  privateRoute
-                >
-                  <RouterPage
-                    path={ROUTES.PROFILE}
-                    PageComponent={ProfilePage}
-                    privateRoute
-                  />
-                  <RouterPage
-                    path={ROUTES.PASSWORD_CHANGE}
-                    PageComponent={PasswordChangePage}
-                    privateRoute
-                  />
-                  <RouterPage
-                    path={ROUTES.PASSWORD_FORGET}
-                    PageComponent={PasswordForgetPage}
-                    privateRoute
-                  />
-                </RouterPage>
-                <RouterPage PageComponent={NotFoundPage} default />
-              </RouterPage>
+              <Layout>
+                <Switch>
+                  <RouterPage path={ROUTES.BASE} exact publicRoute>
+                    <LandingPage />
+                  </RouterPage>
+                  <RouterPage path={ROUTES.SIGN_UP} exact publicRoute>
+                    <SignUpPage />
+                  </RouterPage>
+                  <RouterPage path={ROUTES.SIGN_UP_EMAIL} publicRoute>
+                    <SignUpEmailPage />
+                  </RouterPage>
+                  <RouterPage path={ROUTES.SIGN_IN} exact publicRoute>
+                    <SignInPage />
+                  </RouterPage>
+                  <RouterPage path={ROUTES.SIGN_IN_EMAIL} publicRoute>
+                    <SignInEmailPage />
+                  </RouterPage>
+                  <RouterPage path={ROUTES.PASSWORD_FORGET}>
+                    <PasswordForgetPage />
+                  </RouterPage>
+                  <RouterPage path={ROUTES.APP} exact privateRoute>
+                    <ChatPage />
+                  </RouterPage>
+                  <RouterPage path={ROUTES.ACCOUNT} privateRoute>
+                    <AccountPage>
+                      <Switch>
+                        <RouterPage path={ROUTES.PROFILE} exact privateRoute>
+                          <ProfilePage />
+                        </RouterPage>
+                        <RouterPage
+                          path={ROUTES.ACCOUNT + ROUTES.PASSWORD_CHANGE}
+                          privateRoute
+                        >
+                          <PasswordChangePage />
+                        </RouterPage>
+                        <RouterPage
+                          path={ROUTES.ACCOUNT + ROUTES.PASSWORD_FORGET}
+                          privateRoute
+                        >
+                          <PasswordForgetPage />
+                        </RouterPage>
+                        <Route>
+                          <NotFoundPage />
+                        </Route>
+                      </Switch>
+                    </AccountPage>
+                  </RouterPage>
+                  <Route>
+                    <NotFoundPage />
+                  </Route>
+                </Switch>
+              </Layout>
             </Router>
           </ModalProvider>
         </ThemeContext.Provider>

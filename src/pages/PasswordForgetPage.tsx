@@ -2,7 +2,7 @@ import React from "react";
 import { Form } from "react-final-form";
 import { FORM_ERROR } from "final-form";
 import { authApi } from "../firebase";
-import { Link, WindowLocation } from "@reach/router";
+import { Link, useLocation } from "react-router-dom";
 import { SIGN_IN_EMAIL, PASSWORD_FORGET } from "../constants/routes";
 import InputField from "../components/InputField";
 import FormCard from "../styled/FormCard";
@@ -19,11 +19,8 @@ type Errors = {
   [K in keyof FormValues]?: string;
 };
 
-interface Props {
-  location: WindowLocation;
-}
-
-const PassWordForgetForm = ({ location }: Props) => {
+const PassWordForgetForm = () => {
+  const location = useLocation();
   const onSubmit = async (values: FormValues) => {
     try {
       const response = await authApi.resetPassword(values.email);

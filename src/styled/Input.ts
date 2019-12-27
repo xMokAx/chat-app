@@ -2,7 +2,7 @@ import styled from "styled-components/macro";
 import { rgba, lighten, darken } from "polished";
 
 export default styled.input.attrs({
-  autoComplete: "off",
+  // autoComplete: "off",
   autoCorrect: "off",
   autoCapitalize: "none",
   spellCheck: false

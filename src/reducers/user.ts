@@ -53,7 +53,8 @@ export const userReducer = (
       };
     case AUTH_SUCCESS:
       return {
-        ...state
+        ...state,
+        isLoading: true
       };
     case AUTH_FAILURE:
       return {
