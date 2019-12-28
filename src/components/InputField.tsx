@@ -40,11 +40,7 @@ const InputField = ({ name, placeholder, icon, label }: Props) => (
             placeholder={placeholder}
             aria-label={placeholder}
           />
-          <Icon isLeft>
-            <i aria-hidden className="material-icons">
-              {icon}
-            </i>
-          </Icon>
+          <Icon isLeft>{icon}</Icon>
         </InputGroup>
         <ErrorWithDelay name={name} delay={1000}>
           {(error: string) => <Error as="small">{error}</Error>}

@@ -2,7 +2,7 @@ import React from "react";
 import { Form } from "react-final-form";
 import { FORM_ERROR } from "final-form";
 import { authApi } from "../firebase";
-import { Link } from "@reach/router";
+import { Link } from "react-router-dom";
 import { PASSWORD_FORGET, SIGN_UP } from "../constants/routes";
 import { userActions } from "../actions/user";
 import { connect } from "react-redux";

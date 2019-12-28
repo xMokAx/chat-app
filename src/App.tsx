@@ -1,5 +1,4 @@
 import React, { useState, Fragment, createContext, useEffect } from "react";
-// import { Router } from "@reach/router";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import webFont from "webfontloader";
 import * as ROUTES from "./constants/routes";
@@ -27,16 +26,29 @@ export const ThemeContext = createContext({
   toggleTheme: () => {}
 });
 
+export const IconFontContext = createContext({
+  iconFontLoaded: false
+});
+
 const App = () => {
+  const [iconFontLoaded, setIconFontLoaded] = useState(false);
+
   useEffect(() => {
     console.log("App is mounted");
     // load fonts when app first mounts
     webFont.load({
+      fontactive: function(familyName, fvd) {
+        if (familyName === "Material Icons") {
+          setIconFontLoaded(true);
+        }
+        console.log("rendered", familyName, fvd);
+      },
       google: {
-        families: ["Roboto:400,500,700", "Material Icons&display=swap"]
+        families: ["Material Icons", "Roboto:400,500,700", "&display=swap"]
       }
     });
   }, []);
+
   const stored = localStorage.getItem("isDarkMode");
   const [isDarkMode, setIsDarkMode] = useState(
     stored === "true" ? true : false
@@ -45,67 +57,70 @@ const App = () => {
     setIsDarkMode(!isDarkMode);
     localStorage.setItem("isDarkMode", `${!isDarkMode}`);
   };
+
   return (
     <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
       <Fragment>
         <GlobalStyle />
         <ThemeContext.Provider value={{ isDarkMode, toggleTheme }}>
-          <ModalProvider>
-            <Router>
-              <Layout>
-                <Switch>
-                  <RouterPage path={ROUTES.BASE} exact publicRoute>
-                    <LandingPage />
-                  </RouterPage>
-                  <RouterPage path={ROUTES.SIGN_UP} exact publicRoute>
-                    <SignUpPage />
-                  </RouterPage>
-                  <RouterPage path={ROUTES.SIGN_UP_EMAIL} publicRoute>
-                    <SignUpEmailPage />
-                  </RouterPage>
-                  <RouterPage path={ROUTES.SIGN_IN} exact publicRoute>
-                    <SignInPage />
-                  </RouterPage>
-                  <RouterPage path={ROUTES.SIGN_IN_EMAIL} publicRoute>
-                    <SignInEmailPage />
-                  </RouterPage>
-                  <RouterPage path={ROUTES.PASSWORD_FORGET}>
-                    <PasswordForgetPage />
-                  </RouterPage>
-                  <RouterPage path={ROUTES.APP} exact privateRoute>
-                    <ChatPage />
-                  </RouterPage>
-                  <RouterPage path={ROUTES.ACCOUNT} privateRoute>
-                    <AccountPage>
-                      <Switch>
-                        <RouterPage path={ROUTES.PROFILE} exact privateRoute>
-                          <ProfilePage />
-                        </RouterPage>
-                        <RouterPage
-                          path={ROUTES.ACCOUNT + ROUTES.PASSWORD_CHANGE}
-                          privateRoute
-                        >
-                          <PasswordChangePage />
-                        </RouterPage>
-                        <RouterPage
-                          path={ROUTES.ACCOUNT + ROUTES.PASSWORD_FORGET}
-                          privateRoute
-                        >
-                          <PasswordForgetPage />
-                        </RouterPage>
-                        <Route>
-                          <NotFoundPage />
-                        </Route>
-                      </Switch>
-                    </AccountPage>
-                  </RouterPage>
-                  <Route>
-                    <NotFoundPage />
-                  </Route>
-                </Switch>
-              </Layout>
-            </Router>
-          </ModalProvider>
+          <IconFontContext.Provider value={{ iconFontLoaded }}>
+            <ModalProvider>
+              <Router>
+                <Layout>
+                  <Switch>
+                    <RouterPage path={ROUTES.BASE} exact publicRoute>
+                      <LandingPage />
+                    </RouterPage>
+                    <RouterPage path={ROUTES.SIGN_UP} exact publicRoute>
+                      <SignUpPage />
+                    </RouterPage>
+                    <RouterPage path={ROUTES.SIGN_UP_EMAIL} publicRoute>
+                      <SignUpEmailPage />
+                    </RouterPage>
+                    <RouterPage path={ROUTES.SIGN_IN} exact publicRoute>
+                      <SignInPage />
+                    </RouterPage>
+                    <RouterPage path={ROUTES.SIGN_IN_EMAIL} publicRoute>
+                      <SignInEmailPage />
+                    </RouterPage>
+                    <RouterPage path={ROUTES.PASSWORD_FORGET}>
+                      <PasswordForgetPage />
+                    </RouterPage>
+                    <RouterPage path={ROUTES.APP} exact privateRoute>
+                      <ChatPage />
+                    </RouterPage>
+                    <RouterPage path={ROUTES.ACCOUNT} privateRoute>
+                      <AccountPage>
+                        <Switch>
+                          <RouterPage path={ROUTES.PROFILE} exact privateRoute>
+                            <ProfilePage />
+                          </RouterPage>
+                          <RouterPage
+                            path={ROUTES.ACCOUNT + ROUTES.PASSWORD_CHANGE}
+                            privateRoute
+                          >
+                            <PasswordChangePage />
+                          </RouterPage>
+                          <RouterPage
+                            path={ROUTES.ACCOUNT + ROUTES.PASSWORD_FORGET}
+                            privateRoute
+                          >
+                            <PasswordForgetPage />
+                          </RouterPage>
+                          <Route>
+                            <NotFoundPage />
+                          </Route>
+                        </Switch>
+                      </AccountPage>
+                    </RouterPage>
+                    <Route>
+                      <NotFoundPage />
+                    </Route>
+                  </Switch>
+                </Layout>
+              </Router>
+            </ModalProvider>
+          </IconFontContext.Provider>
         </ThemeContext.Provider>
       </Fragment>
     </ThemeProvider>

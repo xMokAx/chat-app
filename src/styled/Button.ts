@@ -3,8 +3,10 @@ import { lighten, darken, rgba } from "polished";
 
 export interface ButtonProps {
   bg?: keyof DefaultTheme["colors"];
+  color?: keyof DefaultTheme["colors"];
   size?: "l" | "s";
-  full?: "true";
+  full?: boolean;
+  circle?: boolean;
 }
 
 export default styled.button<ButtonProps>`
@@ -19,13 +21,19 @@ export default styled.button<ButtonProps>`
     props.bg ? props.theme.colors[props.bg] : "transparent"};
   color: ${props =>
     props.bg ? props.theme.colors.textMain : props.theme.colors.textSec};
+  color: ${props => props.color && props.theme.colors[props.color]};
   padding: ${props => (props.size === "s" ? "0.375rem" : "0.5rem 1rem")};
   font-size: ${props => (props.size === "l" ? "1.25rem" : "1rem")};
   line-height: 1.5;
-  border-radius: 0.25rem;
+  border-radius: ${props => (props.circle ? "50%" : "0.25rem")};
   &:hover,
   &:active {
-    color: ${props => props.theme.colors.textMain};
+    color: ${props =>
+      props.color
+        ? props.theme.isDarkMode
+          ? lighten(0.1, props.theme.colors[props.color])
+          : darken(0.1, props.theme.colors[props.color])
+        : props.theme.colors.textMain};
     background: ${props =>
       props.bg
         ? props.theme.isDarkMode

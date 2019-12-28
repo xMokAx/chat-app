@@ -3,11 +3,10 @@ import { DefaultTheme } from "styled-components/macro";
 import * as ROUTES from "../constants/routes";
 import Nav from "../styled/Nav";
 import NavLink from "../styled/NavLink";
-import Container from "../styled/Container";
 import { Row, Col } from "../styled/Flex";
 import { connect } from "react-redux";
 import { AppState } from "../store/configureStore";
-import { Redirect } from "@reach/router";
+import { Redirect } from "react-router-dom";
 
 interface StateProps {
   hasPassword: boolean;
@@ -19,14 +18,16 @@ interface OwnProps {
 
 type Props = OwnProps & StateProps;
 
-const AccountPage = ({ children, hasPassword }: Props) => (
-  <Container>
-    {!hasPassword && <Redirect to={ROUTES.ACCOUNT} noThrow />}
+const AccountPage = ({ children, hasPassword }: Props) => {
+  if (!hasPassword) {
+    return <Redirect to={ROUTES.ACCOUNT} />;
+  }
+
+  return (
     <Row>
       <Col
         width={3}
         css={`
-          padding: 0;
           @media only screen and (min-width: 1024px) {
             border-right: 1px solid
               ${(props: { theme: DefaultTheme }) => props.theme.colors.bgSec};
@@ -56,10 +57,10 @@ const AccountPage = ({ children, hasPassword }: Props) => (
           )}
         </Nav>
       </Col>
-      {children}
+      <Col>{children}</Col>
     </Row>
-  </Container>
-);
+  );
+};
 
 const mapStateToProps = (state: AppState) => ({
   hasPassword: state.signInMethods.signInMethods.includes("password")

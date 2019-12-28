@@ -88,9 +88,7 @@ const InputEdit = ({ id, userName, updateUser }: Props) => {
     />
   ) : (
     <FlexContainer>
-      <Icon>
-        <i className="material-icons">person</i>
-      </Icon>
+      <Icon>person</Icon>
       <Text
         as="h2"
         css={`
@@ -100,15 +98,15 @@ const InputEdit = ({ id, userName, updateUser }: Props) => {
         {userName}
       </Text>
       <Button
+        bg="primary"
+        circle
         aria-label="Edit user name"
         size="s"
         onClick={() => {
           setIsEditing(true);
         }}
       >
-        <i aria-hidden className="material-icons">
-          edit
-        </i>
+        <Icon>edit</Icon>
       </Button>
     </FlexContainer>
   );

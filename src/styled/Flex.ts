@@ -13,8 +13,8 @@ export const Row = styled.div`
   display: flex;
   flex: 1;
   flex-wrap: wrap;
-  margin-right: -15px;
-  margin-left: -15px;
+  margin-right: -16px;
+  margin-left: -16px;
 `;
 
 interface ColProps {
@@ -26,8 +26,8 @@ export const Col = styled.div<ColProps>`
   max-width: 100%;
   position: relative;
   width: 100%;
-  padding-right: 15px;
-  padding-left: 15px;
+  padding-right: 16px;
+  padding-left: 16px;
   @media only screen and (min-width: 1024px) {
     flex: ${props =>
       props.width ? `0 0 ${(props.width / 12) * 100}%` : "1 1 0"};

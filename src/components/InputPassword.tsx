@@ -53,15 +53,9 @@ const InputPassword = ({ name, placeholder, label }: Props) => {
                 isHidden ? `Show ${placeholder}` : `Hide ${placeholder}`
               }
             >
-              <i className="material-icons">
-                {isHidden ? "visibility" : "visibility_off"}
-              </i>
+              <Icon>{isHidden ? "visibility" : "visibility_off"}</Icon>
             </Button>
-            <Icon isLeft>
-              <i aria-hidden className="material-icons">
-                lock
-              </i>
-            </Icon>
+            <Icon isLeft>lock</Icon>
           </InputGroup>
           <ErrorWithDelay name={name} delay={1000}>
             {(error: string) => <Error as="small">{error}</Error>}

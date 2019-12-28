@@ -23,7 +23,7 @@ type Props = {
 };
 
 const Profile = ({ userInfo: { id, email, name, photo } }: Props) => (
-  <Col>
+  <>
     <Row>
       <Col
         width={12}
@@ -63,7 +63,7 @@ const Profile = ({ userInfo: { id, email, name, photo } }: Props) => (
       </Col>
       <Col>{email && <ProviderLinking email={email} />}</Col>
     </Row>
-  </Col>
+  </>
 );
 
 const mapStateToProps = (state: AppState) => ({

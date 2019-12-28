@@ -86,9 +86,7 @@ const InputEdit = ({ id, email, updateUser }: Props) => {
         max-width: calc(100vw - 32px);
       `}
     >
-      <Icon>
-        <i className="material-icons">email</i>
-      </Icon>
+      <Icon>email</Icon>
       <Text
         size="18px"
         css={`
@@ -100,15 +98,15 @@ const InputEdit = ({ id, email, updateUser }: Props) => {
         <strong>{email}</strong>
       </Text>
       <Button
+        bg="primary"
+        circle
         aria-label="Edit email"
         size="s"
         onClick={() => {
           setIsEditing(true);
         }}
       >
-        <i aria-hidden className="material-icons">
-          edit
-        </i>
+        <Icon>edit</Icon>
       </Button>
     </FlexContainer>
   );
