@@ -18,12 +18,9 @@ interface OwnProps {
 
 type Props = OwnProps & StateProps;
 
-const AccountPage = ({ children, hasPassword }: Props) => {
-  if (!hasPassword) {
-    return <Redirect to={ROUTES.ACCOUNT} />;
-  }
-
-  return (
+const AccountPage = ({ children, hasPassword }: Props) => (
+  <>
+    {!hasPassword && <Redirect to={ROUTES.ACCOUNT} />}
     <Row>
       <Col
         width={3}
@@ -59,8 +56,8 @@ const AccountPage = ({ children, hasPassword }: Props) => {
       </Col>
       <Col>{children}</Col>
     </Row>
-  );
-};
+  </>
+);
 
 const mapStateToProps = (state: AppState) => ({
   hasPassword: state.signInMethods.signInMethods.includes("password")
