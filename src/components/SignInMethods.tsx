@@ -34,7 +34,9 @@ const SignInMethods = ({
             sign in methods in your account page:
           </p>
           {signInMethods.map(method => (
-            <p key={method}>{method}</p>
+            <p key={method}>
+              {method === "password" ? `email + ${method}` : method}
+            </p>
           ))}
         </div>
       )}

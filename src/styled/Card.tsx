@@ -1,6 +1,10 @@
 import styled from "styled-components/macro";
 
-export default styled.div`
+interface Props {
+  expandedChildren?: boolean;
+}
+
+export default styled.div<Props>`
   flex: 1;
   display: flex;
   width: 100%;
@@ -12,7 +16,7 @@ export default styled.div`
   margin-left: auto;
   margin-right: auto;
   & > * {
-    width: 100%;
     margin-bottom: 1rem;
+    width: ${props => props.expandedChildren && "100%"};
   }
 `;

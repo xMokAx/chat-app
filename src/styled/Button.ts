@@ -5,7 +5,7 @@ export interface ButtonProps {
   bg?: keyof DefaultTheme["colors"];
   color?: keyof DefaultTheme["colors"];
   size?: "l" | "s";
-  full?: boolean;
+  expanded?: boolean;
   circle?: boolean;
 }
 
@@ -16,7 +16,7 @@ export default styled.button<ButtonProps>`
   align-items: center;
   text-align: center;
   font-weight: 500;
-  width: ${props => props.full && "100%"};
+  width: ${props => props.expanded && "100%"};
   background: ${props =>
     props.bg ? props.theme.colors[props.bg] : "transparent"};
   color: ${props =>

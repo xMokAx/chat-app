@@ -36,7 +36,7 @@ const ProviderLinking = ({
   error
 }: WithSignInMethodsProps) => {
   return (
-    <Card>
+    <Card expandedChildren>
       <h2>Link sign in methods</h2>
       <Fragment>
         {isLoading ? (
