@@ -3,14 +3,14 @@ import React from "react";
 import styled from "styled-components/macro";
 import InputGroup from "../styled/InputGroup";
 import Input from "../styled/Input";
-import Icon from "../styled/Icon";
+import Icon, { UnicodeIcons } from "../styled/Icon";
 import { FieldProps, Field } from "react-final-form";
 import ErrorWithDelay from "./ErrorWithDelay";
 import Error from "../styled/Error";
 
 type Props = FieldProps<any, HTMLElement> & {
   placeholder: string;
-  icon: string;
+  icon: keyof UnicodeIcons;
   label?: string;
 };
 
@@ -40,7 +40,7 @@ const InputField = ({ name, placeholder, icon, label }: Props) => (
             placeholder={placeholder}
             aria-label={placeholder}
           />
-          <Icon isLeft>{icon}</Icon>
+          <Icon isLeft icon={icon} />
         </InputGroup>
         <ErrorWithDelay name={name} delay={1000}>
           {(error: string) => <Error as="small">{error}</Error>}

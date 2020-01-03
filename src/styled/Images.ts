@@ -28,6 +28,7 @@ export const Figure = styled.figure`
 
 export const ImgFit = styled.img`
   width: 100%;
-  height: 100%;
+  border: 1px solid ${props => props.theme.colors.grey};
   object-fit: cover;
+  border-radius: 0.25rem;
 `;

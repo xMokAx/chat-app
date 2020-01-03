@@ -88,7 +88,7 @@ const InputEdit = ({ id, userName, updateUser }: Props) => {
     />
   ) : (
     <FlexContainer>
-      <Icon>person</Icon>
+      <Icon icon="person" />
       <Text
         as="h2"
         css={`
@@ -106,7 +106,7 @@ const InputEdit = ({ id, userName, updateUser }: Props) => {
           setIsEditing(true);
         }}
       >
-        <Icon>edit</Icon>
+        <Icon icon="edit" />
       </Button>
     </FlexContainer>
   );

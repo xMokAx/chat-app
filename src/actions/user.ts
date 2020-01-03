@@ -5,7 +5,8 @@ export const ADD_USER = "ADD_USER";
 export const UPDATE_USER = "UPDATE_USER";
 export const SIGN_OUT = "SIGN_OUT";
 
-// the user properties types can be string, undefined when the app start with empty state or null when assigned to firebase empty user properties
+// the user properties types can be string, undefined when the app start with empty
+// state or null when assigned to firebase empty user properties.
 export type User = {
   // [key: string]: string | null | undefined | boolean;
   id: string;

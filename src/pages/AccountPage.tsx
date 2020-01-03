@@ -33,6 +33,7 @@ const AccountPage = ({ children, hasPassword }: Props) => (
       >
         <Nav
           css={`
+            margin-bottom: 0;
             @media only screen and (min-width: 1024px) {
               flex-direction: column;
               border-bottom: none;
@@ -54,7 +55,7 @@ const AccountPage = ({ children, hasPassword }: Props) => (
           )}
         </Nav>
       </Col>
-      <Col>{children}</Col>
+      <Col css="height:100%;">{children}</Col>
     </Row>
   </>
 );

@@ -86,7 +86,7 @@ const InputEdit = ({ id, email, updateUser }: Props) => {
         max-width: calc(100vw - 32px);
       `}
     >
-      <Icon>email</Icon>
+      <Icon icon="email" />
       <Text
         size="18px"
         css={`
@@ -106,7 +106,7 @@ const InputEdit = ({ id, email, updateUser }: Props) => {
           setIsEditing(true);
         }}
       >
-        <Icon>edit</Icon>
+        <Icon icon="edit" />
       </Button>
     </FlexContainer>
   );

@@ -64,7 +64,7 @@ const PassWordForgetForm = () => {
           )}
           {submitError && <Error>{submitError}</Error>}
           <Text size="14px">
-            To reset your password, enter the email address you use to sign in.
+            To reset your password, enter the email you use to sign in.
           </Text>
           <InputField name="email" placeholder="Email" icon="email" />
           <LoadingButton type="submit" bg="primary" isLoading={submitting}>

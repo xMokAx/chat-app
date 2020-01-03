@@ -53,9 +53,9 @@ const InputPassword = ({ name, placeholder, label }: Props) => {
                 isHidden ? `Show ${placeholder}` : `Hide ${placeholder}`
               }
             >
-              <Icon>{isHidden ? "visibility" : "visibility_off"}</Icon>
+              <Icon icon={isHidden ? "visibility" : "visibility_off"} />
             </Button>
-            <Icon isLeft>lock</Icon>
+            <Icon isLeft icon="lock" />
           </InputGroup>
           <ErrorWithDelay name={name} delay={1000}>
             {(error: string) => <Error as="small">{error}</Error>}

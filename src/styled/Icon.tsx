@@ -1,6 +1,16 @@
-import React, { useContext } from "react";
+import React from "react";
 import styled, { DefaultTheme } from "styled-components/macro";
-import { IconFontContext } from "../App";
+
+const unicodeIcons = {
+  email: "\ue0be",
+  edit: "\ue3c9",
+  visibility: "\ue8f4",
+  visibility_off: "\ue8f5",
+  lock: "\ue897",
+  person: "\ue7fd"
+};
+
+export type UnicodeIcons = typeof unicodeIcons;
 
 interface ContainerProps {
   isLeft?: boolean;
@@ -9,12 +19,11 @@ interface ContainerProps {
 }
 
 interface IconProps {
-  children: string;
   size?: string;
   color?: keyof DefaultTheme["colors"];
 }
 
-type Props = IconProps & ContainerProps;
+type Props = IconProps & ContainerProps & { icon: keyof UnicodeIcons };
 
 const Container = styled.span.attrs(props => ({
   "aria-hidden": props["aria-label"] ? false : true
@@ -31,21 +40,16 @@ const Container = styled.span.attrs(props => ({
 const Icon = styled.i.attrs({
   className: "material-icons"
 })<IconProps>`
-  font-size: ${props => props.size && props.size};
+  font-size: ${props => (props.size ? props.size : "24px")};
   color: ${props => props.color && props.theme.colors[props.color]};
 `;
 
-export default ({ children, size, color, ...props }: Props) => {
-  const { iconFontLoaded } = useContext(IconFontContext);
+export default ({ icon, size, color, ...props }: Props) => {
   return (
     <Container {...props}>
-      {iconFontLoaded ? (
-        <Icon color={color} size={size}>
-          {children}
-        </Icon>
-      ) : (
-        "☐"
-      )}
+      <Icon color={color} size={size}>
+        {unicodeIcons[icon]}
+      </Icon>
     </Container>
   );
 };

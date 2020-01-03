@@ -5,7 +5,6 @@ import * as ROUTES from "./constants/routes";
 import { ThemeProvider } from "styled-components/macro";
 import { lightTheme } from "./themes/light";
 import { darkTheme } from "./themes/dark";
-import { ModalProvider } from "styled-react-modal";
 import Layout from "./components/Layout";
 import LandingPage from "./pages/LandingPage";
 import SignUpPage from "./pages/SignUpPage";
@@ -26,23 +25,11 @@ export const ThemeContext = createContext({
   toggleTheme: () => {}
 });
 
-export const IconFontContext = createContext({
-  iconFontLoaded: false
-});
-
 const App = () => {
-  const [iconFontLoaded, setIconFontLoaded] = useState(false);
-
   useEffect(() => {
     console.log("App is mounted");
     // load fonts when app first mounts
     webFont.load({
-      fontactive: function(familyName, fvd) {
-        if (familyName === "Material Icons") {
-          setIconFontLoaded(true);
-        }
-        console.log("rendered", familyName, fvd);
-      },
       google: {
         families: ["Material Icons", "Roboto:400,500,700", "&display=swap"]
       }
@@ -63,64 +50,60 @@ const App = () => {
       <Fragment>
         <GlobalStyle />
         <ThemeContext.Provider value={{ isDarkMode, toggleTheme }}>
-          <IconFontContext.Provider value={{ iconFontLoaded }}>
-            <ModalProvider>
-              <Router>
-                <Layout>
-                  <Switch>
-                    <RouterPage path={ROUTES.BASE} exact publicRoute>
-                      <LandingPage />
-                    </RouterPage>
-                    <RouterPage path={ROUTES.SIGN_UP} exact publicRoute>
-                      <SignUpPage />
-                    </RouterPage>
-                    <RouterPage path={ROUTES.SIGN_UP_EMAIL} publicRoute>
-                      <SignUpEmailPage />
-                    </RouterPage>
-                    <RouterPage path={ROUTES.SIGN_IN} exact publicRoute>
-                      <SignInPage />
-                    </RouterPage>
-                    <RouterPage path={ROUTES.SIGN_IN_EMAIL} publicRoute>
-                      <SignInEmailPage />
-                    </RouterPage>
-                    <RouterPage path={ROUTES.PASSWORD_FORGET}>
-                      <PasswordForgetPage />
-                    </RouterPage>
-                    <RouterPage path={ROUTES.APP} exact privateRoute>
-                      <ChatPage />
-                    </RouterPage>
-                    <RouterPage path={ROUTES.ACCOUNT} privateRoute>
-                      <AccountPage>
-                        <Switch>
-                          <RouterPage path={ROUTES.PROFILE} exact privateRoute>
-                            <ProfilePage />
-                          </RouterPage>
-                          <RouterPage
-                            path={ROUTES.ACCOUNT + ROUTES.PASSWORD_CHANGE}
-                            privateRoute
-                          >
-                            <PasswordChangePage />
-                          </RouterPage>
-                          <RouterPage
-                            path={ROUTES.ACCOUNT + ROUTES.PASSWORD_FORGET}
-                            privateRoute
-                          >
-                            <PasswordForgetPage />
-                          </RouterPage>
-                          <Route>
-                            <NotFoundPage />
-                          </Route>
-                        </Switch>
-                      </AccountPage>
-                    </RouterPage>
-                    <Route>
-                      <NotFoundPage />
-                    </Route>
-                  </Switch>
-                </Layout>
-              </Router>
-            </ModalProvider>
-          </IconFontContext.Provider>
+          <Router>
+            <Layout>
+              <Switch>
+                <RouterPage path={ROUTES.BASE} exact publicRoute>
+                  <LandingPage />
+                </RouterPage>
+                <RouterPage path={ROUTES.SIGN_UP} exact publicRoute>
+                  <SignUpPage />
+                </RouterPage>
+                <RouterPage path={ROUTES.SIGN_UP_EMAIL} publicRoute>
+                  <SignUpEmailPage />
+                </RouterPage>
+                <RouterPage path={ROUTES.SIGN_IN} exact publicRoute>
+                  <SignInPage />
+                </RouterPage>
+                <RouterPage path={ROUTES.SIGN_IN_EMAIL} publicRoute>
+                  <SignInEmailPage />
+                </RouterPage>
+                <RouterPage path={ROUTES.PASSWORD_FORGET}>
+                  <PasswordForgetPage />
+                </RouterPage>
+                <RouterPage path={ROUTES.APP} exact privateRoute>
+                  <ChatPage />
+                </RouterPage>
+                <RouterPage path={ROUTES.ACCOUNT} privateRoute>
+                  <AccountPage>
+                    <Switch>
+                      <RouterPage path={ROUTES.PROFILE} exact privateRoute>
+                        <ProfilePage />
+                      </RouterPage>
+                      <RouterPage
+                        path={ROUTES.ACCOUNT + ROUTES.PASSWORD_CHANGE}
+                        privateRoute
+                      >
+                        <PasswordChangePage />
+                      </RouterPage>
+                      <RouterPage
+                        path={ROUTES.ACCOUNT + ROUTES.PASSWORD_FORGET}
+                        privateRoute
+                      >
+                        <PasswordForgetPage />
+                      </RouterPage>
+                      <Route>
+                        <NotFoundPage />
+                      </Route>
+                    </Switch>
+                  </AccountPage>
+                </RouterPage>
+                <Route>
+                  <NotFoundPage />
+                </Route>
+              </Switch>
+            </Layout>
+          </Router>
         </ThemeContext.Provider>
       </Fragment>
     </ThemeProvider>

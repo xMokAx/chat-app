@@ -1,6 +1,7 @@
 import firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
+import "firebase/storage";
 import { User } from "../actions/user";
 
 const config = {
@@ -73,12 +74,23 @@ const authApi = {
 const firestore = firebase.firestore;
 const database = firestore();
 const users = database.collection("users");
+
+// Get a reference to the storage service, which is used to create references in your storage bucket
+const storage = firebase.storage();
+// Create a storage reference from our storage service
+const storageRef = storage.ref();
+// Create a child reference
+const imagesRef = storageRef.child("images");
+// imagesRef now points to 'images'
+
 const userApi = {
   addUser: (id: string, user: User) => users.doc(id).set(user, { merge: true }),
   updateUser: (id: string, user: Omit<User, "id">) =>
     users.doc(id).set(user, { merge: true }),
   deleteUser: (id: string) => users.doc(id).delete(),
-  getUser: (id: string) => users.doc(id).get()
+  getUser: (id: string) => users.doc(id).get(),
+  uploadImage: (imageName: string, image: Blob) =>
+    imagesRef.child(imageName).put(image)
 };
 
 export { authApi, auth, userApi };
