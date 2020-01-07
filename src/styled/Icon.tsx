@@ -7,7 +7,9 @@ const unicodeIcons = {
   visibility: "\ue8f4",
   visibility_off: "\ue8f5",
   lock: "\ue897",
-  person: "\ue7fd"
+  person: "\ue7fd",
+  arrow_drop_up: "\ue5c7",
+  arrow_drop_down: "\ue5c5"
 };
 
 export type UnicodeIcons = typeof unicodeIcons;
@@ -40,7 +42,7 @@ const Container = styled.span.attrs(props => ({
 const Icon = styled.i.attrs({
   className: "material-icons"
 })<IconProps>`
-  font-size: ${props => (props.size ? props.size : "24px")};
+  font-size: ${props => (props.size ? props.size + "!important" : "24px")};
   color: ${props => props.color && props.theme.colors[props.color]};
 `;
 

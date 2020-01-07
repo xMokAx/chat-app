@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import Navigation from "./Navigation";
 import Wrapper from "../styled/Wrapper";
-import Main from "../styled/Main";
 import ErrorMessage from "../styled/ErrorMessage";
 import { connect } from "react-redux";
 import { AppState } from "../store/configureStore";
+import Container from "../styled/Container";
 
 interface StateProps {
   userError: string;
@@ -62,7 +62,7 @@ const Layout = ({ children, userError }: Props) => {
       )}
       {userError && <ErrorMessage>{userError}</ErrorMessage>}
       <Navigation />
-      <Main>{children}</Main>
+      <Container as="main">{children}</Container>
     </Wrapper>
   );
 };

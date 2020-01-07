@@ -1,3 +1,4 @@
+import { createHash } from "crypto";
 import {
   ADD_USER,
   UPDATE_USER,
@@ -8,6 +9,11 @@ import {
   AUTH_SUCCESS,
   NO_USER
 } from "../actions/user";
+
+const emailHash = (email: string) =>
+  createHash("md5")
+    .update(email)
+    .digest("hex");
 
 export type UserState = {
   userInfo: User;
@@ -32,6 +38,11 @@ export const userReducer = (
 ): UserState => {
   switch (action.type) {
     case ADD_USER:
+      if (!action.user.photo) {
+        action.user.photo = `https://www.gravatar.com/avatar/${emailHash(
+          action.user.email!!
+        )}?s=400&r=pg&d=identicon`;
+      }
       return {
         ...state,
         userInfo: action.user,

@@ -8,8 +8,8 @@ export const cropToCanvas = (
 ) => {
   const scaleX = image.naturalWidth / image.width;
   const scaleY = image.naturalHeight / image.height;
-  canvas.width = 256;
-  canvas.height = 256;
+  canvas.width = 200;
+  canvas.height = 200;
   const ctx = canvas.getContext("2d");
 
   ctx!!.drawImage(
@@ -20,8 +20,8 @@ export const cropToCanvas = (
     crop.height * scaleY,
     0,
     0,
-    256,
-    256
+    200,
+    200
   );
 };
 

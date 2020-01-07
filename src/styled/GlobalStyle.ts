@@ -213,7 +213,7 @@ export default createGlobalStyle`
 
   button:focus {
     outline: 1px dotted;
-    outline: 5px auto -webkit-focus-ring-color;
+    outline: 5px auto ${props => props.theme.colors.primary};
   }
 
   input,

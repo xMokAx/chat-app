@@ -3,7 +3,7 @@ import { authApi } from "../firebase";
 import Button from "../styled/Button";
 
 const SignOutButon = () => (
-  <Button size="s" onClick={authApi.signOut}>
+  <Button color="grey" onClick={authApi.signOut}>
     Log out
   </Button>
 );

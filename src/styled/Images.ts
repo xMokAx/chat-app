@@ -14,9 +14,17 @@ export const ImgThumbnail = styled.img`
   height: auto;
 `;
 
-export const Figure = styled.figure`
+interface FigProps {
+  size?: string;
+  m?: string;
+}
+
+export const Figure = styled.figure<FigProps>`
   display: inline-block;
-  & > img {
+  width: ${props => props.size && props.size};
+  height: ${props => props.size && props.size};
+  margin: ${props => props.m && props.m};
+  & > img:not(:last-child) {
     margin-bottom: 0.5rem;
     line-height: 1;
   }

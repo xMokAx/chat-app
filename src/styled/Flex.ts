@@ -18,16 +18,15 @@ export const FlexContainer = styled.div<FlexConProps>`
 
 export const Row = styled.div`
   display: flex;
-  flex: 1;
   flex-wrap: wrap;
   margin-right: -16px;
   margin-left: -16px;
-  height: 100%;
 `;
 
 interface ColProps {
   width?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
   s?: boolean;
+  largeOnly?: boolean;
 }
 
 export const Col = styled.div<ColProps>`
@@ -36,6 +35,9 @@ export const Col = styled.div<ColProps>`
   position: relative;
   width: 100%;
   padding: 8px 16px;
+  @media only screen and (max-width: 1023px) {
+    display: ${props => props.largeOnly && "none"};
+  }
   @media only screen and (min-width: ${props =>
       props.s ? "600px" : "1024px"}) {
     flex: ${props =>

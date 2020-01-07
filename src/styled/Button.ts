@@ -28,12 +28,7 @@ export default styled.button<ButtonProps>`
   border-radius: ${props => (props.circle ? "50%" : "0.25rem")};
   &:hover,
   &:active {
-    color: ${props =>
-      props.color
-        ? props.theme.isDarkMode
-          ? lighten(0.1, props.theme.colors[props.color])
-          : darken(0.1, props.theme.colors[props.color])
-        : props.theme.colors.textMain};
+    color: ${props => props.theme.colors.textMain};
     background: ${props =>
       props.bg
         ? props.theme.isDarkMode
@@ -43,7 +38,8 @@ export default styled.button<ButtonProps>`
     text-decoration: none;
   }
   &:focus {
-    outline: 0;
+    outline: ${props => props.bg && "none"};
+    color: ${props => props.color && props.theme.colors.textMain};
     box-shadow: 0 0 0 0.2rem
       ${props =>
         props.bg

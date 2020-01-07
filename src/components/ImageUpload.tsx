@@ -43,8 +43,8 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  height: 256px;
-  width: 256px;
+  height: 200px;
+  width: 200px;
   padding: 20px;
   border-width: 2px;
   border-radius: 2px;

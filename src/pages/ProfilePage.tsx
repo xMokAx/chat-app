@@ -26,14 +26,16 @@ const Profile = ({ userInfo: { id, email, name, photo } }: Props) => (
       >
         <h1>Profile</h1>
       </Col>
+      <Col largeOnly width={2}></Col>
       <Col>
         <Card>
-          <ProfileImage name={name!!} email={email!!} photo={photo} id={id} />
+          <ProfileImage name={name!!} email={email!!} photo={photo!!} id={id} />
           <EditUserName id={id} userName={name!!} />
           <EditEmail id={id} email={email!!} />
         </Card>
       </Col>
       <Col>{email && <ProviderLinking email={email} />}</Col>
+      <Col largeOnly width={2}></Col>
     </Row>
   </>
 );
