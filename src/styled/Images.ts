@@ -1,15 +1,20 @@
 import styled from "styled-components/macro";
 
-export const ImgFluid = styled.img`
+interface ImgProps {
+  circle?: boolean;
+}
+
+export const ImgFluid = styled.img<ImgProps>`
   max-width: 100%;
   height: auto;
+  border-radius: ${props => (props.circle ? "50%" : "0.25rem")};
 `;
 
-export const ImgThumbnail = styled.img`
+export const ImgThumbnail = styled.img<ImgProps>`
   padding: 0.25rem;
   background-color: ${props => props.theme.colors.bgMain};
   border: 1px solid ${props => props.theme.colors.grey};
-  border-radius: 0.25rem;
+  border-radius: ${props => (props.circle ? "50%" : "0.25rem")};
   max-width: 100%;
   height: auto;
 `;
@@ -34,9 +39,20 @@ export const Figure = styled.figure<FigProps>`
   }
 `;
 
-export const ImgFit = styled.img`
+export const ImgFit = styled.img<ImgProps>`
   width: 100%;
   border: 1px solid ${props => props.theme.colors.grey};
   object-fit: cover;
-  border-radius: 0.25rem;
+  border-radius: ${props => (props.circle ? "50%" : "0.25rem")};
+`;
+
+export const FakeImage = styled.div<ImgProps>`
+  vertical-align: middle;
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+  background-color: ${props => props.theme.colors.grey};
+  border-radius: ${props => (props.circle ? "50%" : "0.25rem")};
+  color: ${props => props.theme.colors.textMain};
+  font-size: 14px;
 `;

@@ -40,7 +40,6 @@ const InputEdit = ({ id, userName, updateUser }: Props) => {
       updateUser({ name: values.userName });
       setIsEditing(false);
     } catch (e) {
-      console.log(e);
       return { [FORM_ERROR]: e };
     }
   };
@@ -62,7 +61,7 @@ const InputEdit = ({ id, userName, updateUser }: Props) => {
 
         return errors;
       }}
-      render={({ handleSubmit, submitting, values, submitError }) => (
+      render={({ handleSubmit, submitting, submitError }) => (
         <FormCard onSubmit={handleSubmit}>
           {submitError && <Error>{submitError.message}</Error>}
           <InputField

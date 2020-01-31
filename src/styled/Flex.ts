@@ -1,18 +1,31 @@
 import styled from "styled-components/macro";
+import { JustifyContentProperty } from "csstype";
 
 interface FlexConProps {
   column?: boolean;
-  fullH?: boolean;
+  h?: string;
+  justify?: JustifyContentProperty;
+  p?: string;
+  m?: string;
+  wr?: boolean;
 }
 
 export const FlexContainer = styled.div<FlexConProps>`
   display: flex;
   flex-direction: ${props => props.column && "column"};
-  justify-content: center;
+  flex-wrap: ${props => (props.wr ? "wrap" : "no-wrap")};
+  justify-content: ${props => (props.justify ? props.justify : "center")};
   align-items: center;
-  height: ${props => props.fullH && "100%"};
+  padding: ${props => props.p && props.p};
+  margin: ${props => props.m && props.m};
+  height: ${props => props.h && props.h};
   & > :not(:last-child) {
-    ${props => (props.column ? "margin-bottom" : "margin-right")}: 1rem;
+    ${props =>
+      props.wr
+        ? "margin: 0"
+        : props.column
+        ? "margin-bottom"
+        : "margin-right"}: 1rem;
   }
 `;
 

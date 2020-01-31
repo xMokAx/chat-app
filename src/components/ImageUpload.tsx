@@ -74,7 +74,6 @@ const ImageUpload = ({ id, toggleEditing, updateUserPhoto }: Props) => {
   }, []);
 
   const onDropAccepted = useCallback((acceptedImages, e) => {
-    console.log("acceptedImages:", acceptedImages, e);
     URL.createObjectURL(acceptedImages[0]);
     setImgSrc(URL.createObjectURL(acceptedImages[0]));
   }, []);
@@ -102,7 +101,6 @@ const ImageUpload = ({ id, toggleEditing, updateUserPhoto }: Props) => {
       const uploadTaskSnapshot = await userApi.uploadImage(id, image!!);
 
       const downloadURL = await uploadTaskSnapshot.ref.getDownloadURL();
-      console.log("File available at", downloadURL);
       await userApi.updateUser(id, {
         photo: downloadURL
       });
@@ -111,11 +109,10 @@ const ImageUpload = ({ id, toggleEditing, updateUserPhoto }: Props) => {
       });
       toggleEditing();
     } catch (err) {
-      console.log("isUploading should be false", isUploading);
       setIsUploading(false);
       setError("Upload failed.");
     }
-  }, [id, isUploading, toggleEditing, updateUserPhoto]);
+  }, [id, toggleEditing, updateUserPhoto]);
 
   const closeModal = useCallback(() => {
     if (!isUploading) {
@@ -153,7 +150,7 @@ const ImageUpload = ({ id, toggleEditing, updateUserPhoto }: Props) => {
       <Modal isOpen={!!imgSrc} onRequestClose={closeModal}>
         <Row>
           <Col s>
-            <FlexContainer column fullH>
+            <FlexContainer column h="100%">
               {error ? (
                 <Text color="red">{error}</Text>
               ) : isUploading ? (

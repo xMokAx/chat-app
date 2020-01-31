@@ -6,11 +6,10 @@ interface ContainerProps {
 }
 
 const Container = styled.div<ContainerProps>`
-  margin-left: -16px;
-  margin-right: -16px;
   padding: 4px;
-  position: sticky;
+  position: fixed;
   top: 0;
+  width 100%;
   :not(:first-child) {
     top: 36px;
   }

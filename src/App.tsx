@@ -27,7 +27,6 @@ export const ThemeContext = createContext({
 
 const App = () => {
   useEffect(() => {
-    console.log("App is mounted");
     // load fonts when app first mounts
     webFont.load({
       google: {
@@ -71,7 +70,7 @@ const App = () => {
                 <RouterPage path={ROUTES.PASSWORD_FORGET}>
                   <PasswordForgetPage />
                 </RouterPage>
-                <RouterPage path={ROUTES.APP} exact privateRoute>
+                <RouterPage path={ROUTES.APP} privateRoute>
                   <ChatPage />
                 </RouterPage>
                 <RouterPage path={ROUTES.ACCOUNT} privateRoute>

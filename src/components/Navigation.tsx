@@ -41,7 +41,7 @@ const NavigationAuth = ({ hasPassword, userPhoto }: NavAuthProps) => {
   );
   return (
     <Fragment>
-      <NavLink to={ROUTES.APP}>App</NavLink>
+      <NavLink to={ROUTES.APP}>Chat</NavLink>
       <NavLink to={ROUTES.ACCOUNT}>Account</NavLink>
       <ThemeTogglerButton />
       <Figure size="40px" m="0" css="position: relative;">

@@ -13,7 +13,6 @@ const ImageCrop = ({ src, onComplete }: Props) => {
       crop={crop}
       onComplete={onComplete}
       onChange={newCrop => {
-        console.log(newCrop);
         setCrop(newCrop);
       }}
     />

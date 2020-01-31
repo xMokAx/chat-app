@@ -1,10 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, createContext } from "react";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import styled from "styled-components/macro";
 import Navigation from "./Navigation";
 import Wrapper from "../styled/Wrapper";
 import ErrorMessage from "../styled/ErrorMessage";
 import { connect } from "react-redux";
 import { AppState } from "../store/configureStore";
 import Container from "../styled/Container";
+import { useMediaQuery } from "react-responsive";
+
+export const ConnectionContext = createContext({
+  showConnectionStatus: false
+});
 
 interface StateProps {
   userError: string;
@@ -53,8 +60,30 @@ const Layout = ({ children, userError }: Props) => {
       window.removeEventListener("online", handleOnlineStatus);
     };
   }, []);
+  const shouldIncreasePadding = useMediaQuery({
+    query: "(max-width: 432px)"
+  });
+
+  let wrapperPaddingTop;
+  if (show && userError) {
+    if (shouldIncreasePadding) {
+      wrapperPaddingTop = "96px";
+    } else {
+      wrapperPaddingTop = "72px";
+    }
+  } else if (userError && shouldIncreasePadding) {
+    wrapperPaddingTop = "56px";
+  } else if (show || userError) {
+    wrapperPaddingTop = "32px";
+  } else {
+    wrapperPaddingTop = "0";
+  }
   return (
-    <Wrapper>
+    <Wrapper
+      css={`
+        padding-top: ${wrapperPaddingTop};
+      `}
+    >
       {show && (
         <ErrorMessage isOnline={isOnline}>
           {isOnline ? "You are back online" : "You are offline"}
@@ -62,7 +91,9 @@ const Layout = ({ children, userError }: Props) => {
       )}
       {userError && <ErrorMessage>{userError}</ErrorMessage>}
       <Navigation />
-      <Container as="main">{children}</Container>
+      <ConnectionContext.Provider value={{ showConnectionStatus: show }}>
+        <Container as="main">{children}</Container>
+      </ConnectionContext.Provider>
     </Wrapper>
   );
 };

@@ -21,9 +21,7 @@ ReactDOM.render(
 
 let justRendered = true;
 auth.onAuthStateChanged(async authUser => {
-  console.log("Auth state changed");
   if (authUser) {
-    console.log("auth change user: ", authUser);
     const user = {
       id: authUser.uid,
       name: authUser.displayName,
@@ -31,8 +29,6 @@ auth.onAuthStateChanged(async authUser => {
       photo: authUser.photoURL
     };
     if (justRendered) {
-      console.log("just rendered? ", justRendered);
-      console.log("user is already authenticated");
       // if a user is authenticated and the app didn't render yet dispatch authSuccess action to run user Saga
       store.dispatch(userActions.authSuccess(false, user));
       store.dispatch(signInMethodsActions.getMethodsStart(user.email!!));
@@ -40,7 +36,6 @@ auth.onAuthStateChanged(async authUser => {
     }
   } else {
     if (!justRendered) {
-      console.log("no user and the app is rendered will dispatch signOut");
       store.dispatch(userActions.signOut());
     } else {
       store.dispatch(userActions.noUser());

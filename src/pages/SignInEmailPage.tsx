@@ -31,7 +31,6 @@ const SignInEmailPage = ({ authSuccess }: Props) => {
   const onSubmit = async (values: FormValues) => {
     try {
       const response = await authApi.signInEmail(values.email, values.password);
-      console.log(response);
       if (response.user) {
         const { displayName, email, uid, photoURL } = response.user;
         if (response.additionalUserInfo) {
@@ -44,7 +43,6 @@ const SignInEmailPage = ({ authSuccess }: Props) => {
         }
       }
     } catch (e) {
-      console.log(e);
       return { [FORM_ERROR]: e.message };
     }
   };

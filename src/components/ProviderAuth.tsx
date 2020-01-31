@@ -27,7 +27,6 @@ const ProviderAuth = ({ authSuccess }: Props) => {
     setIsLoading(true);
     try {
       const response = await authApi.signInWithProvider(provider);
-      console.log(response);
       if (response.user) {
         const { displayName, email, uid, photoURL } = response.user;
         if (response.additionalUserInfo) {
@@ -39,15 +38,12 @@ const ProviderAuth = ({ authSuccess }: Props) => {
           });
         }
         if (!didUnmount.current) {
-          console.log("is mounted");
           setError(null);
           setIsLoading(false);
         }
       }
     } catch (e) {
-      console.log(e);
       if (!didUnmount.current) {
-        console.log("is mounted");
         setError(e);
         setIsLoading(false);
       }

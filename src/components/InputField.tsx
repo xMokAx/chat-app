@@ -10,7 +10,7 @@ import Error from "../styled/Error";
 
 type Props = FieldProps<any, HTMLElement> & {
   placeholder: string;
-  icon: keyof UnicodeIcons;
+  icon?: keyof UnicodeIcons;
   label?: string;
 };
 
@@ -33,14 +33,14 @@ const InputField = ({ name, placeholder, icon, label }: Props) => (
             {label}
           </label>
         )}
-        <InputGroup hasIconLeft>
+        <InputGroup hasIconLeft={!!icon}>
           <Input
             {...input}
             type="text"
             placeholder={placeholder}
             aria-label={placeholder}
           />
-          <Icon isLeft icon={icon} />
+          {icon && <Icon isLeft icon={icon} />}
         </InputGroup>
         <ErrorWithDelay name={name} delay={1000}>
           {(error: string) => <Error as="small">{error}</Error>}

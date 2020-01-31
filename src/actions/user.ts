@@ -13,6 +13,8 @@ export type User = {
   name?: string | null;
   email?: string | null;
   photo?: string | null;
+  createdRooms?: string[];
+  joinedRooms?: string[];
 };
 
 export interface NoUserAction {
@@ -41,7 +43,7 @@ export interface AddUserAction {
 
 export interface UpdateUserAction {
   type: typeof UPDATE_USER;
-  user: Omit<User, "id">;
+  user: Partial<User>;
 }
 
 export type UserActionTypes =
@@ -76,7 +78,7 @@ const addUser = (user: User): UserActionTypes => ({
   user
 });
 
-const updateUser = (user: Omit<User, "id">): UserActionTypes => ({
+const updateUser = (user: Partial<User>): UserActionTypes => ({
   type: UPDATE_USER,
   user
 });

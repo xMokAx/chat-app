@@ -6,7 +6,6 @@ export default styled.nav`
   justify-content: center;
   align-items: center;
   padding: 0 16px;
-  margin-bottom: 1rem;
   border-bottom-width: 1px;
   border-color: ${props => props.theme.colors.bgSec};
   border-style: solid;

@@ -28,13 +28,11 @@ const ToggleLinkingProvider = ({
     setIsLoading(true);
     setError("");
     try {
-      const response = await authApi.linkProvider(providerName);
-      console.log(response);
+      await authApi.linkProvider(providerName);
       addMethod(providerId);
       setError("");
       setIsLoading(false);
     } catch (e) {
-      console.log(e);
       setError(e.message);
       setIsLoading(false);
     }
@@ -43,13 +41,11 @@ const ToggleLinkingProvider = ({
     setError("");
     setIsLoading(true);
     try {
-      const response = await authApi.unlinkProvider(providerId);
-      console.log(response);
+      await authApi.unlinkProvider(providerId);
       removeMethod(providerId);
       setError("");
       setIsLoading(false);
     } catch (e) {
-      console.log(e);
       setError(e.message);
       setIsLoading(false);
     }

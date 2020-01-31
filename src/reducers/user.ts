@@ -26,7 +26,9 @@ const initialUserState = {
     id: "",
     name: null,
     email: null,
-    photo: null
+    photo: null,
+    createdRooms: [],
+    joinedRooms: []
   },
   isLoading: true,
   error: ""
@@ -45,7 +47,7 @@ export const userReducer = (
       }
       return {
         ...state,
-        userInfo: action.user,
+        userInfo: { ...state.userInfo, ...action.user },
         error: "",
         isLoading: false
       };

@@ -1,9 +1,12 @@
 import styled from "styled-components";
 
-export default styled.div`
-  padding-bottom: 16px;
+interface Props {
+  minH?: string;
+}
+
+export default styled.div<Props>`
   height: 100%;
-  min-height: 100vh;
+  min-height: ${props => (props.minH ? props.minH : "100vh")};
   width: 100%;
   display: flex;
   flex-direction: column;

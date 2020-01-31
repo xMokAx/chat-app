@@ -32,7 +32,6 @@ const DisplayError = ({
       timeout = window.setTimeout(() => setShow(true), delay);
       // when the form is reseted after submit the fields become untouched but the errors are still shown
     } else if (!touched && show) {
-      console.log("not touched");
       // so when the touched is false we set show to false to hide the errors after reset
       setShow(false);
     }

@@ -32,10 +32,10 @@ const withSignInMethods = (
     removeMethod
   }: WithSignInMethodsProps) => {
     useEffect(() => {
-      if (!signInMethods.length && email) {
+      if (email) {
         getMethodsStart(email);
       }
-    }, [email, getMethodsStart, signInMethods.length]);
+    }, [email, getMethodsStart]);
     return (
       <Component
         email={email}

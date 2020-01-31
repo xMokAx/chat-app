@@ -23,10 +23,8 @@ const PassWordForgetForm = () => {
   const location = useLocation();
   const onSubmit = async (values: FormValues) => {
     try {
-      const response = await authApi.resetPassword(values.email);
-      console.log(response);
+      await authApi.resetPassword(values.email);
     } catch (e) {
-      console.log(e);
       return { [FORM_ERROR]: e.message };
     }
   };
@@ -50,7 +48,6 @@ const PassWordForgetForm = () => {
           onSubmit={async event => {
             const error = await handleSubmit(event);
             if (error) {
-              console.log("Error returned from Form onSubmit", error);
               return error;
             }
             form.reset();

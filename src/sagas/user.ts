@@ -29,7 +29,6 @@ function* user(action: AuthSuccessAction) {
 
       if (doc.exists) {
         // add user to redux store
-        console.log("users doc exists: ", doc);
 
         yield put(userActions.addUser(doc.data()));
       } else {
@@ -38,7 +37,6 @@ function* user(action: AuthSuccessAction) {
         yield put(userActions.authSuccess(true, action.user));
       }
     } catch (error) {
-      console.log(error);
       // network failure
       yield put(
         userActions.authFailure(

@@ -1,5 +1,5 @@
 import React, { ReactNode, useEffect, useRef } from "react";
-import styled from "styled-components/macro";
+import styled, { DefaultTheme } from "styled-components/macro";
 import Icon from "./Icon";
 import Button from "./Button";
 
@@ -16,6 +16,7 @@ type Props = MenuProps &
   ContainerProps & {
     children: ReactNode;
     circleButton?: boolean;
+    buttonBG?: keyof DefaultTheme["colors"];
     openOrCloseMenu: (menuState: boolean) => void;
   };
 
@@ -61,9 +62,9 @@ const Dropdown = ({
   left,
   circleButton,
   openOrCloseMenu,
-  containerStyle = ""
+  containerStyle = "",
+  buttonBG = "primary"
 }: Props) => {
-  console.log(children);
   const menuRef = useRef(null);
   useEffect(() => {
     const clickHandler = () => {
@@ -83,7 +84,6 @@ const Dropdown = ({
     document.addEventListener("keydown", escapeHandler);
 
     const upDownHandler = (e: KeyboardEvent) => {
-      console.log(e.key);
       const menuChildren = Array.from(
         ((menuRef.current as unknown) as HTMLDivElement).children
       );
@@ -92,7 +92,6 @@ const Dropdown = ({
           ? 0
           : menuChildren.indexOf(document.activeElement!!);
       if (isActive) {
-        console.log(index);
         if (e.key === "ArrowUp" || e.key === "ArrowDown") {
           e.preventDefault();
           if (
@@ -133,7 +132,7 @@ const Dropdown = ({
       <Button
         aria-label="toggle menu"
         circle={circleButton}
-        bg="primary"
+        bg={buttonBG}
         size="s"
         onClick={() => {
           if (!isActive) {

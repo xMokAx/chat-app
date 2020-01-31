@@ -9,7 +9,10 @@ const unicodeIcons = {
   lock: "\ue897",
   person: "\ue7fd",
   arrow_drop_up: "\ue5c7",
-  arrow_drop_down: "\ue5c5"
+  arrow_drop_down: "\ue5c5",
+  search: "\ue8b6",
+  send: "\ue163",
+  arrow_downward: "\ue5db"
 };
 
 export type UnicodeIcons = typeof unicodeIcons;

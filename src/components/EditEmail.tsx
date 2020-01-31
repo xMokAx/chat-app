@@ -38,7 +38,6 @@ const InputEdit = ({ id, email, updateUser }: Props) => {
       updateUser({ email: values.email });
       setIsEditing(false);
     } catch (e) {
-      console.log(e);
       return { [FORM_ERROR]: e };
     }
   };
@@ -60,7 +59,7 @@ const InputEdit = ({ id, email, updateUser }: Props) => {
 
         return errors;
       }}
-      render={({ handleSubmit, submitting, values, submitError }) => (
+      render={({ handleSubmit, submitting, submitError }) => (
         <FormCard onSubmit={handleSubmit}>
           {submitError && <Error>{submitError.message}</Error>}
           <InputField name="email" placeholder="New email" icon="email" />

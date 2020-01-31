@@ -33,12 +33,10 @@ const SignUpEmailPage = ({ authSuccess }: Props) => {
   const onSubmit = async (values: FormValues) => {
     try {
       const response = await authApi.signUpEmail(values.email, values.password);
-      console.log(response);
       if (response.user) {
-        const updateResponse = await response.user.updateProfile({
+        await response.user.updateProfile({
           displayName: values.userName
         });
-        console.log(updateResponse);
         const { email, uid, photoURL } = response.user;
         if (response.additionalUserInfo) {
           authSuccess(response.additionalUserInfo.isNewUser, {
@@ -50,7 +48,6 @@ const SignUpEmailPage = ({ authSuccess }: Props) => {
         }
       }
     } catch (e) {
-      console.log(e);
       return { [FORM_ERROR]: e };
     }
   };

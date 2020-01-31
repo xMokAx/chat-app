@@ -32,6 +32,6 @@ export default styled.input.attrs({
     box-shadow: 0 0 0 0.2rem ${props => rgba(props.theme.colors.primary, 0.25)};
   }
   &::placeholder {
-    color: ${props => props.theme.colors.textSec};
+    color: ${props => props.theme.colors.grey};
   }
 `;

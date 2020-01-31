@@ -39,11 +39,9 @@ const ToggleLinkingProvider = ({
   if (isLinked) {
     const onSubmit = async () => {
       try {
-        const response = await authApi.unlinkProvider(providerId);
-        console.log(response);
+        await authApi.unlinkProvider(providerId);
         removeMethod(providerId);
       } catch (e) {
-        console.log(e);
         return { [FORM_ERROR]: e.message };
       }
     };
@@ -70,13 +68,10 @@ const ToggleLinkingProvider = ({
     );
   }
   const onSubmit = async (values: FormValues) => {
-    console.log("handleSubmit");
     try {
-      const response = await authApi.linkEmail(values.password);
-      console.log(response);
+      await authApi.linkEmail(values.password);
       addMethod(providerId);
     } catch (e) {
-      console.log(e);
       return { [FORM_ERROR]: e.message };
     }
   };
@@ -114,10 +109,8 @@ const ToggleLinkingProvider = ({
         }) => (
           <FormCard
             onSubmit={async event => {
-              console.log("onSubmit");
               const error = await handleSubmit(event);
               if (error) {
-                console.log("Error returned from Form onSubmit", error);
                 return error;
               }
               if (!hasValidationErrors) {

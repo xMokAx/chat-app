@@ -1,5 +1,5 @@
 export const BASE = "/";
-export const APP = "/app";
+export const APP = "/chat";
 export const SIGN_UP = "/sign-up";
 export const SIGN_UP_EMAIL = `${SIGN_UP}/email`;
 export const SIGN_IN = "/sign-in";
@@ -9,3 +9,5 @@ export const PROFILE = ACCOUNT;
 export const ADMIN = "/admin";
 export const PASSWORD_FORGET = "/pw-forget";
 export const PASSWORD_CHANGE = "/pw-change";
+export const CHAT_ROOM = `${APP}/room/:id`;
+export const CREATE_ROOM = `${APP}/create-room`;

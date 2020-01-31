@@ -20,10 +20,8 @@ type Errors = {
 const PasswordChangeForm = () => {
   const onSubmit = async (values: FormValues, form: FormApi<FormValues>) => {
     try {
-      const response = await authApi.updatePassword(values.newPassword);
-      console.log(response);
+      await authApi.updatePassword(values.newPassword);
     } catch (e) {
-      console.log(e);
       return { [FORM_ERROR]: e.message };
     }
   };
@@ -61,7 +59,6 @@ const PasswordChangeForm = () => {
             onSubmit={async event => {
               const error = await handleSubmit(event);
               if (error) {
-                console.log("Error returned from Form onSubmit", error);
                 return error;
               }
               form.reset();
