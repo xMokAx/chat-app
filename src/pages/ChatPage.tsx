@@ -42,7 +42,11 @@ const ChatPage = ({ getRoomsStart, rooms }: Props) => {
   );
   const { showConnectionStatus } = useContext(ConnectionContext);
   return (
-    <Row css="min-height: 200px;">
+    <Row
+      css={`
+        height: calc(100vh - ${showConnectionStatus ? "90px" : "57px"});
+      `}
+    >
       {isLarge ? (
         <>
           <Col width={3}>

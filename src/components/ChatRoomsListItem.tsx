@@ -42,7 +42,7 @@ const ChatRoomsListItem = ({
       css={`
         color: ${(props: { theme: DefaultTheme }) =>
           props.theme.colors.textSec};
-        padding: 8px 4px;
+        padding: 8px;
         display: block;
         text-align: left;
       `}

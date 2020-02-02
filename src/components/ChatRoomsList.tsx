@@ -21,6 +21,7 @@ const Container = styled.div<ContainerProps>`
     height: 0;
   }
   -webkit-overflow-scrolling: touch;
+  margin: 0 -4px;
 `;
 
 interface Props {
