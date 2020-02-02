@@ -73,8 +73,9 @@ const authApi = {
   }
 };
 
-const fStore = firebase.firestore;
-const database = fStore();
+const firestore = firebase.firestore;
+const database = firestore();
+database.enablePersistence();
 export const users = database.collection("users");
 
 // Get a reference to the storage service, which is used to create references in your storage bucket
