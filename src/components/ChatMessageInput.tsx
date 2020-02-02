@@ -22,11 +22,11 @@ const ChatMessageInput = ({ activeRoomId, userId }: Props) => {
       if (!message) {
         return;
       }
+      setMessage("");
       await chatMessagesApi.addMessage(activeRoomId, {
         text: message,
         senderId: userId
       });
-      setMessage("");
     },
     [activeRoomId, message, userId]
   );
