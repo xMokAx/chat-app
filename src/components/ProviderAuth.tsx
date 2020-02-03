@@ -21,7 +21,7 @@ const ProviderAuth = ({ authSuccess }: Props) => {
     email: string;
   }>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const didUnmount = useRef(false);
+  const isMounted = useRef(true);
   const onButtonClick = async (provider: string) => {
     setError(null);
     setIsLoading(true);
@@ -37,13 +37,13 @@ const ProviderAuth = ({ authSuccess }: Props) => {
             photo: photoURL
           });
         }
-        if (!didUnmount.current) {
+        if (isMounted.current) {
           setError(null);
           setIsLoading(false);
         }
       }
     } catch (e) {
-      if (!didUnmount.current) {
+      if (isMounted.current) {
         setError(e);
         setIsLoading(false);
       }
@@ -52,7 +52,7 @@ const ProviderAuth = ({ authSuccess }: Props) => {
 
   useEffect(() => {
     return () => {
-      didUnmount.current = true;
+      isMounted.current = false;
     };
   }, []);
   return (
