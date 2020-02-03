@@ -32,10 +32,11 @@ const withSignInMethods = (
     removeMethod
   }: WithSignInMethodsProps) => {
     useEffect(() => {
-      if (email) {
+      if (!signInMethods.length) {
         getMethodsStart(email);
       }
-    }, [email, getMethodsStart]);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
     return (
       <Component
         email={email}

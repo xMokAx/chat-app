@@ -36,6 +36,7 @@ auth.onAuthStateChanged(async authUser => {
     }
   } else {
     if (!justRendered) {
+      store.dispatch(signInMethodsActions.getMethodsSuccess([]));
       store.dispatch(userActions.signOut());
     } else {
       store.dispatch(userActions.noUser());
