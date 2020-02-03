@@ -37,7 +37,6 @@ const InputEdit = ({ id, userName, updateUser }: Props) => {
         displayName: values.userName
       });
       await userApi.updateUser(id, { name: values.userName });
-      updateUser({ name: values.userName });
       setIsEditing(false);
     } catch (e) {
       return { [FORM_ERROR]: e };

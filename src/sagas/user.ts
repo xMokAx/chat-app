@@ -1,13 +1,36 @@
-import { call, put, takeLatest, delay } from "redux-saga/effects";
-import { userActions, AUTH_SUCCESS, AuthSuccessAction } from "../actions/user";
+import { call, put, takeLatest, delay, take } from "redux-saga/effects";
+import { createHash } from "crypto";
+import {
+  userActions,
+  AUTH_SUCCESS,
+  AuthSuccessAction,
+  AddUserAction,
+  User,
+  ADD_USER
+} from "../actions/user";
 import { userApi } from "../firebase";
+import { eventChannel } from "redux-saga";
 
-function* user(action: AuthSuccessAction) {
+const emailHash = (email: string) =>
+  createHash("md5")
+    .update(email)
+    .digest("hex");
+
+function* addUser(action: AuthSuccessAction) {
   if (action.isNewUser) {
     // sign up
     try {
       // add user to firestore
-      const response = yield call(userApi.addUser, action.user.id, action.user);
+      if (!action.user.photo) {
+        action.user.photo = `https://www.gravatar.com/avatar/${emailHash(
+          action.user.email!!
+        )}?s=200&r=pg&d=identicon`;
+      }
+      const response = yield call(userApi.addUser, action.user.id, {
+        createdRooms: [],
+        joinedRooms: [],
+        ...action.user
+      });
       console.log("add user response: ", response); // undefined
       // add user to redux store
       yield put(userActions.addUser(action.user));
@@ -49,6 +72,29 @@ function* user(action: AuthSuccessAction) {
   }
 }
 
-export function* watchUser() {
-  yield takeLatest(AUTH_SUCCESS, user);
+export function* watchAddUser() {
+  yield takeLatest(AUTH_SUCCESS, addUser);
+}
+
+function* updateUser(action: AddUserAction) {
+  const channel = eventChannel(emit =>
+    userApi.user(action.user.id).onSnapshot(userDoc => {
+      const user = userDoc.data();
+      console.log("update user saga");
+      emit(userActions.updateUser(user as User));
+    })
+  );
+
+  try {
+    while (true) {
+      const action = yield take(channel);
+      yield put(action);
+    }
+  } catch (err) {
+    // yield put(errorAction(err))
+  }
+}
+
+export function* watchUpdateUser() {
+  yield takeLatest(ADD_USER, updateUser);
 }

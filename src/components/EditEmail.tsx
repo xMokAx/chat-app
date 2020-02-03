@@ -35,7 +35,6 @@ const InputEdit = ({ id, email, updateUser }: Props) => {
     try {
       await authApi.currentUser().updateEmail(values.email);
       await userApi.updateUser(id, { email: values.email });
-      updateUser({ email: values.email });
       setIsEditing(false);
     } catch (e) {
       return { [FORM_ERROR]: e };
