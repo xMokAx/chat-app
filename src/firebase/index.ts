@@ -2,7 +2,7 @@ import * as firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
 import "firebase/storage";
-import { User, userActions } from "../actions/user";
+import { User } from "../actions/user";
 import { Room, Message } from "../actions/chatRooms";
 import { store } from "..";
 
@@ -73,8 +73,7 @@ const authApi = {
   }
 };
 
-const firestore = firebase.firestore;
-const database = firestore();
+const database = firebase.firestore();
 database.enablePersistence();
 export const users = database.collection("users");
 
@@ -87,6 +86,7 @@ const imagesRef = storageRef.child("images");
 // imagesRef now points to 'images'
 
 const userApi = {
+  user: (id: string) => users.doc(id),
   addUser: (id: string, user: User) => users.doc(id).set(user, { merge: true }),
   updateUser: (id: string, user: Partial<User>) => users.doc(id).update(user),
   deleteUser: (id: string) => users.doc(id).delete(),
@@ -102,52 +102,32 @@ const chatRoomsApi = {
   addRoom: async (room: Pick<Room, "name" | "desc">) => {
     const roomRef = chatRooms.doc();
     const roomId = roomRef.id;
-    const {
-      id,
-      name,
-      createdRooms,
-      joinedRooms
-    } = store.getState().user.userInfo;
+    const { id, name } = store.getState().user.userInfo;
     await roomRef.set({
       id: roomRef.id,
       people: firebase.firestore.FieldValue.arrayUnion(id),
       createdAt: firebase.firestore.FieldValue.serverTimestamp(),
       messagesCount: 0,
+      creator: {
+        id,
+        name
+      },
       ...room
     });
-
-    await chatMessagesApi.addMessage(roomRef.id, {
-      text: `${name} created this room.`,
-      senderId: "system"
-    });
-
-    await chatMessagesApi.addMessage(roomRef.id, {
-      text: `${name} Joined this room.`,
-      senderId: "system"
-    });
-
-    await userApi.updateUser(id, {
-      createdRooms: (firebase.firestore.FieldValue.arrayUnion(
-        roomId
-      ) as unknown) as string[],
-      joinedRooms: (firebase.firestore.FieldValue.arrayUnion(
-        roomId
-      ) as unknown) as string[]
-    });
-    store.dispatch(
-      userActions.updateUser({
-        createdRooms: [roomId, ...createdRooms!!],
-        joinedRooms: [roomId, ...joinedRooms!!]
-      })
-    );
 
     return Promise.resolve(roomId);
   },
   updateRoom: async (id: string, room: Partial<Room>) =>
     chatRooms.doc(id).update(room),
+  deleteRoom: (id: string) => chatRooms.doc(id).delete(),
   getRoom: (id: string) => chatRooms.doc(id).get(),
   // { source: "server" } to throw error when offline instead of using cache
-  getRooms: () => chatRooms.orderBy("createdAt")
+  getRooms: () => chatRooms.orderBy("createdAt").limit(10),
+  getMyRooms: () => {
+    const userId = store.getState().user.userInfo.id;
+    return chatRooms.where("people", "array-contains", userId);
+  },
+  getRoomsByQuery: (query: string) => chatRooms.where("name", "==", query).get()
 };
 
 const chatMessagesApi = {
@@ -164,7 +144,8 @@ const chatMessagesApi = {
       .collection("messages")
       .orderBy("createdAt", "desc")
       .startAfter(beforeCreatedAt)
-      .limit(20);
+      .limit(20)
+      .get();
   },
   addMessage: async (
     roomId: string,
