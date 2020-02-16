@@ -12,7 +12,8 @@ const unicodeIcons = {
   arrow_drop_down: "\ue5c5",
   search: "\ue8b6",
   send: "\ue163",
-  arrow_downward: "\ue5db"
+  arrow_downward: "\ue5db",
+  filter_list: "\ue152"
 };
 
 export type UnicodeIcons = typeof unicodeIcons;
