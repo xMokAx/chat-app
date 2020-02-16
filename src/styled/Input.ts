@@ -26,6 +26,9 @@ export default styled.input.attrs({
         : darken(0.2, props.theme.colors.bgSec)};
   border-radius: 0.25rem;
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  &:hover {
+    border-color: ${props => props.theme.colors.textMain};
+  }
   &:focus {
     border-color: ${props => props.theme.colors.primary};
     outline: 0;
