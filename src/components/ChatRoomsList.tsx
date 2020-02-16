@@ -6,12 +6,14 @@ import { ConnectionContext } from "./Layout";
 
 interface ContainerProps {
   showConnectionStatus: boolean;
+  roomsSearch: boolean;
 }
 
 const Container = styled.div<ContainerProps>`
-  height: calc(
-    100vh - ${props => (props.showConnectionStatus ? "218px" : "185px")}
-  );
+  height: ${props =>
+    `calc(100vh - 221px - ${props.showConnectionStatus ? "33px" : "0px"} - ${
+      props.roomsSearch ? "56px" : "0px"
+    })`};
   overflow-y: auto;
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* Internet Explorer 10+ */
@@ -26,12 +28,16 @@ const Container = styled.div<ContainerProps>`
 
 interface Props {
   rooms: Rooms;
+  roomsSearch: boolean;
 }
 
-const ChatRoomsList = ({ rooms }: Props) => {
+const ChatRoomsList = ({ rooms, roomsSearch }: Props) => {
   const { showConnectionStatus } = useContext(ConnectionContext);
   return (
-    <Container showConnectionStatus={showConnectionStatus}>
+    <Container
+      roomsSearch={roomsSearch}
+      showConnectionStatus={showConnectionStatus}
+    >
       {rooms.map(room => {
         return <ChatRoomsListItem room={room} key={room.id} />;
       })}

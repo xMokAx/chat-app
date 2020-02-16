@@ -7,27 +7,34 @@ import {
   DELETE_MESSAGE,
   ADD_MESSAGES
 } from "../actions/chatMessages";
+import { AppState } from "../store/configureStore";
 
-export type ChatMessagesState = {
+export interface RoomMessagesState {
   isLoading: boolean;
   error: string;
   messages: Message[];
-};
+}
 
-const initialChatMessagesState: ChatMessagesState = {
+const initialRoomMessagesState: RoomMessagesState = {
   isLoading: false,
   error: "",
   messages: []
 };
 
-export const chatMessagesReducer = (
-  state = initialChatMessagesState,
+export type ChatMessagesState = {
+  [key: string]: RoomMessagesState;
+};
+
+const initialChatMessagesState: ChatMessagesState = {};
+
+const chatMessages = (
+  state = initialRoomMessagesState,
   action: ChatMessagesActionTypes
-): ChatMessagesState => {
+): RoomMessagesState => {
   switch (action.type) {
     case GET_MESSAGES_START:
       return {
-        ...initialChatMessagesState,
+        ...initialRoomMessagesState,
         isLoading: true
       };
     case ADD_MESSAGES:
@@ -66,15 +73,53 @@ export const chatMessagesReducer = (
   }
 };
 
-export const getSortedMessages = (state: ChatMessagesState) =>
-  state.messages.sort((a, b) => {
-    if (a.createdAt && b.createdAt) {
-      if (a.createdAt.seconds - b.createdAt.seconds !== 0) {
-        return a.createdAt.seconds - b.createdAt.seconds;
-      } else {
-        return a.createdAt.nanoseconds - b.createdAt.nanoseconds;
+export const chatMessagesByRoomReducer = (
+  state = initialChatMessagesState,
+  action: ChatMessagesActionTypes
+): ChatMessagesState => {
+  switch (action.type) {
+    case GET_MESSAGES_START:
+    case ADD_MESSAGES:
+    case ADD_MESSAGE:
+    case UPDATE_MESSAGE:
+    case DELETE_MESSAGE:
+      return {
+        ...state,
+        [action.roomId]: chatMessages(state[action.roomId], action)
+      };
+    default:
+      return state;
+  }
+};
+
+export const getRoomMessagesState = (state: AppState) => {
+  const { chatRooms, chatMessages } = state;
+  return {
+    isLoading: chatMessages[chatRooms.activeRoomId]
+      ? chatMessages[chatRooms.activeRoomId].isLoading
+      : true,
+    error: chatMessages[chatRooms.activeRoomId]
+      ? chatMessages[chatRooms.activeRoomId].error
+      : ""
+  };
+};
+
+export const getSortedMessages = (state: AppState) => {
+  if (state.chatMessages[state.chatRooms.activeRoomId]) {
+    return state.chatMessages[state.chatRooms.activeRoomId].messages.sort(
+      (a, b) => {
+        if (a.createdAt && b.createdAt) {
+          if (a.createdAt.seconds - b.createdAt.seconds !== 0) {
+            return a.createdAt.seconds - b.createdAt.seconds;
+          } else {
+            return a.createdAt.nanoseconds - b.createdAt.nanoseconds;
+          }
+        } else {
+          return 0;
+        }
       }
-    } else {
-      return 0;
-    }
-  });
+    );
+  } else {
+    return [];
+  }
+};

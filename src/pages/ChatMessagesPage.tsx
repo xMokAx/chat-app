@@ -1,21 +1,24 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import styled from "styled-components/macro";
 import * as firebase from "firebase/app";
 import { AppState } from "../store/configureStore";
 import { chatMessagesActions } from "../actions/chatMessages";
-import { ChatMessagesState, getSortedMessages } from "../reducers/chatMessages";
-import { useParams } from "react-router";
+import {
+  getSortedMessages,
+  RoomMessagesState,
+  getRoomMessagesState
+} from "../reducers/chatMessages";
+import { useParams, useHistory } from "react-router";
 import { userApi, chatMessagesApi, chatRoomsApi } from "../firebase";
 import { userActions } from "../actions/user";
-import { getActiveRoom } from "../reducers/activeRoom";
-import { activeRoomActions } from "../actions/activeRoom";
-import { Room } from "../actions/chatRooms";
+import { Room, chatRoomsActions } from "../actions/chatRooms";
 import ChatMessageInput from "../components/ChatMessageInput";
 import Wrapper from "../styled/Wrapper";
 import ChatMessagesDisplay from "../components/ChatMessagesDisplay";
 import Error from "../styled/Error";
 import Loading from "../styled/Loading";
+import { getActiveRoom } from "../reducers/chatRooms";
 
 const Container = styled.div`
   display: flex;
@@ -24,11 +27,11 @@ const Container = styled.div`
   height: 100%;
 `;
 
-type Props = ChatMessagesState & {
+type Props = RoomMessagesState & {
   getMessagesStart: typeof chatMessagesActions.getMessagesStart;
-  setActiveRoom: typeof activeRoomActions.setActiveRoom;
+  setActiveRoom: typeof chatRoomsActions.setActiveRoom;
   updateUser: typeof userActions.updateUser;
-  addMessages: typeof chatMessagesActions.addMessages;
+  getMessagesSuccess: typeof chatMessagesActions.getMessagesSuccess;
   activeRoomId: string;
   userId: string;
   userName: string;
@@ -47,43 +50,45 @@ const ChatMessagesPage = ({
   setActiveRoom,
   joinedRooms,
   updateUser,
-  addMessages,
+  getMessagesSuccess,
   activeRoom
 }: Props) => {
-  const isMounted = useRef(true);
-  useEffect(() => {
-    return () => {
-      isMounted.current = false;
-    };
-  }, []);
-
+  const history = useHistory();
   const { id } = useParams();
   useEffect(() => {
-    if (id && id !== activeRoomId) {
-      setActiveRoom(id);
-      getMessagesStart(id);
+    if (id) {
+      if (id !== activeRoomId) {
+        setActiveRoom(id);
+      } else {
+        if (!messages.length) {
+          getMessagesStart(id);
+        }
+      }
     }
-  }, [activeRoomId, getMessagesStart, id, setActiveRoom]);
+  }, [activeRoomId, getMessagesStart, id, messages.length, setActiveRoom]);
 
   useEffect(() => {
-    if (activeRoomId) {
-      if (!joinedRooms.includes(activeRoomId)) {
-        chatRoomsApi.updateRoom(activeRoomId, {
-          people: (firebase.firestore.FieldValue.arrayUnion(
-            userId
-          ) as unknown) as string[]
-        });
-        userApi
-          .updateUser(userId, {
-            joinedRooms: (firebase.firestore.FieldValue.arrayUnion(
-              activeRoomId
+    if (activeRoomId && !activeRoom) {
+      console.log("pushing to /chat");
+      history.push(`/chat`);
+    }
+  }, [activeRoom, activeRoomId, history]);
+
+  useEffect(() => {
+    if (activeRoomId && activeRoom) {
+      if (!activeRoom.people.includes(userId)) {
+        chatRoomsApi
+          .updateRoom(activeRoomId, {
+            people: (firebase.firestore.FieldValue.arrayUnion(
+              userId
             ) as unknown) as string[]
           })
           .then(async () => {
-            updateUser({
-              joinedRooms: [activeRoomId, ...joinedRooms]
+            await userApi.updateUser(userId, {
+              joinedRooms: (firebase.firestore.FieldValue.arrayUnion(
+                activeRoomId
+              ) as unknown) as string[]
             });
-
             await chatMessagesApi.addMessage(activeRoomId, {
               text: `${userName} Joined this room.`,
               senderId: "system"
@@ -91,7 +96,7 @@ const ChatMessagesPage = ({
           });
       }
     }
-  }, [activeRoomId, joinedRooms, updateUser, userId, userName]);
+  }, [activeRoom, activeRoomId, joinedRooms, updateUser, userId, userName]);
 
   return (
     <Wrapper minH="100%">
@@ -107,7 +112,7 @@ const ChatMessagesPage = ({
         <>
           <ChatMessagesDisplay
             activeRoom={activeRoom}
-            addMessages={addMessages}
+            getMessagesSuccess={getMessagesSuccess}
             messagesCount={activeRoom ? activeRoom.messagesCount : 0}
             messages={messages}
             activeRoomId={activeRoomId}
@@ -120,24 +125,23 @@ const ChatMessagesPage = ({
 };
 
 const mapStateToProps = (state: AppState) => {
-  const { chatMessages, activeRoom, user } = state;
+  const { chatRooms, user } = state;
   return {
-    isLoading: chatMessages.isLoading,
-    error: chatMessages.error,
-    messages: getSortedMessages(chatMessages),
-    activeRoomId: activeRoom.activeRoomId,
+    ...getRoomMessagesState(state),
+    messages: getSortedMessages(state),
+    activeRoomId: chatRooms.activeRoomId,
     userId: user.userInfo.id,
     userName: user.userInfo.name!!,
     joinedRooms: user.userInfo.joinedRooms!!,
-    activeRoom: getActiveRoom(state)
+    activeRoom: getActiveRoom(chatRooms)
   };
 };
 
 const mapDispatchToProps = {
   getMessagesStart: chatMessagesActions.getMessagesStart,
-  setActiveRoom: activeRoomActions.setActiveRoom,
+  setActiveRoom: chatRoomsActions.setActiveRoom,
   updateUser: userActions.updateUser,
-  addMessages: chatMessagesActions.addMessages
+  getMessagesSuccess: chatMessagesActions.getMessagesSuccess
 };
 
 export default connect(

@@ -48,22 +48,59 @@ const ChatRoomsListItem = ({
       `}
     >
       <FlexContainer justify="space-between">
-        <Text as="strong">{name}</Text>
-        <Text as="span" size="12px">
+        <Text
+          as="strong"
+          css={`
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+          `}
+        >
+          {name}
+        </Text>
+        <Text
+          as="span"
+          size="12px"
+          css={`
+            white-space: nowrap;
+          `}
+        >
           {created}
         </Text>
       </FlexContainer>
       <FlexContainer justify="space-between">
-        <Text as="span" size="14px">
+        <Text
+          as="span"
+          size="14px"
+          css={`
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+          `}
+        >
           {desc}
         </Text>
-        <Text as="span" size="14px">
+        <Text
+          as="span"
+          size="14px"
+          css={`
+            white-space: nowrap;
+          `}
+        >
           {people.length} people
         </Text>
       </FlexContainer>
       {lastMessage && (
         <FlexContainer justify="space-between">
-          <Text as="span" size="14px">
+          <Text
+            as="span"
+            size="12px"
+            css={`
+              overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+            `}
+          >
             {!isSystemMsg && lastMessageSender && (
               <Figure size="24px" m="0 4px 0 0">
                 {lastMessageSender.photo ? (
@@ -79,7 +116,13 @@ const ChatRoomsListItem = ({
             )}
             {lastMessage.text}
           </Text>
-          <Text as="span" size="12px">
+          <Text
+            as="span"
+            size="12px"
+            css={`
+              white-space: nowrap;
+            `}
+          >
             {moment(
               isSystemMsg
                 ? createdAt.seconds * 1000

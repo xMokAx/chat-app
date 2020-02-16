@@ -5,23 +5,24 @@ import InputGroup from "../styled/InputGroup";
 import Input from "../styled/Input";
 import Icon from "../styled/Icon";
 import { AppState } from "../store/configureStore";
-import { chatRoomsActions } from "../actions/chatRooms";
+import { chatRoomsActions, RoomsType } from "../actions/chatRooms";
 
 const Container = styled.div`
-  padding: 16px 0;
+  padding: 16px 0 13px 0;
 `;
 
 interface Props {
   textFilter: string;
   setTextFilter: typeof chatRoomsActions.setTextFilter;
+  roomsType: RoomsType;
 }
 
-const ChatRoomsFilter = ({ textFilter, setTextFilter }: Props) => {
+const ChatRoomsFilter = ({ textFilter, setTextFilter, roomsType }: Props) => {
   const onTextFilterChange = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
-      setTextFilter(e.target.value);
+      setTextFilter(e.target.value, roomsType);
     },
-    [setTextFilter]
+    [roomsType, setTextFilter]
   );
   return (
     <Container>
@@ -33,14 +34,15 @@ const ChatRoomsFilter = ({ textFilter, setTextFilter }: Props) => {
           placeholder="Filter Rooms"
           aria-label="Filter Rooms"
         />
-        <Icon isLeft icon="search" />
+        <Icon isLeft icon="filter_list" />
       </InputGroup>
     </Container>
   );
 };
 
 const mapStateToProps = ({ chatRooms }: AppState) => ({
-  textFilter: chatRooms.textFilter
+  textFilter: chatRooms[chatRooms.roomsType].textFilter,
+  roomsType: chatRooms.roomsType
 });
 
 const mapDispatchToProps = {

@@ -7,7 +7,14 @@ import {
   ADD_ROOM,
   DELETE_ROOM,
   UPDATE_ROOM,
-  SET_TEXT_FILTER
+  SET_TEXT_FILTER,
+  RECENT_ROOMS,
+  MY_ROOMS,
+  QUERY_ROOMS,
+  SET_ROOMS_TYPE,
+  RoomsType,
+  GET_ROOMS_BY_QUERY_START,
+  SET_ACTIVE_ROOM
 } from "../actions/chatRooms";
 
 export type ChatRoomsState = {
@@ -15,23 +22,42 @@ export type ChatRoomsState = {
   error: string;
   textFilter: string;
   rooms: Rooms;
-  activeRoomId: string;
 };
 
 const initialChatRoomState: ChatRoomsState = {
   isLoading: false,
   error: "",
   textFilter: "",
-  rooms: [],
-  activeRoomId: ""
+  rooms: []
 };
 
-export const chatRoomsReducer = (
+export type ChatRoomsByTypeState = {
+  activeRoomId: string;
+  roomsType: RoomsType;
+  [RECENT_ROOMS]: ChatRoomsState;
+  [MY_ROOMS]: ChatRoomsState;
+  [QUERY_ROOMS]: ChatRoomsState;
+};
+
+const initialChatRoomsByTypeState = {
+  activeRoomId: "",
+  roomsType: MY_ROOMS,
+  [RECENT_ROOMS]: initialChatRoomState,
+  [MY_ROOMS]: initialChatRoomState,
+  [QUERY_ROOMS]: initialChatRoomState
+};
+
+const chatRoomsReducer = (
   state = initialChatRoomState,
   action: ChatRoomsActionTypes
 ): ChatRoomsState => {
   switch (action.type) {
     case GET_ROOMS_START:
+      return {
+        ...initialChatRoomState,
+        isLoading: true
+      };
+    case GET_ROOMS_BY_QUERY_START:
       return {
         ...initialChatRoomState,
         isLoading: true
@@ -82,6 +108,42 @@ export const chatRoomsReducer = (
       return state;
   }
 };
+
+export const ChatRoomsByTypeReducer = (
+  state = initialChatRoomsByTypeState,
+  action: ChatRoomsActionTypes
+): ChatRoomsByTypeState => {
+  switch (action.type) {
+    case GET_ROOMS_START:
+    case GET_ROOMS_BY_QUERY_START:
+    case GET_ROOMS_SUCCESS:
+    case GET_ROOMS_FAILURE:
+    case ADD_ROOM:
+    case UPDATE_ROOM:
+    case DELETE_ROOM:
+    case SET_TEXT_FILTER:
+      return {
+        ...(state as ChatRoomsByTypeState),
+        [action.roomsType]: chatRoomsReducer(state[action.roomsType], action)
+      };
+    case SET_ROOMS_TYPE:
+      return {
+        ...state,
+        roomsType: action.roomsType
+      };
+    case SET_ACTIVE_ROOM:
+      return {
+        ...(state as ChatRoomsByTypeState),
+        activeRoomId: action.id
+      };
+    default:
+      return state as ChatRoomsByTypeState;
+  }
+};
+
+export const getActiveRoom = (state: ChatRoomsByTypeState) =>
+  state[state.roomsType].rooms.find(r => r.id === state.activeRoomId) ||
+  state[MY_ROOMS].rooms.find(r => r.id === state.activeRoomId);
 
 const getRooms = (state: ChatRoomsState) => state.rooms;
 const getTextFilter = (state: ChatRoomsState) => state.textFilter;

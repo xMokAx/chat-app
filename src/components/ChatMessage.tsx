@@ -7,8 +7,8 @@ import { connect } from "react-redux";
 import { AppState } from "../store/configureStore";
 import Text from "../styled/Text";
 import { ImgFluid, Figure, FakeImage } from "../styled/Images";
-import { Person } from "../actions/activeRoom";
-import { getPerson } from "../reducers/activeRoom";
+import { Person } from "../actions/people";
+import { getPerson } from "../reducers/people";
 
 interface MessageContainerProps {
   isUser: boolean;
@@ -20,6 +20,7 @@ const MessageContainer = styled.div<MessageContainerProps>`
   padding: 8px;
   border-radius: 0.25rem;
   margin-left: ${props => !props.isUser && "32px"};
+  max-width: 66.6666666%;
 `;
 
 interface StateProps {
@@ -84,12 +85,9 @@ const ChatMessage = ({
   );
 };
 
-const mapStateToProps = (
-  { user, activeRoom }: AppState,
-  ownProps: OwnProps
-) => ({
-  userId: user.userInfo.id,
-  messageSender: getPerson(activeRoom, ownProps.message.senderId)
+const mapStateToProps = (state: AppState, ownProps: OwnProps) => ({
+  userId: state.user.userInfo.id,
+  messageSender: getPerson(state, ownProps.message.senderId)
 });
 
 export default connect(mapStateToProps)(ChatMessage);

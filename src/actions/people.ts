@@ -1,60 +1,56 @@
 import { User } from "./user";
 
-export const SET_ACTIVE_ROOM = "SET_ACTIVE_ROOM";
 export const ADD_PERSON = "ADD_PERSON";
 export const UPDATE_PERSON = "UPDATE_PERSON";
 export const DELETE_PERSON = "DELETE_PERSON";
 
 export type Person = Pick<User, "id" | "name" | "photo">;
 
-export interface SetActiveRoomAction {
-  type: typeof SET_ACTIVE_ROOM;
-  id: string;
-}
-
 export interface AddPersonAction {
   type: typeof ADD_PERSON;
   person: Person;
+  roomId: string;
 }
 
 export interface UpdatePersonAction {
   type: typeof UPDATE_PERSON;
   person: Partial<Person>;
+  roomId: string;
 }
 
 export interface DeletePersonAction {
   type: typeof DELETE_PERSON;
   id: string;
+  roomId: string;
 }
 
-export type ActiveRoomActionTypes =
-  | SetActiveRoomAction
+export type PeopleActionTypes =
   | AddPersonAction
   | UpdatePersonAction
   | DeletePersonAction;
 
-const setActiveRoom = (id: string): ActiveRoomActionTypes => ({
-  type: SET_ACTIVE_ROOM,
-  id
-});
-
-const addPerson = (person: Person): ActiveRoomActionTypes => ({
+const addPerson = (person: Person, roomId: string): PeopleActionTypes => ({
   type: ADD_PERSON,
-  person
+  person,
+  roomId
 });
 
-const updatePerson = (person: Partial<Person>): ActiveRoomActionTypes => ({
+const updatePerson = (
+  person: Partial<Person>,
+  roomId: string
+): PeopleActionTypes => ({
   type: UPDATE_PERSON,
-  person
+  person,
+  roomId
 });
 
-const deletePerson = (id: string): ActiveRoomActionTypes => ({
+const deletePerson = (id: string, roomId: string): PeopleActionTypes => ({
   type: DELETE_PERSON,
-  id
+  id,
+  roomId
 });
 
-export const activeRoomActions = {
-  setActiveRoom,
+export const peopleActions = {
   addPerson,
   updatePerson,
   deletePerson

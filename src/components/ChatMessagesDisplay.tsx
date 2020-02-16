@@ -44,7 +44,7 @@ interface Props {
   messages: Message[];
   messagesCount: number;
   activeRoomId: string;
-  addMessages: typeof chatMessagesActions.addMessages;
+  getMessagesSuccess: typeof chatMessagesActions.getMessagesSuccess;
   activeRoom?: Room;
 }
 
@@ -52,14 +52,14 @@ const ChatMessagesDisplay = ({
   messages,
   messagesCount,
   activeRoomId,
-  addMessages,
+  getMessagesSuccess,
   activeRoom
 }: Props) => {
   const { showConnectionStatus } = useContext(ConnectionContext);
   const containerRef = useRef<HTMLDivElement>(null);
   const [showScrollDownBtn, setShowScrollDownBtn] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const hasMore = messages.length < messagesCount;
+  const hasMore = messages.length >= 20 && messages.length < messagesCount;
   const oldScrollHeight = useRef(0);
   const oldScrollTop = useRef(0);
   const scrollToBottom = () => {
@@ -128,7 +128,6 @@ const ChatMessagesDisplay = ({
         setIsLoading(true);
         chatMessagesApi
           .getMoreMessages(activeRoomId, messages[0].createdAt)
-          .get()
           .then(querySnapshot => {
             const newMessages: Message[] = [];
             querySnapshot.forEach(doc => {
@@ -139,7 +138,7 @@ const ChatMessagesDisplay = ({
               oldScrollHeight.current = containerRef.current.scrollHeight;
               oldScrollTop.current = containerRef.current.scrollTop;
             }
-            addMessages(newMessages);
+            getMessagesSuccess(newMessages, activeRoomId);
             // make sure the scroll doesn't jump after adding new batch
             if (containerRef && containerRef.current) {
               if (oldScrollTop.current === 0) {
@@ -155,7 +154,7 @@ const ChatMessagesDisplay = ({
           });
       }
     },
-    [activeRoomId, addMessages, isLoading, messages]
+    [activeRoomId, getMessagesSuccess, isLoading, messages]
   );
   return (
     <Container ref={containerRef} showConnectionStatus={showConnectionStatus}>

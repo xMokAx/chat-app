@@ -13,29 +13,33 @@ export interface GetMessagesStartAction {
   roomId: string;
 }
 
-export interface AddMessagesAction {
+export interface GetMessagesSuccessAction {
   type: typeof ADD_MESSAGES;
   messages: Message[];
+  roomId: string;
 }
 
 export interface AddMessageAction {
   type: typeof ADD_MESSAGE;
   message: Message;
+  roomId: string;
 }
 
 export interface UpdateMessageAction {
   type: typeof UPDATE_MESSAGE;
   message: Partial<Message>;
+  roomId: string;
 }
 
 export interface DeleteMessageAction {
   type: typeof DELETE_MESSAGE;
   id: string;
+  roomId: string;
 }
 
 export type ChatMessagesActionTypes =
   | GetMessagesStartAction
-  | AddMessagesAction
+  | GetMessagesSuccessAction
   | AddMessageAction
   | UpdateMessageAction
   | DeleteMessageAction;
@@ -45,24 +49,40 @@ const getMessagesStart = (roomId: string): ChatMessagesActionTypes => ({
   roomId
 });
 
-const addMessages = (messages: Message[]): ChatMessagesActionTypes => ({
+const getMessagesSuccess = (
+  messages: Message[],
+  roomId: string
+): ChatMessagesActionTypes => ({
   type: ADD_MESSAGES,
-  messages
+  messages,
+  roomId
 });
 
-const addMessage = (message: Message): ChatMessagesActionTypes => ({
+const addMessage = (
+  message: Message,
+  roomId: string
+): ChatMessagesActionTypes => ({
   type: ADD_MESSAGE,
-  message
+  message,
+  roomId
 });
 
-const updateMessage = (message: Partial<Message>): ChatMessagesActionTypes => ({
+const updateMessage = (
+  message: Partial<Message>,
+  roomId: string
+): ChatMessagesActionTypes => ({
   type: UPDATE_MESSAGE,
-  message
+  message,
+  roomId
 });
 
-const deleteMessage = (id: string): ChatMessagesActionTypes => ({
+const deleteMessage = (
+  id: string,
+  roomId: string
+): ChatMessagesActionTypes => ({
   type: DELETE_MESSAGE,
-  id
+  id,
+  roomId
 });
 
 export const chatMessagesActions = {
@@ -70,5 +90,5 @@ export const chatMessagesActions = {
   addMessage,
   updateMessage,
   deleteMessage,
-  addMessages
+  getMessagesSuccess
 };

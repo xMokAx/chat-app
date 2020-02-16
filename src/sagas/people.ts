@@ -1,11 +1,7 @@
-import { put, takeLatest, take } from "redux-saga/effects";
+import { put, take, takeEvery } from "redux-saga/effects";
 import { eventChannel } from "redux-saga";
-import {
-  SetActiveRoomAction,
-  SET_ACTIVE_ROOM,
-  activeRoomActions,
-  Person
-} from "../actions/activeRoom";
+import { peopleActions, Person } from "../actions/people";
+import { SetActiveRoomAction, SET_ACTIVE_ROOM } from "../actions/chatRooms";
 import { users } from "../firebase";
 
 function* activeRoomPeople(action: SetActiveRoomAction) {
@@ -16,14 +12,14 @@ function* activeRoomPeople(action: SetActiveRoomAction) {
         peopleSnapshot.docChanges().forEach(function(change) {
           if (change.type === "added") {
             const { id, name, photo } = change.doc.data() as Person;
-            emit(activeRoomActions.addPerson({ id, name, photo }));
+            emit(peopleActions.addPerson({ id, name, photo }, action.id));
           }
           if (change.type === "modified") {
             const { id, name, photo } = change.doc.data() as Person;
-            emit(activeRoomActions.updatePerson({ id, name, photo }));
+            emit(peopleActions.updatePerson({ id, name, photo }, action.id));
           }
           if (change.type === "removed") {
-            emit(activeRoomActions.deletePerson(change.doc.id));
+            emit(peopleActions.deletePerson(change.doc.id, action.id));
           }
         });
       })
@@ -40,5 +36,5 @@ function* activeRoomPeople(action: SetActiveRoomAction) {
 }
 
 export function* watchActiveRoomPeople() {
-  yield takeLatest(SET_ACTIVE_ROOM, activeRoomPeople);
+  yield takeEvery(SET_ACTIVE_ROOM, activeRoomPeople);
 }

@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect, useContext } from "react";
+import React, { useState, useCallback, useContext } from "react";
 import { DefaultTheme } from "styled-components/macro";
 import { useMediaQuery } from "react-responsive";
 import ChatRoomsPage from "./ChatRoomsPage";
@@ -13,9 +13,7 @@ import Dropdown from "../styled/Dropdown";
 import NavLink from "../styled/NavLink";
 import * as ROUTES from "../constants/routes";
 import { Link } from "react-router-dom";
-import { connect } from "react-redux";
 import { chatRoomsActions, Room } from "../actions/chatRooms";
-import { AppState } from "../store/configureStore";
 import { ConnectionContext } from "../components/Layout";
 
 interface Props {
@@ -23,13 +21,7 @@ interface Props {
   getRoomsStart: typeof chatRoomsActions.getRoomsStart;
 }
 
-const ChatPage = ({ getRoomsStart, rooms }: Props) => {
-  useEffect(() => {
-    if (!rooms.length) {
-      getRoomsStart();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+const ChatPage = () => {
   const isLarge = useMediaQuery({
     query: "(min-width: 1024px)"
   });
@@ -124,15 +116,4 @@ const ChatPage = ({ getRoomsStart, rooms }: Props) => {
   );
 };
 
-const mapStateToProps = ({ chatRooms }: AppState) => ({
-  rooms: chatRooms.rooms
-});
-
-const mapDispatchToProps = {
-  getRoomsStart: chatRoomsActions.getRoomsStart
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ChatPage);
+export default ChatPage;
