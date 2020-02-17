@@ -125,7 +125,9 @@ const chatRoomsApi = {
   getRooms: () => chatRooms.orderBy("createdAt").limit(10),
   getMyRooms: () => {
     const userId = store.getState().user.userInfo.id;
-    return chatRooms.where("people", "array-contains", userId);
+    return chatRooms
+      .orderBy("createdAt")
+      .where("people", "array-contains", userId);
   },
   getRoomsByQuery: (query: string) => chatRooms.where("name", "==", query).get()
 };
