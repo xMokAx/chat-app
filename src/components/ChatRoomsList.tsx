@@ -11,7 +11,7 @@ interface ContainerProps {
 
 const Container = styled.div<ContainerProps>`
   height: ${props =>
-    `calc(100vh - 221px - ${props.showConnectionStatus ? "33px" : "0px"} - ${
+    `calc(100vh - 226px - ${props.showConnectionStatus ? "33px" : "0px"} - ${
       props.roomsSearch ? "56px" : "0px"
     })`};
   overflow-y: auto;

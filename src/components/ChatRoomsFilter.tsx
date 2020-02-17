@@ -8,7 +8,7 @@ import { AppState } from "../store/configureStore";
 import { chatRoomsActions, RoomsType } from "../actions/chatRooms";
 
 const Container = styled.div`
-  padding: 16px 0 13px 0;
+  padding: 16px 0 5px 0;
 `;
 
 interface Props {
