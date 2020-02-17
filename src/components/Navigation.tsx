@@ -15,23 +15,33 @@ import { Figure, ImgFluid } from "../styled/Images";
 interface NavAuthProps {
   hasPassword: boolean;
   userPhoto: string;
+  userName: string;
 }
 
 type NavigationProps = NavAuthProps & {
   userId: string;
 };
 
-const Navigation = ({ userId, hasPassword, userPhoto }: NavigationProps) => (
+const Navigation = ({
+  userId,
+  hasPassword,
+  userPhoto,
+  userName
+}: NavigationProps) => (
   <Nav>
     {userId ? (
-      <NavigationAuth hasPassword={hasPassword} userPhoto={userPhoto} />
+      <NavigationAuth
+        hasPassword={hasPassword}
+        userPhoto={userPhoto}
+        userName={userName}
+      />
     ) : (
       <NavigationNonAuth />
     )}
   </Nav>
 );
 
-const NavigationAuth = ({ hasPassword, userPhoto }: NavAuthProps) => {
+const NavigationAuth = ({ hasPassword, userPhoto, userName }: NavAuthProps) => {
   const [isMenuActive, setIsMenuActive] = useState(false);
   const openOrCloseMenu = useCallback(
     (menuState: boolean) => {
@@ -45,7 +55,7 @@ const NavigationAuth = ({ hasPassword, userPhoto }: NavAuthProps) => {
       <NavLink to={ROUTES.ACCOUNT}>Account</NavLink>
       <ThemeTogglerButton />
       <Figure size="40px" m="0" css="position: relative;">
-        <ImgFluid src={userPhoto} />
+        <ImgFluid src={userPhoto} alt={`${userName}'s avatar`} />
         <Dropdown
           containerStyle={`
             position: absolute;
@@ -91,6 +101,7 @@ const NavigationNonAuth = () => (
 const mapStatetoProps = (state: AppState) => ({
   userId: state.user.userInfo.id,
   userPhoto: state.user.userInfo.photo!!,
+  userName: state.user.userInfo.name!!,
   hasPassword: state.signInMethods.signInMethods.includes("password")
 });
 
