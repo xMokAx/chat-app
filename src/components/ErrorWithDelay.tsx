@@ -28,7 +28,6 @@ const DisplayError = ({
   React.useEffect(() => {
     let timeout: number;
     if (active && error && dirty) {
-      console.info("setting timeout");
       timeout = window.setTimeout(() => setShow(true), delay);
       // when the form is reseted after submit the fields become untouched but the errors are still shown
     } else if (!touched && show) {
@@ -36,7 +35,6 @@ const DisplayError = ({
       setShow(false);
     }
     return () => {
-      console.info("clearing timeout");
       clearTimeout(timeout);
     };
   }, [delay, error, active, dirty, touched, show]);
