@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import * as firebase from "firebase/app";
 import { Form, Field } from "react-final-form";
 import { FORM_ERROR } from "final-form";
 import FormCard from "../styled/FormCard";
@@ -8,7 +7,7 @@ import Error from "../styled/Error";
 import Text from "../styled/Text";
 import InputField from "../components/InputField";
 import LoadingButton from "../components/LoadingButton";
-import { chatRoomsApi, userApi } from "../firebase";
+import { chatRoomsApi } from "../firebase";
 import { useHistory } from "react-router";
 import { connect } from "react-redux";
 import { AppState } from "../store/configureStore";
@@ -82,18 +81,6 @@ const CreateChatRoomPage = ({
   const onDeleteSubmit = async (values: DeleteFormValues) => {
     try {
       await chatRoomsApi.deleteRoom(values.room);
-      await userApi.updateUser(userId, {
-        createdRooms: (firebase.firestore.FieldValue.arrayRemove(
-          values.room
-        ) as unknown) as string[],
-        joinedRooms: (firebase.firestore.FieldValue.arrayRemove(
-          values.room
-        ) as unknown) as string[]
-      });
-      if (activeRoom && values.room === activeRoom.id) {
-        setActiveRoom("");
-        history.push(`/chat`);
-      }
     } catch (e) {
       return { [FORM_ERROR]: e.message };
     }
