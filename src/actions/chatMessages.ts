@@ -3,7 +3,6 @@ import { Message } from "./chatRooms";
 export const ADD_MESSAGE = "ADD_MESSAGE";
 export const UPDATE_MESSAGE = "UPDATE_MESSAGE";
 export const DELETE_MESSAGE = "DELETE_MESSAGE";
-export const ADD_MESSAGES = "ADD_MESSAGES";
 export const GET_MESSAGES_START = "GET_MESSAGES_START";
 export const GET_MESSAGES_SUCCESS = "GET_MESSAGES_SUCCESS";
 export const GET_MESSAGES_FAILURE = "GET_MESSAGES_FAILURE";
@@ -14,7 +13,7 @@ export interface GetMessagesStartAction {
 }
 
 export interface GetMessagesSuccessAction {
-  type: typeof ADD_MESSAGES;
+  type: typeof GET_MESSAGES_SUCCESS;
   messages: Message[];
   roomId: string;
 }
@@ -53,7 +52,7 @@ const getMessagesSuccess = (
   messages: Message[],
   roomId: string
 ): ChatMessagesActionTypes => ({
-  type: ADD_MESSAGES,
+  type: GET_MESSAGES_SUCCESS,
   messages,
   roomId
 });

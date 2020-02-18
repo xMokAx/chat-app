@@ -5,7 +5,7 @@ import {
   GET_MESSAGES_START,
   UPDATE_MESSAGE,
   DELETE_MESSAGE,
-  ADD_MESSAGES
+  GET_MESSAGES_SUCCESS
 } from "../actions/chatMessages";
 import { AppState } from "../store/configureStore";
 
@@ -37,7 +37,7 @@ const chatMessages = (
         ...initialRoomMessagesState,
         isLoading: true
       };
-    case ADD_MESSAGES:
+    case GET_MESSAGES_SUCCESS:
       return {
         ...state,
         messages: [...action.messages, ...state.messages]
@@ -79,7 +79,7 @@ export const chatMessagesByRoomReducer = (
 ): ChatMessagesState => {
   switch (action.type) {
     case GET_MESSAGES_START:
-    case ADD_MESSAGES:
+    case GET_MESSAGES_SUCCESS:
     case ADD_MESSAGE:
     case UPDATE_MESSAGE:
     case DELETE_MESSAGE:
