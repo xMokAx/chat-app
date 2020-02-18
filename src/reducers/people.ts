@@ -58,7 +58,9 @@ export const peopleByRoomReducer = (
 };
 
 export const getPerson = (state: AppState, id: string) =>
-  state.people[state.chatRooms.activeRoomId].find(p => p.id === id);
+  state.people[state.chatRooms.activeRoomId]
+    ? state.people[state.chatRooms.activeRoomId].find(p => p.id === id)
+    : undefined;
 
 export const getPeopleCount = (state: PeopleState, roomId: string) =>
   state[roomId].length;
