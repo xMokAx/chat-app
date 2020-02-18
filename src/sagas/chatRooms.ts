@@ -1,5 +1,13 @@
-import { put, take, takeEvery, call } from "redux-saga/effects";
+import {
+  put,
+  take,
+  takeEvery,
+  select,
+  takeLatest,
+  cancelled
+} from "redux-saga/effects";
 import { eventChannel } from "redux-saga";
+import * as firebase from "firebase/app";
 import {
   GetRoomsStartAction,
   GET_ROOMS_START,
@@ -9,42 +17,65 @@ import {
   GetRoomsByQueryStart,
   GET_ROOMS_BY_QUERY_START
 } from "../actions/chatRooms";
-import { chatRoomsApi } from "../firebase";
+import { chatRoomsApi, userApi } from "../firebase";
+import { AppState } from "../store/configureStore";
 
 function* chatRooms(action: GetRoomsStartAction) {
-  let roomsQuery =
-    action.roomsType === MY_ROOMS
-      ? chatRoomsApi.getMyRooms
-      : chatRoomsApi.getRooms;
+  const roomsType = action.roomsType;
+  const isMyRooms = roomsType === MY_ROOMS;
+  let isInitialDocs = true;
+  let roomsQuery = isMyRooms ? chatRoomsApi.getMyRooms : chatRoomsApi.getRooms;
+
+  const userId = yield select((state: AppState) => state.user.userInfo.id);
   const channel = eventChannel(emit =>
     roomsQuery().onSnapshot(roomsSnapshot => {
       if (roomsSnapshot.empty) {
-        emit(
-          chatRoomsActions.getRoomsFailure(
-            "No rooms available.",
-            action.roomsType
-          )
-        );
+        isInitialDocs = false;
+
+        if (roomsSnapshot.metadata.fromCache) {
+          emit(
+            chatRoomsActions.getRoomsFailure(
+              "Please, fix your connection. Retrying...",
+              roomsType
+            )
+          );
+        } else {
+          let error = isMyRooms
+            ? "You didn't join any rooms."
+            : "No rooms available. Create a room and start chatting.";
+          emit(chatRoomsActions.getRoomsFailure(error, roomsType));
+        }
       }
+      let rooms: Room[] = [];
       roomsSnapshot.docChanges().forEach(change => {
         if (change.type === "added") {
           const room = change.doc.data() as Room;
-          if (room.createdAt) {
-            emit(chatRoomsActions.addRoom(room, action.roomsType));
+          if (room.createdAt && isInitialDocs) {
+            rooms.unshift(room);
+          } else {
+            emit(chatRoomsActions.addRoom(room, roomsType));
           }
         }
         if (change.type === "modified") {
           const room = change.doc.data() as Room;
-          if (!room.lastMessage) {
-            emit(chatRoomsActions.addRoom(room, action.roomsType));
-          } else {
-            emit(chatRoomsActions.updateRoom(room, action.roomsType));
-          }
+          emit(chatRoomsActions.updateRoom(room, roomsType));
         }
         if (change.type === "removed") {
-          emit(chatRoomsActions.deleteRoom(change.doc.id, action.roomsType));
+          emit(chatRoomsActions.deleteRoom(change.doc.id, roomsType));
+          if (isMyRooms) {
+            userApi.updateUser(userId, {
+              joinedRooms: (firebase.firestore.FieldValue.arrayRemove(
+                change.doc.id
+              ) as unknown) as string[]
+            });
+          }
         }
       });
+
+      if (isInitialDocs) {
+        emit(chatRoomsActions.getRoomsSuccess(rooms, roomsType));
+        isInitialDocs = false;
+      }
     })
   );
 
@@ -63,33 +94,69 @@ export function* watchChatRooms() {
 }
 
 function* chatRoomsByQuery(action: GetRoomsByQueryStart) {
-  try {
-    const roomsSnapshot: firebase.firestore.QuerySnapshot = yield call(
-      chatRoomsApi.getRoomsByQuery,
-      action.query
-    );
-
-    if (roomsSnapshot.empty) {
-      if (roomsSnapshot.metadata.fromCache) {
-        throw new Error(
-          "Can't search for rooms, please check your connection."
-        );
+  const roomsType = action.roomsType;
+  let isInitialDocs = true;
+  const channel = eventChannel(emit =>
+    chatRoomsApi.getRoomsByQuery(action.query).onSnapshot(roomsSnapshot => {
+      if (roomsSnapshot.empty) {
+        if (roomsSnapshot.metadata.fromCache) {
+          emit(
+            chatRoomsActions.getRoomsFailure(
+              "Please, fix your connection. Retrying...",
+              roomsType
+            )
+          );
+        } else {
+          emit(
+            chatRoomsActions.getRoomsFailure("No rooms available.", roomsType)
+          );
+        }
       }
-      console.log(roomsSnapshot.metadata);
-      throw new Error("No rooms found.");
+      let rooms: Room[] = [];
+      roomsSnapshot.docChanges().forEach(change => {
+        if (change.type === "added") {
+          const room = change.doc.data() as Room;
+          if (room.createdAt && isInitialDocs) {
+            rooms.unshift(room);
+          } else {
+            emit(chatRoomsActions.addRoom(room, roomsType));
+          }
+        }
+        if (change.type === "modified") {
+          const room = change.doc.data() as Room;
+          emit(chatRoomsActions.updateRoom(room, roomsType));
+        }
+        if (change.type === "removed") {
+          emit(chatRoomsActions.deleteRoom(change.doc.id, roomsType));
+        }
+      });
+
+      if (isInitialDocs) {
+        emit(chatRoomsActions.getRoomsSuccess(rooms, roomsType));
+        isInitialDocs = false;
+      }
+    })
+  );
+
+  try {
+    while (true) {
+      const action = yield take(channel);
+      yield put(action);
     }
-    const rooms: Room[] = [];
-    roomsSnapshot.forEach(doc => {
-      rooms.push(doc.data() as Room);
-    });
-    yield put(chatRoomsActions.getRoomsSuccess(rooms, action.roomsType));
-  } catch (error) {
-    yield put(
-      chatRoomsActions.getRoomsFailure(error.message, action.roomsType)
-    );
+  } catch (err) {
+    // yield put(errorAction(err))
+    if (yield cancelled()) {
+      console.log("rooms query saga is cancelled from catch");
+      channel.close();
+    }
+  } finally {
+    if (yield cancelled()) {
+      console.log("rooms query saga is cancelled from finally");
+      channel.close();
+    }
   }
 }
 
 export function* watchChatRoomsByQuery() {
-  yield takeEvery(GET_ROOMS_BY_QUERY_START, chatRoomsByQuery);
+  yield takeLatest(GET_ROOMS_BY_QUERY_START, chatRoomsByQuery);
 }
