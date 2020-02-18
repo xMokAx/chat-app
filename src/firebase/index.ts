@@ -129,7 +129,8 @@ const chatRoomsApi = {
       .orderBy("createdAt")
       .where("people", "array-contains", userId);
   },
-  getRoomsByQuery: (query: string) => chatRooms.where("name", "==", query).get()
+  getRoomsByQuery: (query: string) =>
+    chatRooms.orderBy("createdAt").where("name", "==", query)
 };
 
 const chatMessagesApi = {
