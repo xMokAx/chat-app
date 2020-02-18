@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import styled from "styled-components/macro";
 import * as firebase from "firebase/app";
@@ -37,6 +37,7 @@ type Props = RoomMessagesState & {
   userName: string;
   joinedRooms: string[];
   activeRoom?: Room;
+  isLoadingMyRooms: boolean;
 };
 
 const ChatMessagesPage = ({
@@ -51,31 +52,45 @@ const ChatMessagesPage = ({
   joinedRooms,
   updateUser,
   getMessagesSuccess,
-  activeRoom
+  activeRoom,
+  isLoadingMyRooms
 }: Props) => {
   const history = useHistory();
   const { id } = useParams();
+  const [isFetching, setIsFetching] = useState(false);
   useEffect(() => {
     if (id) {
       if (id !== activeRoomId) {
+        setIsFetching(false);
         setActiveRoom(id);
-      } else {
-        if (!messages.length) {
-          getMessagesStart(id);
+      } else if (id === activeRoomId) {
+        if (!isLoadingMyRooms) {
+          if (!activeRoom) {
+            history.push(`/chat`);
+          } else {
+            if (!messages.length && !isFetching) {
+              setIsFetching(true);
+              getMessagesStart(id);
+            }
+          }
         }
       }
     }
-  }, [activeRoomId, getMessagesStart, id, messages.length, setActiveRoom]);
+  }, [
+    activeRoom,
+    activeRoomId,
+    getMessagesStart,
+    history,
+    id,
+    isFetching,
+    isLoading,
+    isLoadingMyRooms,
+    messages.length,
+    setActiveRoom
+  ]);
 
   useEffect(() => {
-    if (activeRoomId && !activeRoom) {
-      console.log("pushing to /chat");
-      history.push(`/chat`);
-    }
-  }, [activeRoom, activeRoomId, history]);
-
-  useEffect(() => {
-    if (activeRoomId && activeRoom) {
+    if (activeRoomId && activeRoom && activeRoomId === activeRoom.id) {
       if (!activeRoom.people.includes(userId)) {
         chatRoomsApi
           .updateRoom(activeRoomId, {
@@ -130,6 +145,7 @@ const mapStateToProps = (state: AppState) => {
     ...getRoomMessagesState(state),
     messages: getSortedMessages(state),
     activeRoomId: chatRooms.activeRoomId,
+    isLoadingMyRooms: chatRooms.MY_ROOMS.isLoading,
     userId: user.userInfo.id,
     userName: user.userInfo.name!!,
     joinedRooms: user.userInfo.joinedRooms!!,
