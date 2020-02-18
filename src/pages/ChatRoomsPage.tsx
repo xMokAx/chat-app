@@ -40,7 +40,7 @@ type CustomButtonProps = ButtonProps & {
   active: boolean;
 };
 
-const CustomButton = styled(Button)<CustomButtonProps>`
+export const CustomButton = styled(Button)<CustomButtonProps>`
   &:hover {
     background-color: ${props => props.theme.colors.bgSec};
   }
@@ -72,12 +72,10 @@ const ChatRoomsPage = ({
   const { showConnectionStatus } = useContext(ConnectionContext);
   const roomsSearch = roomsType === QUERY_ROOMS;
   useEffect(() => {
-    if (!rooms.length) {
-      if (roomsType !== QUERY_ROOMS) {
-        getRoomsStart(roomsType);
-      }
+    if (!rooms.length && !error && !roomsSearch) {
+      getRoomsStart(roomsType);
     }
-  }, [getRoomsStart, rooms.length, roomsType]);
+  }, [error, getRoomsStart, rooms.length, roomsSearch, roomsType]);
   return (
     <>
       <FlexContainer justify="flex-start">
