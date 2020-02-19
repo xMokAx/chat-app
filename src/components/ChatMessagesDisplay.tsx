@@ -24,10 +24,10 @@ interface ContainerProps {
 const Container = styled.div<ContainerProps>`
   flex: 1;
   height: calc(
-    100vh - ${props => (props.showConnectionStatus ? "150px" : "117px")}
+    100vh - ${props => (props.showConnectionStatus ? "196px" : "163px")}
   );
   max-height: calc(
-    100vh - ${props => (props.showConnectionStatus ? "150px" : "117px")}
+    100vh - ${props => (props.showConnectionStatus ? "196px" : "163px")}
   );
   overflow: auto;
   scrollbar-width: none; /* Firefox */
@@ -81,11 +81,11 @@ const ChatMessagesDisplay = ({
   // scroll to bottom after remount
   useLayoutEffect(() => {
     instantScrollToBottom();
-  }, []);
+  }, [activeRoomId]);
 
   useLayoutEffect(() => {
     const scrollableContainer = containerRef.current;
-    const handleScroll = (e: Event) => {
+    const handleScroll = () => {
       const { scrollTop, scrollHeight, clientHeight } = scrollableContainer!!;
       if (scrollTop < scrollHeight - clientHeight * 2) {
         setShowScrollDownBtn(true);

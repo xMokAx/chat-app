@@ -149,7 +149,7 @@ const ImageUpload = ({ id, toggleEditing, updateUserPhoto }: Props) => {
       </Container>
       <Modal isOpen={!!imgSrc} onRequestClose={closeModal}>
         <Row>
-          <Col s>
+          <Col break="600px">
             <FlexContainer column h="100%">
               {error ? (
                 <Text color="red">{error}</Text>
@@ -173,7 +173,7 @@ const ImageUpload = ({ id, toggleEditing, updateUserPhoto }: Props) => {
               )}
             </FlexContainer>
           </Col>
-          <Col s>
+          <Col break="600px">
             <p>Preview</p>
             <Canvas />
           </Col>

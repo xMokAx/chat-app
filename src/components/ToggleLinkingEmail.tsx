@@ -53,7 +53,7 @@ const ToggleLinkingProvider = ({
             <FormCard onSubmit={handleSubmit}>
               {submitError && <Error>{submitError}</Error>}
               <LoadingButton
-                expanded
+                w="100%"
                 type="submit"
                 bg="red"
                 isLoading={submitting}

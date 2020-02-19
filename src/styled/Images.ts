@@ -8,6 +8,7 @@ export const ImgFluid = styled.img<ImgProps>`
   max-width: 100%;
   height: auto;
   border-radius: ${props => (props.circle ? "50%" : "0.25rem")};
+  font-size: 10px;
 `;
 
 export const ImgThumbnail = styled.img<ImgProps>`
@@ -17,6 +18,7 @@ export const ImgThumbnail = styled.img<ImgProps>`
   border-radius: ${props => (props.circle ? "50%" : "0.25rem")};
   max-width: 100%;
   height: auto;
+  font-size: 10px;
 `;
 
 interface FigProps {
@@ -44,6 +46,7 @@ export const ImgFit = styled.img<ImgProps>`
   border: 1px solid ${props => props.theme.colors.grey};
   object-fit: cover;
   border-radius: ${props => (props.circle ? "50%" : "0.25rem")};
+  font-size: 10px;
 `;
 
 export const FakeImage = styled.div<ImgProps>`

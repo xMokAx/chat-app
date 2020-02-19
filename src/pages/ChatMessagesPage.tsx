@@ -19,6 +19,7 @@ import ChatMessagesDisplay from "../components/ChatMessagesDisplay";
 import Error from "../styled/Error";
 import Loading from "../styled/Loading";
 import { getActiveRoom } from "../reducers/chatRooms";
+import ChatMessagesPageHeader from "../components/ChatMessagesPageHeader";
 
 const Container = styled.div`
   display: flex;
@@ -61,8 +62,11 @@ const ChatMessagesPage = ({
   useEffect(() => {
     if (id) {
       if (id !== activeRoomId) {
-        setIsFetching(false);
-        setActiveRoom(id);
+        if (isFetching) {
+          setIsFetching(false);
+        } else {
+          setActiveRoom(id);
+        }
       } else if (id === activeRoomId) {
         if (!isLoadingMyRooms) {
           if (!activeRoom) {
@@ -88,30 +92,40 @@ const ChatMessagesPage = ({
     messages.length,
     setActiveRoom
   ]);
-
+  const [isLeaving, setIsLeaving] = useState(false);
   useEffect(() => {
-    if (activeRoomId && activeRoom && activeRoomId === activeRoom.id) {
-      if (!activeRoom.people.includes(userId)) {
-        chatRoomsApi
-          .updateRoom(activeRoomId, {
-            people: (firebase.firestore.FieldValue.arrayUnion(
-              userId
-            ) as unknown) as string[]
-          })
-          .then(async () => {
-            await userApi.updateUser(userId, {
-              joinedRooms: (firebase.firestore.FieldValue.arrayUnion(
-                activeRoomId
+    if (!isLeaving) {
+      if (activeRoomId && activeRoom && activeRoomId === activeRoom.id) {
+        if (!activeRoom.people.includes(userId)) {
+          chatRoomsApi
+            .updateRoom(activeRoomId, {
+              people: (firebase.firestore.FieldValue.arrayUnion(
+                userId
               ) as unknown) as string[]
+            })
+            .then(async () => {
+              await userApi.updateUser(userId, {
+                joinedRooms: (firebase.firestore.FieldValue.arrayUnion(
+                  activeRoomId
+                ) as unknown) as string[]
+              });
+              await chatMessagesApi.addMessage(activeRoomId, {
+                text: `${userName} Joined this room.`,
+                senderId: "system"
+              });
             });
-            await chatMessagesApi.addMessage(activeRoomId, {
-              text: `${userName} Joined this room.`,
-              senderId: "system"
-            });
-          });
+        }
       }
     }
-  }, [activeRoom, activeRoomId, joinedRooms, updateUser, userId, userName]);
+  }, [
+    activeRoom,
+    activeRoomId,
+    isLeaving,
+    joinedRooms,
+    updateUser,
+    userId,
+    userName
+  ]);
 
   return (
     <Wrapper minH="100%">
@@ -125,6 +139,14 @@ const ChatMessagesPage = ({
         </Container>
       ) : (
         <>
+          <ChatMessagesPageHeader
+            isLeaving={isLeaving}
+            setIsLeaving={setIsLeaving}
+            activeRoom={activeRoom}
+            history={history}
+            userId={userId}
+            userName={userName}
+          />
           <ChatMessagesDisplay
             activeRoom={activeRoom}
             getMessagesSuccess={getMessagesSuccess}
@@ -141,6 +163,7 @@ const ChatMessagesPage = ({
 
 const mapStateToProps = (state: AppState) => {
   const { chatRooms, user } = state;
+  const activeRoom = getActiveRoom(chatRooms);
   return {
     ...getRoomMessagesState(state),
     messages: getSortedMessages(state),
@@ -149,7 +172,7 @@ const mapStateToProps = (state: AppState) => {
     userId: user.userInfo.id,
     userName: user.userInfo.name!!,
     joinedRooms: user.userInfo.joinedRooms!!,
-    activeRoom: getActiveRoom(chatRooms)
+    activeRoom
   };
 };
 

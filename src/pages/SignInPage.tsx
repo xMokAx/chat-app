@@ -8,7 +8,7 @@ const SignInPage = () => (
   <Card>
     <h1>Sign in</h1>
     <ProviderAuth />
-    <ButtonAsLink to={SIGN_IN_EMAIL} bg="red" size="l" expanded>
+    <ButtonAsLink to={SIGN_IN_EMAIL} bg="red" size="l" w="100%">
       Email
     </ButtonAsLink>
   </Card>

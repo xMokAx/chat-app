@@ -35,7 +35,7 @@ interface OwnProps {
 type Props = StateProps & OwnProps;
 
 const ChatMessage = ({
-  message: { text, id, createdAt, senderId },
+  message: { text, createdAt, senderId },
   userId,
   messageSender
 }: Props) => {
@@ -46,7 +46,7 @@ const ChatMessage = ({
 
   if (senderId === "system") {
     return (
-      <FlexContainer wr justify="space-evenly" m="0 0 16px">
+      <FlexContainer wr justify="space-evenly" m="8px 0">
         <Text color="grey" align="center" size="12px" m="0">
           {text}
         </Text>

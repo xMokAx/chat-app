@@ -26,16 +26,14 @@ function* addUser(action: AuthSuccessAction) {
           action.user.email!!
         )}?s=200&r=pg&d=identicon`;
       }
-      const response = yield call(userApi.addUser, action.user.id, {
+      yield call(userApi.addUser, action.user.id, {
         createdRooms: [],
         joinedRooms: [],
         ...action.user
       });
-      console.log("add user response: ", response); // undefined
       // add user to redux store
       yield put(userActions.addUser(action.user));
     } catch (error) {
-      console.log(error);
       yield put(
         userActions.authFailure(
           "You signed up sccessfully but we failed to automatically sign you in, please fix your connection. Retrying..."
@@ -80,7 +78,6 @@ function* updateUser(action: AddUserAction) {
   const channel = eventChannel(emit =>
     userApi.user(action.user.id).onSnapshot(userDoc => {
       const user = userDoc.data();
-      console.log("update user saga");
       emit(userActions.updateUser(user as User));
     })
   );

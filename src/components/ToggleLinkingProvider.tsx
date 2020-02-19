@@ -55,7 +55,7 @@ const ToggleLinkingProvider = ({
       {error && <Error>{error}</Error>}
       {isLinked ? (
         <LoadingButton
-          expanded
+          w="100%"
           type="button"
           bg="red"
           onClick={onUnlink}
@@ -66,7 +66,7 @@ const ToggleLinkingProvider = ({
         </LoadingButton>
       ) : (
         <LoadingButton
-          expanded
+          w="100%"
           type="button"
           bg="green"
           onClick={onLink}

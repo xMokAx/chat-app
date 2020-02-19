@@ -1,10 +1,17 @@
-import { put, take, takeEvery } from "redux-saga/effects";
+import { put, take, takeEvery, select } from "redux-saga/effects";
 import { eventChannel } from "redux-saga";
 import { peopleActions, Person } from "../actions/people";
 import { SetActiveRoomAction, SET_ACTIVE_ROOM } from "../actions/chatRooms";
 import { users } from "../firebase";
+import { AppState } from "../store/configureStore";
 
 function* activeRoomPeople(action: SetActiveRoomAction) {
+  const exist: Person[] | undefined = yield select(
+    (state: AppState) => state.people[action.id]
+  );
+  if (exist) {
+    return;
+  }
   const channel = eventChannel(emit =>
     users
       .where("joinedRooms", "array-contains", action.id)

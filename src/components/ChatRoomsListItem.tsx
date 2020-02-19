@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import styled, { DefaultTheme } from "styled-components/macro";
+import { DefaultTheme } from "styled-components/macro";
 import { FlexContainer } from "../styled/Flex";
 import Text from "../styled/Text";
 import { Room } from "../actions/chatRooms";
@@ -9,13 +8,24 @@ import moment from "moment";
 import { Figure, ImgFluid, FakeImage } from "../styled/Images";
 import { userApi } from "../firebase";
 import { User } from "../actions/user";
+import { connect } from "react-redux";
+import { getPerson } from "../reducers/people";
+import { AppState } from "../store/configureStore";
+import { Person } from "../actions/people";
 
-interface Props {
+interface OwnProps {
   room: Room;
 }
 
+interface StateProps {
+  lastSender?: Person;
+}
+
+type Props = OwnProps & StateProps;
+
 const ChatRoomsListItem = ({
-  room: { id, name, desc, createdAt, lastMessage, people }
+  room: { id, name, desc, createdAt, lastMessage, people },
+  lastSender
 }: Props) => {
   const [lastMessageSender, setLastMessageSender] = useState<null | Pick<
     User,
@@ -23,8 +33,9 @@ const ChatRoomsListItem = ({
   >>(null);
   const created = createdAt && moment(createdAt.seconds * 1000).format("l");
   const isSystemMsg = lastMessage && lastMessage.senderId === "system";
+  let sender = lastSender ? lastSender : lastMessageSender;
   useEffect(() => {
-    if (lastMessage && !isSystemMsg)
+    if (lastMessage && !isSystemMsg && !lastSender)
       userApi.getUser(lastMessage.senderId).then(doc => {
         if (doc.exists) {
           const { id, name, photo } = doc.data() as User;
@@ -35,7 +46,7 @@ const ChatRoomsListItem = ({
           });
         }
       });
-  }, [isSystemMsg, lastMessage]);
+  }, [isSystemMsg, lastMessage, lastSender]);
   return (
     <NavLink
       to={`/chat/room/${id}`}
@@ -101,16 +112,12 @@ const ChatRoomsListItem = ({
               white-space: nowrap;
             `}
           >
-            {!isSystemMsg && lastMessageSender && (
+            {!isSystemMsg && sender && (
               <Figure size="24px" m="0 4px 0 0">
-                {lastMessageSender.photo ? (
-                  <ImgFluid
-                    alt={lastMessageSender.name!!}
-                    src={lastMessageSender.photo}
-                    circle
-                  />
+                {sender.photo ? (
+                  <ImgFluid alt={sender.name!!} src={sender.photo} circle />
                 ) : (
-                  <FakeImage title={lastMessageSender.name!!} circle />
+                  <FakeImage title={sender.name!!} circle />
                 )}
               </Figure>
             )}
@@ -135,4 +142,11 @@ const ChatRoomsListItem = ({
   );
 };
 
-export default ChatRoomsListItem;
+const mapStateToProps = (state: AppState, { room }: OwnProps) => ({
+  lastSender:
+    room.lastMessage && room.lastMessage.senderId !== "system"
+      ? getPerson(state, room.lastMessage.senderId)
+      : undefined
+});
+
+export default connect(mapStateToProps)(ChatRoomsListItem);

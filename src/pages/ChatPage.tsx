@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useContext } from "react";
+import React, { useState, useCallback, useContext, useEffect } from "react";
 import { DefaultTheme } from "styled-components/macro";
 import { useMediaQuery } from "react-responsive";
 import ChatRoomsPage from "./ChatRoomsPage";
@@ -13,15 +13,35 @@ import Dropdown from "../styled/Dropdown";
 import NavLink from "../styled/NavLink";
 import * as ROUTES from "../constants/routes";
 import { Link } from "react-router-dom";
-import { chatRoomsActions, Room } from "../actions/chatRooms";
+import { chatRoomsActions, RoomsType, QUERY_ROOMS } from "../actions/chatRooms";
 import { ConnectionContext } from "../components/Layout";
+import { connect } from "react-redux";
+import { getFilteredRooms, ChatRoomsState } from "../reducers/chatRooms";
+import { AppState } from "../store/configureStore";
 
-interface Props {
-  rooms: Room[];
+type StateProps = Omit<ChatRoomsState, "textFilter"> & {
+  roomsType: RoomsType;
+};
+
+interface DispatchProps {
   getRoomsStart: typeof chatRoomsActions.getRoomsStart;
 }
 
-const ChatPage = () => {
+type Props = StateProps & DispatchProps;
+
+const ChatPage = ({
+  rooms,
+  error,
+  isLoading,
+  roomsType,
+  getRoomsStart
+}: Props) => {
+  const roomsSearch = roomsType === QUERY_ROOMS;
+  useEffect(() => {
+    if (!rooms.length && !error && !roomsSearch && !isLoading) {
+      getRoomsStart(roomsType);
+    }
+  }, [error, getRoomsStart, isLoading, rooms.length, roomsSearch, roomsType]);
   const isLarge = useMediaQuery({
     query: "(min-width: 1024px)"
   });
@@ -74,8 +94,8 @@ const ChatPage = () => {
           <Dropdown
             containerStyle={`
             position: fixed;
-            top: ${showConnectionStatus ? "105px" : "73px"};
-            right: 16px;
+            top: ${showConnectionStatus ? "100px" : "68px"};
+            right: 8px;
             z-index: 2
           `}
             buttonBG="blue"
@@ -116,4 +136,18 @@ const ChatPage = () => {
   );
 };
 
-export default ChatPage;
+const mapStateToProps = ({ chatRooms }: AppState) => ({
+  isLoading: chatRooms[chatRooms.roomsType].isLoading,
+  error: chatRooms[chatRooms.roomsType].error,
+  rooms: getFilteredRooms(chatRooms[chatRooms.roomsType]),
+  roomsType: chatRooms.roomsType
+});
+
+const mapDispatchToProps = {
+  getRoomsStart: chatRoomsActions.getRoomsStart
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ChatPage);

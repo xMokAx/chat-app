@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from "react";
+import React, { useContext } from "react";
 import { connect } from "react-redux";
 import styled from "styled-components/macro";
 import { AppState } from "../store/configureStore";
@@ -48,13 +48,13 @@ export const CustomButton = styled(Button)<CustomButtonProps>`
   color: ${props => props.active && props.theme.colors.textMain};
 `;
 
-type StateProps = Omit<ChatRoomsState, "textFilter" | "activeRoomId"> & {
+type StateProps = Omit<ChatRoomsState, "textFilter"> & {
   userPhoto: string;
   roomsType: RoomsType;
+  userName: string;
 };
 
 interface DispatchProps {
-  getRoomsStart: typeof chatRoomsActions.getRoomsStart;
   setRoomsType: typeof chatRoomsActions.setRoomsType;
 }
 
@@ -65,22 +65,17 @@ const ChatRoomsPage = ({
   isLoading,
   error,
   userPhoto,
-  getRoomsStart,
   roomsType,
-  setRoomsType
+  setRoomsType,
+  userName
 }: Props) => {
   const { showConnectionStatus } = useContext(ConnectionContext);
   const roomsSearch = roomsType === QUERY_ROOMS;
-  useEffect(() => {
-    if (!rooms.length && !error && !roomsSearch) {
-      getRoomsStart(roomsType);
-    }
-  }, [error, getRoomsStart, rooms.length, roomsSearch, roomsType]);
   return (
     <>
       <FlexContainer justify="flex-start">
         <Figure size="40px" m="0">
-          <ImgFluid src={userPhoto} />
+          <ImgFluid src={userPhoto} alt={userName} />
         </Figure>
 
         <Text as="h2" m="0">
@@ -147,11 +142,11 @@ const mapStateToProps = ({ chatRooms, user }: AppState) => ({
   error: chatRooms[chatRooms.roomsType].error,
   rooms: getFilteredRooms(chatRooms[chatRooms.roomsType]),
   roomsType: chatRooms.roomsType,
-  userPhoto: user.userInfo.photo!!
+  userPhoto: user.userInfo.photo!!,
+  userName: user.userInfo.name!!
 });
 
 const mapDispatchToProps = {
-  getRoomsStart: chatRoomsActions.getRoomsStart,
   setRoomsType: chatRoomsActions.setRoomsType
 };
 

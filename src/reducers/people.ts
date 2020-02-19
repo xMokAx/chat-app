@@ -64,3 +64,5 @@ export const getPerson = (state: AppState, id: string) =>
 
 export const getPeopleCount = (state: PeopleState, roomId: string) =>
   state[roomId].length;
+
+export const getPeople = (state: PeopleState, roomId: string) => state[roomId];

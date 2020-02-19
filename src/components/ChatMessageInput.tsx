@@ -47,8 +47,9 @@ const ChatMessageInput = ({ activeRoomId, userId }: Props) => {
           aria-label="Send Message"
           color="primary"
           size="s"
+          h="40px"
         >
-          <Icon icon="send" size="32px" />
+          <Icon icon="send" size="28px" />
         </Button>
       </FlexContainer>
     </form>
