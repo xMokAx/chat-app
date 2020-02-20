@@ -33,9 +33,10 @@ function* chatRooms(action: GetRoomsStartAction) {
         isInitialDocs = false;
 
         if (roomsSnapshot.metadata.fromCache) {
+          let error = isMyRooms ? "your" : "recent";
           emit(
             chatRoomsActions.getRoomsFailure(
-              "Please, fix your connection. Retrying...",
+              `Can't get ${error} rooms. Please, fix your connection. Retrying...`,
               roomsType
             )
           );
@@ -73,7 +74,9 @@ function* chatRooms(action: GetRoomsStartAction) {
       });
 
       if (isInitialDocs) {
-        emit(chatRoomsActions.getRoomsSuccess(rooms, roomsType));
+        if (rooms.length) {
+          emit(chatRoomsActions.getRoomsSuccess(rooms, roomsType));
+        }
         isInitialDocs = false;
       }
     })
@@ -102,14 +105,12 @@ function* chatRoomsByQuery(action: GetRoomsByQueryStart) {
         if (roomsSnapshot.metadata.fromCache) {
           emit(
             chatRoomsActions.getRoomsFailure(
-              "Please, fix your connection. Retrying...",
+              `Can't search for "${action.query}". Please, fix your connection and try again.`,
               roomsType
             )
           );
         } else {
-          emit(
-            chatRoomsActions.getRoomsFailure("No rooms available.", roomsType)
-          );
+          emit(chatRoomsActions.getRoomsFailure("No rooms found.", roomsType));
         }
       }
       let rooms: Room[] = [];
@@ -132,7 +133,9 @@ function* chatRoomsByQuery(action: GetRoomsByQueryStart) {
       });
 
       if (isInitialDocs) {
-        emit(chatRoomsActions.getRoomsSuccess(rooms, roomsType));
+        if (rooms.length) {
+          emit(chatRoomsActions.getRoomsSuccess(rooms, roomsType));
+        }
         isInitialDocs = false;
       }
     })
@@ -146,12 +149,10 @@ function* chatRoomsByQuery(action: GetRoomsByQueryStart) {
   } catch (err) {
     // yield put(errorAction(err))
     if (yield cancelled()) {
-      console.log("rooms query saga is cancelled from catch");
       channel.close();
     }
   } finally {
     if (yield cancelled()) {
-      console.log("rooms query saga is cancelled from finally");
       channel.close();
     }
   }
