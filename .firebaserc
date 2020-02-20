@@ -1,0 +1,6 @@
+{
+  "projects": {
+    "default": "chat-app-dev-893ed",
+    "production": "chat-app-acad7"
+  }
+}
