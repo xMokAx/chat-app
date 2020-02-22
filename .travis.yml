@@ -1,0 +1,13 @@
+language: node_js
+node_js:
+  - node
+install:
+  - npm ci && cd functions && npm ci
+cache: npm
+script:
+  - npm run test && npm run build
+deploy:
+  provider: firebase
+  cleanup: false
+  token:
+    secure: y7ZCoWMBm+D4TWkE1AfJBpHKamvh5i7OoQEmyfq7XdX8p+EgT0SWDnG+16g6tWL0doFPFU79t2l6X/knf+y6ZahHMCSvLG8dWDooGBU7BOAiZ4gBCAzbAjYuHCvNMr0uhz6f+8i986awgWvFVsAXgQ1LKIGvzYTa1LPBewQBW6JK0hNkh24OA2xR+uHgw0kXoFGgmE3qvXYcRY89pn+69Gcyc0kvuE32L9Ve7eMqNrPPJfJ7AGzUd8o+YJrI1UIj8mDNopQ9tKttwWi5ngmwIIeGfmevwUGPx3Sr2DZ9OVkySQhX0mwfh77RbZy2wVG4pX/yAiFHTfVMkPAX3USsDQZb2uH8oHMNEew9xvHjaVC8StITH3McIsapdngGnPZz/fsYV4k1JMzYS9B+eQpaq6zuT9wngjFzIZyM67VqePHHIhGjm+HSNuTKlx+Y/PNd0Ug1kFqgUxLnF7fllGAdKAPz6Wno37uSzaoAvKxiHllG99W3VdOSXFTRB7cVfAb2sS6S21whhQT68/G38BfTPjgOpItD7RppCLHk6xYXSudpCWf4MOM8QvnfPMdPw7FS4Y8EbdVSVhB0WBOx4+KPCaSt+4I8dqx6OtR+xTmEx/VtQGiRbIWX77J40pNeXCFokR+CEA836NbGsl58UCO8BJMXk2mlULVQEi+YmW/Audw=

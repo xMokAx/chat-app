@@ -1,4 +1,6 @@
-# Chat App
+[![Build Status](https://travis-ci.com/xMokAx/chat-app.svg?branch=master)](https://travis-ci.com/xMokAx/chat-app)
+
+# Welcome to Chat App
 
 [Check online](https://chat-app-acad7.firebaseapp.com/)
 
@@ -6,6 +8,7 @@ A chat app created using: TypeScript, React, Redux, Redux Saga, Styled Component
 
 ## Todo
 
+- ~~Continuous Integration and Continuous Delivery.~~
 - Ability to send image(s) as message.
 - App icon.
 - PWA.
