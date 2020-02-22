@@ -51,7 +51,9 @@ const NavigationAuth = ({ hasPassword, userPhoto, userName }: NavAuthProps) => {
   );
   return (
     <Fragment>
-      <NavLink to={ROUTES.APP}>Chat</NavLink>
+      <NavLink to={ROUTES.APP} m="3px 3px 3px 0">
+        Chat
+      </NavLink>
       <NavLink to={ROUTES.ACCOUNT}>Account</NavLink>
       <ThemeTogglerButton />
       <Figure size="40px" m="0" css="position: relative;">
@@ -59,14 +61,15 @@ const NavigationAuth = ({ hasPassword, userPhoto, userName }: NavAuthProps) => {
         <Dropdown
           containerStyle={`
             position: absolute;
-            bottom: -10px;
-            right: -10px;
+            bottom: -16px;
+            right: -8px;
           `}
           isActive={isMenuActive}
           left="-147px"
-          circleButton
+          circle
           openOrCloseMenu={openOrCloseMenu}
         >
+          <NavLink to={ROUTES.APP}>Chat</NavLink>
           <NavLink exact to={ROUTES.ACCOUNT}>
             Profile
           </NavLink>

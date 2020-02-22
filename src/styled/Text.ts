@@ -7,6 +7,7 @@ interface Props {
   p?: string;
   align?: string;
   weight?: string;
+  case?: "capitalize" | "uppercase" | "lowercase";
 }
 
 export default styled.p<Props>`
@@ -16,4 +17,5 @@ export default styled.p<Props>`
   padding: ${props => props.p && props.p};
   text-align: ${props => props.align && props.align};
   font-weight: ${props => props.weight && props.weight};
+  text-transform: ${props => props.case && props.case};
 `;

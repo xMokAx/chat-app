@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { DefaultTheme } from "styled-components/macro";
 import { FlexContainer } from "../styled/Flex";
 import Text from "../styled/Text";
 import { Room } from "../actions/chatRooms";
@@ -48,19 +47,13 @@ const ChatRoomsListItem = ({
       });
   }, [isSystemMsg, lastMessage, lastSender]);
   return (
-    <NavLink
-      to={`/chat/room/${id}`}
-      css={`
-        color: ${(props: { theme: DefaultTheme }) =>
-          props.theme.colors.textSec};
-        padding: 8px;
-        display: block;
-        text-align: left;
-      `}
-    >
+    <NavLink p="8px" display="block" color="textSec" to={`/chat/room/${id}`}>
       <FlexContainer justify="space-between">
         <Text
-          as="strong"
+          as="h3"
+          m="0"
+          size="16px"
+          case="capitalize"
           css={`
             overflow: hidden;
             text-overflow: ellipsis;

@@ -1,7 +1,7 @@
 import React, { ReactNode, useEffect, useRef } from "react";
 import styled, { DefaultTheme } from "styled-components/macro";
 import Icon from "./Icon";
-import Button from "./Button";
+import Button, { ButtonProps } from "./Button";
 
 interface ContainerProps {
   containerStyle: string;
@@ -13,11 +13,12 @@ interface MenuProps {
 }
 
 type Props = MenuProps &
+  ButtonProps &
   ContainerProps & {
     children: ReactNode;
-    circleButton?: boolean;
-    buttonBG?: keyof DefaultTheme["colors"];
     openOrCloseMenu: (menuState: boolean) => void;
+    iconSize?: string;
+    iconColor?: keyof DefaultTheme["colors"];
   };
 
 const Container = styled.div<ContainerProps>`
@@ -60,10 +61,13 @@ const Dropdown = ({
   children,
   isActive,
   left,
-  circleButton,
   openOrCloseMenu,
   containerStyle = "",
-  buttonBG = "primary"
+  size: buttonSize = "s",
+  bg = "primary",
+  iconSize = "20px",
+  iconColor,
+  ...buttonProps
 }: Props) => {
   const menuRef = useRef(null);
   useEffect(() => {
@@ -131,9 +135,9 @@ const Dropdown = ({
     <Container containerStyle={containerStyle}>
       <Button
         aria-label="toggle menu"
-        circle={circleButton}
-        bg={buttonBG}
-        size="s"
+        {...buttonProps}
+        bg={bg}
+        size={buttonSize}
         onClick={() => {
           if (!isActive) {
             openOrCloseMenu(true);
@@ -141,7 +145,8 @@ const Dropdown = ({
         }}
       >
         <Icon
-          size="16px"
+          color={iconColor}
+          size={iconSize}
           icon={isActive ? "arrow_drop_up" : "arrow_drop_down"}
         />
       </Button>

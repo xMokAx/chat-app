@@ -94,14 +94,14 @@ const ChatPage = ({
           <Dropdown
             containerStyle={`
             position: fixed;
-            top: ${showConnectionStatus ? "100px" : "68px"};
+            top: ${showConnectionStatus ? "106px" : "74px"};
             right: 8px;
             z-index: 2
           `}
-            buttonBG="blue"
+            bg="blue"
             isActive={isMenuActive}
             left="-147px"
-            circleButton
+            circle
             openOrCloseMenu={openOrCloseMenu}
           >
             <NavLink exact to={ROUTES.APP}>

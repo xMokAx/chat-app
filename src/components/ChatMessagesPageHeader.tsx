@@ -15,6 +15,7 @@ import Button from "../styled/Button";
 import { useMediaQuery } from "react-responsive";
 import { AppState } from "../store/configureStore";
 import { getPeople, getPerson } from "../reducers/people";
+import Icon from "../styled/Icon";
 
 const CustomText = styled(Text)`
   white-space: nowrap;
@@ -95,7 +96,6 @@ const ChatMessagesPageHeader = ({
       <Row
         isMobile
         css={`
-          margin-top: -8px;
           margin-bottom: 8px;
           padding: 0 8px;
           height: 50px;
@@ -104,7 +104,7 @@ const ChatMessagesPageHeader = ({
           border-bottom: solid 1px
             ${(props: { theme: DefaultTheme }) => props.theme.colors.bgSec};
           @media screen and (max-width: 1023px) {
-            padding-right: 44px;
+            padding-right: 56px;
           }
         `}
       >
@@ -124,33 +124,50 @@ const ChatMessagesPageHeader = ({
                 </Figure>
               )}
               {roomCreator && (
-                <CustomText m="0" size="14px">
+                <CustomText m="0" size="14px" case="capitalize">
                   {roomCreator.name}
                 </CustomText>
               )}
             </FlexContainer>
           )}
         </Col>
-        <Col width={isSmall ? 5 : 4} p="0 8px 0 0" break="0px">
+        <Col width={isSmall ? 6 : 4} p="0 8px 0 0" break="0px">
           {activeRoom && (
             <div>
-              <CustomText m="0">{activeRoom.name}</CustomText>
-              <CustomText size="14px" m="0" color="textSec">
+              <CustomText m="0" as="h2" size="18px" case="capitalize">
+                {activeRoom.name}
+              </CustomText>
+              <CustomText
+                as="h3"
+                size="14px"
+                m="0"
+                color="textSec"
+                case="capitalize"
+              >
                 {activeRoom.desc}
               </CustomText>
             </div>
           )}
         </Col>
-        <Col width={isSmall ? 5 : 4} p="0" break="0px">
-          <FlexContainer childrenM="8px" justify="flex-end">
+        <Col width={isSmall ? 6 : 4} p="0" break="0px">
+          <FlexContainer childrenM="16px" justify="flex-end">
             {activeRoom && (
-              <Button bg="green" size="s" onClick={toggleModal}>
-                <CustomText m="0" size="14px">
-                  {activeRoom.people.length} People
-                </CustomText>
+              <Button
+                title={`${activeRoom.people.length} people`}
+                aria-label={`${activeRoom.people.length} people`}
+                bg="green"
+                size="s"
+                onClick={toggleModal}
+              >
+                <Text as="span" m="0 4px 0 0">
+                  {activeRoom.people.length}
+                </Text>{" "}
+                <Icon icon="people" />
               </Button>
             )}
             <LoadingButton
+              title="leave room"
+              aria-label="leave room"
               size="s"
               bg="red"
               onClick={onLeaveClick}
@@ -158,9 +175,7 @@ const ChatMessagesPageHeader = ({
               isLoading={isLeaving}
               disabled={isLeaving}
             >
-              <Text m="0" size="14px">
-                Leave
-              </Text>
+              <Icon icon="exit" />
             </LoadingButton>
           </FlexContainer>
         </Col>
@@ -173,9 +188,11 @@ const ChatMessagesPageHeader = ({
               childrenM="4px"
               p="4px 0"
               css={`
-                border-bottom: solid 1px
-                  ${(props: { theme: DefaultTheme }) =>
-                    props.theme.colors.bgSec};
+                :not(:last-child) {
+                  border-bottom: solid 1px
+                    ${(props: { theme: DefaultTheme }) =>
+                      props.theme.colors.bgSec};
+                }
               `}
               key={p.id}
             >

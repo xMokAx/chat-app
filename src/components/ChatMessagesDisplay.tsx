@@ -24,10 +24,10 @@ interface ContainerProps {
 const Container = styled.div<ContainerProps>`
   flex: 1;
   height: calc(
-    100vh - ${props => (props.showConnectionStatus ? "196px" : "163px")}
+    100vh - ${props => (props.showConnectionStatus ? "204px" : "171px")}
   );
   max-height: calc(
-    100vh - ${props => (props.showConnectionStatus ? "196px" : "163px")}
+    100vh - ${props => (props.showConnectionStatus ? "204px" : "171px")}
   );
   overflow: auto;
   scrollbar-width: none; /* Firefox */
