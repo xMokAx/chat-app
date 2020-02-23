@@ -253,7 +253,4 @@ const mapDispatchToProps = {
   setActiveRoom: chatRoomsActions.setActiveRoom
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(CreateChatRoomPage);
+export default connect(mapStateToProps, mapDispatchToProps)(CreateChatRoomPage);

@@ -102,7 +102,4 @@ const mapDispatchToProps = {
   authSuccess: userActions.authSuccess
 };
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(SignInEmailPage);
+export default connect(null, mapDispatchToProps)(SignInEmailPage);

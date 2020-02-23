@@ -49,7 +49,4 @@ const mapDispatchToProps = {
   setTextFilter: chatRoomsActions.setTextFilter
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ChatRoomsFilter);
+export default connect(mapStateToProps, mapDispatchToProps)(ChatRoomsFilter);

@@ -187,7 +187,4 @@ const mapDispatchToProps = {
   updateUserPhoto: userActions.updateUser
 };
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(ImageUpload);
+export default connect(null, mapDispatchToProps)(ImageUpload);

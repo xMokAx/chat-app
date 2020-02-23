@@ -126,7 +126,4 @@ const mapDispatchToProps = {
   authSuccess: userActions.authSuccess
 };
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(SignUpEmailPage);
+export default connect(null, mapDispatchToProps)(SignUpEmailPage);

@@ -91,7 +91,4 @@ const ProviderAuth = ({ authSuccess }: Props) => {
 const mapDispatchToProps = {
   authSuccess: userActions.authSuccess
 };
-export default connect(
-  null,
-  mapDispatchToProps
-)(ProviderAuth);
+export default connect(null, mapDispatchToProps)(ProviderAuth);

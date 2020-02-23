@@ -50,7 +50,4 @@ const mapDispatchToProps = {
   getRoomsByQueryStart: chatRoomsActions.getRoomsByQueryStart
 };
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(ChatRoomsSearch);
+export default connect(null, mapDispatchToProps)(ChatRoomsSearch);

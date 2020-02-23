@@ -114,7 +114,4 @@ const mapDispatchToProps = {
   updateUser: userActions.updateUser
 };
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(InputEdit);
+export default connect(null, mapDispatchToProps)(InputEdit);

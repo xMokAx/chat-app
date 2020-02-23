@@ -59,10 +59,7 @@ const withSignInMethods = (
     removeMethod: signInMethodsActions.removeMethod
   };
 
-  return connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(SignInMethodsHOC);
+  return connect(mapStateToProps, mapDispatchToProps)(SignInMethodsHOC);
 };
 
 export default withSignInMethods;

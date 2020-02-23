@@ -183,7 +183,4 @@ const mapDispatchToProps = {
   getMessagesSuccess: chatMessagesActions.getMessagesSuccess
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ChatMessagesPage);
+export default connect(mapStateToProps, mapDispatchToProps)(ChatMessagesPage);

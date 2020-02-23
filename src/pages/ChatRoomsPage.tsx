@@ -150,7 +150,4 @@ const mapDispatchToProps = {
   setRoomsType: chatRoomsActions.setRoomsType
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ChatRoomsPage);
+export default connect(mapStateToProps, mapDispatchToProps)(ChatRoomsPage);
