@@ -5,22 +5,23 @@ import InputGroup from "../styled/InputGroup";
 import Input from "../styled/Input";
 import Icon from "../styled/Icon";
 import Button from "../styled/Button";
-import { FieldProps, Field } from "react-final-form";
+import { Field } from "react-final-form";
 import ErrorWithDelay from "./ErrorWithDelay";
 import Error from "../styled/Error";
+import { MyFieldProps } from "./InputField";
 
-type Props = FieldProps<any, HTMLElement> & {
+type Props = MyFieldProps<string> & {
   placeholder: string;
   label?: string;
 };
 
-const InputPassword = ({ name, placeholder, label }: Props) => {
+const InputPassword = ({ placeholder, label, ...fieldProps }: Props) => {
   const [isHidden, setIsHidden] = useState(true);
   const toggleVisibility = () => {
     setIsHidden(!isHidden);
   };
   return (
-    <Field name={name}>
+    <Field {...fieldProps}>
       {({ input }) => (
         <div
           css={`
@@ -33,7 +34,7 @@ const InputPassword = ({ name, placeholder, label }: Props) => {
               css={`
                 text-align: left;
               `}
-              htmlFor={name}
+              htmlFor={input.name}
             >
               {label}
             </label>
@@ -57,7 +58,7 @@ const InputPassword = ({ name, placeholder, label }: Props) => {
             </Button>
             <Icon isLeft icon="lock" />
           </InputGroup>
-          <ErrorWithDelay name={name} delay={1000}>
+          <ErrorWithDelay name={input.name} delay={1000}>
             {(error: string) => <Error as="small">{error}</Error>}
           </ErrorWithDelay>
         </div>
