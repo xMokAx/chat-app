@@ -2,6 +2,7 @@ import * as firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
 import "firebase/storage";
+import "firebase/analytics";
 import { User } from "../actions/user";
 import { Room, Message } from "../actions/chatRooms";
 import { store } from "..";
@@ -18,7 +19,7 @@ let config = {
 };
 
 firebase.initializeApp(config);
-
+firebase.analytics();
 const auth = firebase.auth();
 
 const emailProvider = new firebase.auth.EmailAuthProvider();
