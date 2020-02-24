@@ -54,6 +54,9 @@ const Menu = styled.div<MenuProps>`
     &:hover {
       background: ${props => props.theme.colors.bgSec};
     }
+    &:not(:last-child) {
+      margin-bottom: 3px;
+    }
   }
 `;
 
