@@ -49,7 +49,7 @@
     "eject": "react-scripts eject",
     "predeploy:staging": "yarn build:staging",
     "deploy:staging": "firebase use default && firebase deploy",
-    "predeploy:production": "yarn build:production",
+    "predeploy:production": "yarn build",
     "deploy:production": "firebase use production && firebase deploy"
   },
   "husky": {
