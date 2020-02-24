@@ -6,7 +6,7 @@ import { watchChatMessages } from "./chatMessages";
 import { watchActiveRoomPeople } from "./people";
 
 export const rootSaga = function* root() {
-  const [task1, task2, task3, task4, task5] = yield all([
+  yield all([
     fork(watchAddUser),
     fork(watchUpdateUser),
     fork(watchSignInMethods),
@@ -15,5 +15,4 @@ export const rootSaga = function* root() {
     fork(watchChatMessages),
     fork(watchActiveRoomPeople)
   ]);
-  console.log(task1, task2, task3, task4, task5);
 };
