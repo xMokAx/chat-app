@@ -71,7 +71,7 @@ export interface AddRoomAction {
 
 export interface UpdateRoomAction {
   type: typeof UPDATE_ROOM;
-  room: Room;
+  room: Partial<Room>;
   roomsType: RoomsType;
 }
 
